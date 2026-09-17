@@ -1,0 +1,103 @@
+# =========================================================
+# Digigotchi - .gitignore
+# React + Vite + TanStack Start + Node + Docker
+# =========================================================
+
+# Dependencies
+node_modules/
+.pnpm-store/
+.yarn/
+.yarn-cache/
+
+# Build outputs
+dist/
+build/
+.output/
+.vercel/
+.vite/
+.vinxi/
+.tanstack/
+coverage/
+
+# Environment files
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Cache / temp
+.cache/
+.tmp/
+tmp/
+temp/
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing
+.nyc_output/
+playwright-report/
+test-results/
+
+# IDEs / editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Windows / WSL
+*.stackdump
+.wslconfig
+
+# Python helper scripts cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Docker local overrides
+docker-compose.override.yml
+compose.override.yml
+
+# Local certificates / keys
+*.pem
+*.key
+*.crt
+*.pfx
+*.p12
+
+# Local database / storage files
+*.sqlite
+*.sqlite3
+*.db
+
+# Local backups
+*.bak
+*.backup
+*.old
+
+# Package archives / generated bundles
+*.tgz
+
+# Misc local-only
+.local/

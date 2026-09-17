@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Digital Pet",
+      "hasCanvas": false,
+      "bodyTextLen": 125,
+      "bodyTextHash": "df820f81537dbc43a309652b6b31aa9e348f75f1b7341624d73ec9fec07cbd47",
+      "bodyTextPrefix": "PARCEIRO DIGITAL Digital Pet Escolha uma linha, cuide todos os d",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Digital Pet",
+      "hasCanvas": false,
+      "bodyTextLen": 125,
+      "bodyTextHash": "df820f81537dbc43a309652b6b31aa9e348f75f1b7341624d73ec9fec07cbd47",
+      "bodyTextPrefix": "PARCEIRO DIGITAL Digital Pet Escolha uma linha, cuide todos os d",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}
