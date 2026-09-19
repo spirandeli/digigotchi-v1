@@ -1,0 +1,8 @@
+{
+  "id": "gabumon",
+  "root": "rougue-like-character-sprites/gabumon",
+  "spriteReady": false,
+  "status": "BLOCKED",
+  "reason": "Mixed character and ice-effect frames; no verified action manifest.",
+  "animations": {}
+}

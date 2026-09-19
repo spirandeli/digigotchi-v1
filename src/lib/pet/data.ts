@@ -10,11 +10,29 @@ export type SpriteAnimation = {
   loop?: boolean;
 };
 
-function animationFrames(species: string, action: string, count: number) {
-  return Array.from(
-    { length: count },
-    (_, index) => `/sprites/animated/${species}/${action}/${String(index).padStart(2, "0")}.png`,
-  );
+const ACTION_FRAME_COUNTS: Record<string, Record<string, number>> = {
+  agumon: { idle: 8, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-pepper-breath": 12 },
+  geogreymon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-mega-flame": 12 },
+  wargreymon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-terra-force": 12 },
+  etemon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-love-serenade": 12 },
+  metaletemon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-banana-slip": 12 },
+  gabumon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-blue-blaster": 12 },
+  garurumon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-howling-blaster": 12 },
+  weregarurumon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-wolf-claw": 12 },
+  veemon: { idle: 14, eat: 8, play: 8, sleep: 8, wake: 8, clean: 8, heal: 8, evolve: 8, "attack-vee-headbutt": 8 },
+  flamedramon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-fire-rocket": 12 },
+  xvmon: { idle: 8, eat: 8, play: 8, sleep: 8, wake: 8, clean: 8, heal: 8, evolve: 8, jump: 8, "attack-vee-laser": 8, attack: 8 },
+};
+
+function animationFrames(species: string, action: string, fallbackCount: number) {
+  const actualCount = ACTION_FRAME_COUNTS[species]?.[action] ?? fallbackCount;
+  const loopCount = Math.max(1, actualCount, fallbackCount);
+  const frameCycle = Math.max(1, actualCount);
+
+  return Array.from({ length: loopCount }, (_, index) => {
+    const frameIndex = index % frameCycle;
+    return `/sprites/animated/${species}/${action}/${String(frameIndex).padStart(2, "0")}.png`;
+  });
 }
 
 function animationSet(
@@ -61,6 +79,13 @@ export const SPRITE_ANIMATIONS: Record<string, Record<string, SpriteAnimation>> 
   flamedramon: animationSet("flamedramon", SPECIES_ATTACK_ANIMATION.flamedramon),
   xvmon: animationSet("xvmon", SPECIES_ATTACK_ANIMATION.xvmon),
 };
+
+export function animationDurationMs(species: string, action: string) {
+  const animation = SPRITE_ANIMATIONS[species]?.[action];
+  if (!animation) return 1000;
+  const frameMs = Math.max(70, Math.round(1000 / animation.fps));
+  return animation.frames.length * frameMs;
+}
 
 // Escala visual reduzida ~15% em relação à rodada anterior, com progressão
 // gradual entre formas. Quadrúpedes largos usam um pouco menos de escala.

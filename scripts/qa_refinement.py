@@ -77,7 +77,7 @@ report += ['## Observações de implementação','',
 '- Os sons são sintetizados especificamente para o projeto; não são trechos extraídos de anime/jogos.',
 '- O treino bloqueia spam durante a animação e aplica custo de energia + XP ao executar a habilidade.',
 '']
-(ROOT/'QA_REFINAMENTO.md').write_text('\n'.join(report),encoding='utf-8')
+(ROOT/'docs'/'planos-e-reviews'/'QA_REFINAMENTO.md').write_text('\n'.join(report),encoding='utf-8')
 print('PASS' if all_ok else 'REVISAR')
 for species,ok,errors,_ in rows:
     print(species, 'PASS' if ok else 'FAIL', '; '.join(errors[:3]))

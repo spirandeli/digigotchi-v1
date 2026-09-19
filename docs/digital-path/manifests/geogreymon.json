@@ -1,0 +1,8 @@
+{
+  "id": "geogreymon",
+  "root": "rougue-like-character-sprites/geogreymon",
+  "spriteReady": false,
+  "status": "BLOCKED",
+  "reason": "Character poses, fire effects and reference panel are mixed.",
+  "animations": {}
+}

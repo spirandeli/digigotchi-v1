@@ -16,25 +16,36 @@ import {
   type PetState,
 } from "./engine";
 import { animationToSound, playDigimonSound } from "./audio";
+import {
+  applyRunResult,
+  createRunInput,
+  type DigitalPathRunInput,
+} from "./digital-path-bridge";
 
-type Screen = "start" | "choose" | "play";
-type Panel = "inventory" | "shop" | "evolution" | "training" | null;
+export type Screen = "start" | "choose" | "play" | "digital-path";
+export type Panel = "inventory" | "shop" | "evolution" | "training" | "digital-path" | null;
 
-type GameStore = {
+export type GameStore = {
   screen: Screen;
   pet: PetState | null;
   panel: Panel;
   speech: string;
   anim: string;
   busyUntil: number;
+  animationRunId: number;
   apply: (fn: (p: PetState) => { pet: PetState; result: ActionResult }) => ActionResult | null;
   startNew: () => void;
   continueSave: () => boolean;
   choose: (lineId: string) => void;
+  setScreen: (s: Screen) => void;
   setPanel: (p: Panel) => void;
+  startDigitalPath: () => void;
+  exitDigitalPath: () => void;
   reset: () => void;
   tick: () => void;
   hasSave: () => boolean;
+  createDigitalPathRunInput: () => DigitalPathRunInput | null;
+  applyDigitalPathResult: (result: unknown) => boolean;
 };
 
 function persist(pet: PetState) {
@@ -62,7 +73,21 @@ export const useGame = create<GameStore>((set, get) => ({
   speech: "",
   anim: "",
   busyUntil: 0,
+  animationRunId: 0,
   hasSave: () => Boolean(loadSave()),
+  createDigitalPathRunInput: () => {
+    const { pet } = get();
+    return pet ? createRunInput(pet) : null;
+  },
+  applyDigitalPathResult: (result) => {
+    const { pet } = get();
+    if (!pet) return false;
+    const applied = applyRunResult(pet, result);
+    if (!applied.applied) return false;
+    persist(applied.pet);
+    set({ pet: applied.pet, speech: "Resultado do Caminho Digital aplicado" });
+    return true;
+  },
   startNew: () => set({ screen: "choose" }),
   continueSave: () => {
     const saved = loadSave();
@@ -77,14 +102,17 @@ export const useGame = create<GameStore>((set, get) => ({
     persist(pet);
     set({ pet, screen: "play", speech: "Cuide de mim!" });
   },
+  setScreen: (screen) => set({ screen }),
   setPanel: (panel) => set({ panel }),
+  startDigitalPath: () => set({ screen: "digital-path", panel: null }),
+  exitDigitalPath: () => set({ screen: "play", panel: null }),
   reset: () => {
     try {
       localStorage.removeItem(SAVE_KEY);
     } catch {
       /* ignore */
     }
-    set({ pet: null, screen: "start", panel: null, speech: "", anim: "", busyUntil: 0 });
+    set({ pet: null, screen: "start", panel: null, speech: "", anim: "", busyUntil: 0, animationRunId: 0 });
   },
   tick: () => {
     const { pet } = get();
@@ -94,7 +122,7 @@ export const useGame = create<GameStore>((set, get) => ({
     set({ pet: next });
   },
   apply: (fn) => {
-    const { pet, busyUntil } = get();
+    const { pet, busyUntil, animationRunId } = get();
     if (!pet) return null;
     if (Date.now() < busyUntil) {
       const result: ActionResult = { ok: false, msg: "Aguarde a animacao terminar" };
@@ -105,11 +133,13 @@ export const useGame = create<GameStore>((set, get) => ({
     const { pet: next, result } = fn(pet);
     persist(next);
     const durationMs = result.durationMs ?? (result.animation ? 1300 : 900);
+    const nextAnimationRunId = animationRunId + 1;
     set({
       pet: next,
       speech: result.msg,
       anim: result.animation ?? "",
       busyUntil: result.ok && result.animation ? Date.now() + durationMs : 0,
+      animationRunId: nextAnimationRunId,
       panel: result.ok && result.animation ? null : get().panel,
     });
 
@@ -120,7 +150,8 @@ export const useGame = create<GameStore>((set, get) => ({
 
     if (typeof window !== "undefined") {
       window.setTimeout(() => {
-        if (useGame.getState().speech === result.msg) {
+        const state = useGame.getState();
+        if (state.animationRunId === nextAnimationRunId && state.speech === result.msg) {
           useGame.setState({ speech: "", anim: "", busyUntil: 0 });
         }
       }, durationMs);
@@ -138,5 +169,8 @@ export const actions = {
   buy: (id: string) => useGame.getState().apply((p) => buy(p, id)),
   evolve: () => useGame.getState().apply(tryEvolve),
   train: () => useGame.getState().apply(trainSkill),
+  startDigitalPath: () => useGame.getState().startDigitalPath(),
+  exitDigitalPath: () => useGame.getState().exitDigitalPath(),
+  createDigitalPathRunInput: () => useGame.getState().createDigitalPathRunInput(),
   use: (id: string) => useGame.getState().apply((p) => useItem(p, id)),
 };

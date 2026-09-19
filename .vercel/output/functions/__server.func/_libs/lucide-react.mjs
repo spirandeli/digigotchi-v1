@@ -1,5 +1,5 @@
 import { i as __toESM } from "../_runtime.mjs";
-import { L as require_react } from "./@tanstack/react-router+[...].mjs";
+import { K as require_react } from "./@tanstack/react-router+[...].mjs";
 //#region node_modules/lucide-react/dist/esm/shared/src/utils.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 /**
@@ -154,6 +154,21 @@ var Coins = createLucideIcon("coins", [
 		key: "1rbuyh"
 	}]
 ]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Compass = createLucideIcon("compass", [["path", {
+	d: "m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z",
+	key: "9ktpf1"
+}], ["circle", {
+	cx: "12",
+	cy: "12",
+	r: "10",
+	key: "1mglay"
+}]]);
 /**
 * @license lucide-react v0.510.0 - ISC
 *
@@ -335,4 +350,4 @@ var Volleyball = createLucideIcon("volleyball", [
 	}]
 ]);
 //#endregion
-export { Sparkles as a, HeartPulse as c, Bath as d, Store as i, Coins as l, Utensils as n, RotateCcw as o, TriangleAlert as r, Package as s, Volleyball as t, Bed as u };
+export { Sparkles as a, HeartPulse as c, Bed as d, Bath as f, Store as i, Compass as l, Utensils as n, RotateCcw as o, TriangleAlert as r, Package as s, Volleyball as t, Coins as u };

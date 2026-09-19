@@ -1,4 +1,4 @@
-import { INITIAL_INVENTORY, ITEMS, LINES, type Mood } from "./data";
+import { animationDurationMs, INITIAL_INVENTORY, ITEMS, LINES, type Mood } from "./data";
 import { getSkillForSpecies, QA_XP_MULTIPLIER } from "./skills";
 
 export type PetState = {
@@ -19,6 +19,7 @@ export type PetState = {
   lastSimulatedAt: number;
   createdAt: number;
   evolutionStage: number;
+  digitalPathResults?: string[];
 };
 
 export type ActionResult = { ok: boolean; msg: string; animation?: string; durationMs?: number };
@@ -146,7 +147,7 @@ export function feed(pet: PetState, itemId: string): { pet: PetState; result: Ac
   next.inventory[itemId] -= 1;
   applyEffects(next, item.effects);
   addXp(next, 5);
-  return { pet: next, result: { ok: true, msg: `${currentName(next)} comeu ${item.name}`, animation: "eat", durationMs: 1200 } };
+  return { pet: next, result: { ok: true, msg: `${currentName(next)} comeu ${item.name}`, animation: "eat", durationMs: animationDurationMs(next.speciesId, "eat") } };
 }
 
 export function feedAny(pet: PetState): { pet: PetState; result: ActionResult } {
@@ -174,7 +175,7 @@ export function play(pet: PetState, itemId?: string): { pet: PetState; result: A
   }
   addXp(next, 8);
   next.coins += 3;
-  return { pet: next, result: { ok: true, msg: `${currentName(next)} se divertiu`, animation: "play", durationMs: 1350 } };
+  return { pet: next, result: { ok: true, msg: `${currentName(next)} se divertiu`, animation: "play", durationMs: animationDurationMs(next.speciesId, "play") } };
 }
 
 export function sleepToggle(pet: PetState): { pet: PetState; result: ActionResult } {
@@ -186,9 +187,9 @@ export function sleepToggle(pet: PetState): { pet: PetState; result: ActionResul
     lastSimulatedAt: Date.now(),
   };
   if (next.isSleeping) {
-    return { pet: next, result: { ok: true, msg: `${currentName(next)} foi dormir`, animation: "sleep", durationMs: 800 } };
+    return { pet: next, result: { ok: true, msg: `${currentName(next)} foi dormir`, animation: "sleep", durationMs: animationDurationMs(next.speciesId, "sleep") } };
   }
-  return { pet: next, result: { ok: true, msg: `${currentName(next)} acordou`, animation: "wake", durationMs: 1050 } };
+  return { pet: next, result: { ok: true, msg: `${currentName(next)} acordou`, animation: "wake", durationMs: animationDurationMs(next.speciesId, "wake") } };
 }
 
 export function clean(pet: PetState, itemId = "sabao"): { pet: PetState; result: ActionResult } {
@@ -205,7 +206,7 @@ export function clean(pet: PetState, itemId = "sabao"): { pet: PetState; result:
     next.happiness = clamp(next.happiness + 5);
   }
   addXp(next, 4);
-  return { pet: next, result: { ok: true, msg: `${currentName(next)} tomou banho`, animation: "clean", durationMs: 1250 } };
+  return { pet: next, result: { ok: true, msg: `${currentName(next)} tomou banho`, animation: "clean", durationMs: animationDurationMs(next.speciesId, "clean") } };
 }
 
 export function heal(pet: PetState, itemId = "medicina"): { pet: PetState; result: ActionResult } {
@@ -219,7 +220,7 @@ export function heal(pet: PetState, itemId = "medicina"): { pet: PetState; resul
   next.inventory[itemId] -= 1;
   applyEffects(next, item.effects);
   addXp(next, 5);
-  return { pet: next, result: { ok: true, msg: `${currentName(next)} se sente melhor`, animation: "heal", durationMs: 1250 } };
+  return { pet: next, result: { ok: true, msg: `${currentName(next)} se sente melhor`, animation: "heal", durationMs: animationDurationMs(next.speciesId, "heal") } };
 }
 
 export function buy(pet: PetState, itemId: string): { pet: PetState; result: ActionResult } {
@@ -248,7 +249,7 @@ export function tryEvolve(pet: PetState): { pet: PetState; result: ActionResult 
   next.speciesId = evo.id;
   next.nickname = evo.name;
   addXp(next, 20);
-  return { pet: next, result: { ok: true, msg: `Evoluiu para ${evo.name}!`, animation: "evolve", durationMs: 1750 } };
+  return { pet: next, result: { ok: true, msg: `Evoluiu para ${evo.name}!`, animation: "evolve", durationMs: animationDurationMs(next.speciesId, "evolve") } };
 }
 
 
@@ -274,7 +275,7 @@ export function trainSkill(pet: PetState): { pet: PetState; result: ActionResult
       ok: true,
       msg: `${skill.name} · +${gainedXp} XP`,
       animation: skill.animation,
-      durationMs: 1350,
+      durationMs: animationDurationMs(next.speciesId, skill.animation),
     },
   };
 }

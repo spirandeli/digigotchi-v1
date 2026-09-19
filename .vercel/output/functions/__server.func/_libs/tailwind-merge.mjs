@@ -406,6 +406,7 @@ var fallbackThemeArr = [];
 var fromTheme = (key) => {
 	const themeGetter = (theme) => theme[key] || fallbackThemeArr;
 	themeGetter.isThemeGetter = true;
+	themeGetter.themeKey = key;
 	return themeGetter;
 };
 var arbitraryValueRegex = /^\[(?:(\w[\w-]*):)?(.+)\]$/i;
@@ -413,7 +414,7 @@ var arbitraryVariableRegex = /^\((?:(\w[\w-]*):)?(.+)\)$/i;
 var fractionRegex = /^\d+(?:\.\d+)?\/\d+(?:\.\d+)?$/;
 var tshirtUnitRegex = /^(\d+(\.\d+)?)?(xs|sm|md|lg|xl)$/;
 var lengthUnitRegex = /\d+(%|px|r?em|[sdl]?v([hwib]|min|max)|pt|pc|in|cm|mm|cap|ch|ex|r?lh|cq(w|h|i|b|min|max))|\b(calc|min|max|clamp)\(.+\)|^0$/;
-var colorFunctionRegex = /^(rgba?|hsla?|hwb|(ok)?(lab|lch)|color-mix)\(.+\)$/;
+var colorFunctionRegex = /^(rgba?|hsla?|hwb|(ok)?(lab|lch)|color-mix|color|light-dark)\(.+\)$/;
 var shadowRegex = /^(inset_)?-?((\d+)?\.?(\d+)[a-z]+|0)_-?((\d+)?\.?(\d+)[a-z]+|0)/;
 var imageRegex = /^(url|image|image-set|cross-fade|element|(repeating-)?(linear|radial|conic)-gradient)\(.+\)$/;
 var isFraction = (value) => fractionRegex.test(value);
@@ -622,6 +623,7 @@ var getDefaultConfig = () => {
 		...scaleUnambiguousSpacing()
 	];
 	const scaleSizingInline = () => [
+		themeContainer,
 		isFraction,
 		"screen",
 		"full",
@@ -854,6 +856,7 @@ var getDefaultConfig = () => {
 			*/
 			columns: [{ columns: [
 				isNumber,
+				"auto",
 				isArbitraryValue,
 				isArbitraryVariable,
 				themeContainer
@@ -1431,32 +1434,32 @@ var getDefaultConfig = () => {
 			size: [{ size: scaleSizing() }],
 			/**
 			* Inline Size
-			* @see https://tailwindcss.com/docs/width
+			* @see https://tailwindcss.com/docs/inline-size
 			*/
 			"inline-size": [{ inline: ["auto", ...scaleSizingInline()] }],
 			/**
 			* Min-Inline Size
-			* @see https://tailwindcss.com/docs/min-width
+			* @see https://tailwindcss.com/docs/min-inline-size
 			*/
 			"min-inline-size": [{ "min-inline": ["auto", ...scaleSizingInline()] }],
 			/**
 			* Max-Inline Size
-			* @see https://tailwindcss.com/docs/max-width
+			* @see https://tailwindcss.com/docs/max-inline-size
 			*/
 			"max-inline-size": [{ "max-inline": ["none", ...scaleSizingInline()] }],
 			/**
 			* Block Size
-			* @see https://tailwindcss.com/docs/height
+			* @see https://tailwindcss.com/docs/block-size
 			*/
 			"block-size": [{ block: ["auto", ...scaleSizingBlock()] }],
 			/**
 			* Min-Block Size
-			* @see https://tailwindcss.com/docs/min-height
+			* @see https://tailwindcss.com/docs/min-block-size
 			*/
 			"min-block-size": [{ "min-block": ["auto", ...scaleSizingBlock()] }],
 			/**
 			* Max-Block Size
-			* @see https://tailwindcss.com/docs/max-height
+			* @see https://tailwindcss.com/docs/max-block-size
 			*/
 			"max-block-size": [{ "max-block": ["none", ...scaleSizingBlock()] }],
 			/**
@@ -1516,6 +1519,7 @@ var getDefaultConfig = () => {
 			"max-h": [{ "max-h": [
 				"screen",
 				"lh",
+				"none",
 				...scaleSizing()
 			] }],
 			/**
@@ -1631,7 +1635,11 @@ var getDefaultConfig = () => {
 			* Line Height
 			* @see https://tailwindcss.com/docs/line-height
 			*/
-			leading: [{ leading: [themeLeading, ...scaleUnambiguousSpacing()] }],
+			leading: [{ leading: [
+				"none",
+				themeLeading,
+				...scaleUnambiguousSpacing()
+			] }],
 			/**
 			* List Style Image
 			* @see https://tailwindcss.com/docs/list-style-image
@@ -1900,6 +1908,7 @@ var getDefaultConfig = () => {
 						isArbitraryValue
 					],
 					conic: [
+						"",
 						isInteger,
 						isArbitraryVariable,
 						isArbitraryValue
@@ -2210,6 +2219,7 @@ var getDefaultConfig = () => {
 			*/
 			shadow: [{ shadow: [
 				"",
+				"inner",
 				"none",
 				themeShadow,
 				isArbitraryVariableShadow,
@@ -3207,8 +3217,18 @@ var getDefaultConfig = () => {
 				"bottom",
 				"left"
 			],
-			"inset-x": ["right", "left"],
-			"inset-y": ["top", "bottom"],
+			"inset-x": [
+				"start",
+				"end",
+				"right",
+				"left"
+			],
+			"inset-y": [
+				"inset-bs",
+				"inset-be",
+				"top",
+				"bottom"
+			],
 			flex: [
 				"basis",
 				"grow",
@@ -3227,8 +3247,18 @@ var getDefaultConfig = () => {
 				"pb",
 				"pl"
 			],
-			px: ["pr", "pl"],
-			py: ["pt", "pb"],
+			px: [
+				"ps",
+				"pe",
+				"pr",
+				"pl"
+			],
+			py: [
+				"pbs",
+				"pbe",
+				"pt",
+				"pb"
+			],
 			m: [
 				"mx",
 				"my",
@@ -3241,8 +3271,18 @@ var getDefaultConfig = () => {
 				"mb",
 				"ml"
 			],
-			mx: ["mr", "ml"],
-			my: ["mt", "mb"],
+			mx: [
+				"ms",
+				"me",
+				"mr",
+				"ml"
+			],
+			my: [
+				"mbs",
+				"mbe",
+				"mt",
+				"mb"
+			],
 			size: ["w", "h"],
 			"font-size": ["leading"],
 			"fvn-normal": [
@@ -3293,8 +3333,18 @@ var getDefaultConfig = () => {
 				"border-w-b",
 				"border-w-l"
 			],
-			"border-w-x": ["border-w-r", "border-w-l"],
-			"border-w-y": ["border-w-t", "border-w-b"],
+			"border-w-x": [
+				"border-w-s",
+				"border-w-e",
+				"border-w-r",
+				"border-w-l"
+			],
+			"border-w-y": [
+				"border-w-bs",
+				"border-w-be",
+				"border-w-t",
+				"border-w-b"
+			],
 			"border-color": [
 				"border-color-x",
 				"border-color-y",
@@ -3307,8 +3357,18 @@ var getDefaultConfig = () => {
 				"border-color-b",
 				"border-color-l"
 			],
-			"border-color-x": ["border-color-r", "border-color-l"],
-			"border-color-y": ["border-color-t", "border-color-b"],
+			"border-color-x": [
+				"border-color-s",
+				"border-color-e",
+				"border-color-r",
+				"border-color-l"
+			],
+			"border-color-y": [
+				"border-color-bs",
+				"border-color-be",
+				"border-color-t",
+				"border-color-b"
+			],
 			translate: [
 				"translate-x",
 				"translate-y",
@@ -3332,8 +3392,18 @@ var getDefaultConfig = () => {
 				"scroll-mb",
 				"scroll-ml"
 			],
-			"scroll-mx": ["scroll-mr", "scroll-ml"],
-			"scroll-my": ["scroll-mt", "scroll-mb"],
+			"scroll-mx": [
+				"scroll-ms",
+				"scroll-me",
+				"scroll-mr",
+				"scroll-ml"
+			],
+			"scroll-my": [
+				"scroll-mbs",
+				"scroll-mbe",
+				"scroll-mt",
+				"scroll-mb"
+			],
 			"scroll-p": [
 				"scroll-px",
 				"scroll-py",
@@ -3346,8 +3416,18 @@ var getDefaultConfig = () => {
 				"scroll-pb",
 				"scroll-pl"
 			],
-			"scroll-px": ["scroll-pr", "scroll-pl"],
-			"scroll-py": ["scroll-pt", "scroll-pb"],
+			"scroll-px": [
+				"scroll-ps",
+				"scroll-pe",
+				"scroll-pr",
+				"scroll-pl"
+			],
+			"scroll-py": [
+				"scroll-pbs",
+				"scroll-pbe",
+				"scroll-pt",
+				"scroll-pb"
+			],
 			touch: [
 				"touch-x",
 				"touch-y",

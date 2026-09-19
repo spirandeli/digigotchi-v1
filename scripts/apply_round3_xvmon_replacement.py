@@ -213,7 +213,7 @@ def write_plan() -> None:
 - Fazer uma rodada 4 de refinamento manual quadro a quadro para utilidades (`sleep`, `eat`, `clean`, `heal`) se você quiser fidelidade máxima em cada ação.
 - Separar efeitos visuais em camadas próprias para o ataque, para deixar os FX ainda mais modernos e menos acoplados ao corpo do sprite.
 '''
-    (ROOT / 'PLANO_RODADA_3_XVMON.md').write_text(text, encoding='utf-8')
+    (ROOT / 'docs' / 'planos-e-reviews' / 'PLANO_RODADA_3_XVMON.md').write_text(text, encoding='utf-8')
 
 
 def write_preview(frames: dict[int, Image.Image]) -> None:

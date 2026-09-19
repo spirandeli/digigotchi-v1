@@ -282,7 +282,7 @@ def write_plan():
 
 Este pacote foi montado para entregar um estado **melhor e mais consistente sem quebrar o projeto**. Alguns monstros já receberam material novo diretamente; outros ainda usam o pipeline anterior com limpeza de bordas.
 '''
-    (ROOT / 'PLANO_MELHORIA_SPRITES_E_EFEITOS_RODADA_2.md').write_text(text, encoding='utf-8')
+    (ROOT / 'docs' / 'planos-e-reviews' / 'PLANO_MELHORIA_SPRITES_E_EFEITOS_RODADA_2.md').write_text(text, encoding='utf-8')
 
 
 def tweak_layouts():

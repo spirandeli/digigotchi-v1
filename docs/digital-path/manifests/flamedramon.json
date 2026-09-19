@@ -1,0 +1,8 @@
+{
+  "id": "flamedramon",
+  "root": "rougue-like-character-sprites/flamedramon",
+  "spriteReady": false,
+  "status": "BLOCKED",
+  "reason": "Actions and effects are not separated into verified runtime sequences.",
+  "animations": {}
+}

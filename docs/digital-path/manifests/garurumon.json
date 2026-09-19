@@ -1,0 +1,8 @@
+{
+  "id": "garurumon",
+  "root": "rougue-like-character-sprites/garurumon",
+  "spriteReady": false,
+  "status": "BLOCKED",
+  "reason": "Annotated source panel and mixed actions require extraction and second review.",
+  "animations": {}
+}

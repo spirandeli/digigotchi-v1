@@ -1,0 +1,33 @@
+{
+  "id": "gabumon",
+  "root": "rougue-like-character-sprites/gabumon",
+  "spriteReady": false,
+  "frame": {
+    "width": 128,
+    "height": 128,
+    "originX": 0.5,
+    "originY": 0.75
+  },
+  "hitbox": {
+    "width": 48,
+    "height": 40,
+    "offsetX": 40,
+    "offsetY": 72
+  },
+  "animations": {
+    "idle": [],
+    "walk_up": [],
+    "walk_down": [],
+    "walk_left": [],
+    "walk_right": [],
+    "attack_basic_1": [],
+    "attack_basic_2": [],
+    "attack_special": [],
+    "hit": [],
+    "death": []
+  },
+  "review": {
+    "secondPassCompleted": false,
+    "unknown": []
+  }
+}
