@@ -2,16 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import {
   Bath,
   Bed,
+  CheckCircle2,
   Compass,
   Coins,
   HeartPulse,
   Package,
   RotateCcw,
+  Settings,
+  ShieldCheck,
   Sparkles,
   Store,
   Utensils,
   Volleyball,
 } from "lucide-react";
+
 import { ITEMS, LINES, SPRITE_ANIMATIONS, SPRITE_STAGE_LAYOUT } from "@/lib/pet/data";
 import { currentName, currentSprite, getMood, xpToNext } from "@/lib/pet/engine";
 import { actions, useGame } from "@/lib/pet/store";
@@ -151,10 +155,11 @@ export function PlayScreen() {
             <Action icon={HeartPulse} label="Saude" disabled={actionBusy} onClick={() => actions.heal()} />
           </nav>
 
-          <footer className="mt-3 grid grid-cols-4 gap-2 border-t border-[rgba(116,135,157,0.48)] px-1 pt-3">
+          <footer className="mt-3 grid grid-cols-5 gap-1.5 border-t border-[rgba(116,135,157,0.48)] px-1 pt-3">
             <NavBtn icon={Package} label="Itens" onClick={() => setPanel("inventory")} />
             <NavBtn icon={Store} label="Loja" onClick={() => setPanel("shop")} />
             <NavBtn icon={Sparkles} label="Evoluir" onClick={() => setPanel("evolution")} />
+            <NavBtn icon={Settings} label="Ajustes" onClick={() => setPanel("settings")} />
             <NavBtn
               icon={RotateCcw}
               label="Novo"
@@ -170,7 +175,17 @@ export function PlayScreen() {
             <div className={cn("ds-modal max-h-[88vh] w-full overflow-y-auto p-5", panel === "digital-path" ? "max-w-xl" : "max-w-md")} onClick={(e) => e.stopPropagation()}>
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-base font-semibold text-fg">
-                  {panel === "inventory" ? "Inventario" : panel === "shop" ? "Loja" : panel === "training" ? "Treino" : panel === "digital-path" ? "Caminho Digital" : "Evolucao"}
+                  {panel === "inventory"
+                    ? "Inventário"
+                    : panel === "shop"
+                    ? "Loja"
+                    : panel === "training"
+                    ? "Treino"
+                    : panel === "digital-path"
+                    ? "Caminho Digital"
+                    : panel === "settings"
+                    ? "Configurações"
+                    : "Árvore de Evolução"}
                 </h2>
                 <button type="button" className="ds-button px-3 py-1.5 text-sm font-medium" onClick={() => setPanel(null)}>
                   Fechar
@@ -181,9 +196,11 @@ export function PlayScreen() {
               {panel === "evolution" ? <Evolution /> : null}
               {panel === "training" ? <Training /> : null}
               {panel === "digital-path" ? <DigitalPathEntry /> : null}
+              {panel === "settings" ? <SettingsPanel /> : null}
             </div>
           </div>
         ) : null}
+
       </div>
     </div>
   );
@@ -312,24 +329,91 @@ function NavBtn({
 function Inventory() {
   const pet = useGame((s) => s.pet);
   const actionBusy = useGame((s) => s.busyUntil > Date.now());
+  const [tab, setTab] = useState<"all" | "food" | "care">("all");
+
   if (!pet) return null;
   const entries = Object.entries(pet.inventory).filter(([, q]) => q > 0);
-  if (entries.length === 0) {
-    return <p className="text-sm text-muted">Vazio. Compre na loja.</p>;
-  }
+
+  const filtered = entries.filter(([id]) => {
+    const item = ITEMS[id];
+    if (!item) return false;
+    if (tab === "food") return item.category === "food";
+    if (tab === "care") return item.category === "health" || item.category === "hygiene" || item.category === "toy";
+    return true;
+  });
+
   return (
-    <div className="grid grid-cols-2 gap-2">
-      {entries.map(([id, qty]) => {
-        const item = ITEMS[id];
-        if (!item) return null;
-        return (
-          <button key={id} type="button" disabled={actionBusy} onClick={() => actions.use(id)} className="ds-card p-3 text-left disabled:cursor-not-allowed disabled:opacity-45">
-            <p className="text-sm font-semibold text-fg">{item.name}</p>
-            <p className="mt-1 text-xs text-muted">{item.desc}</p>
-            <p className="mt-2 text-xs tabular-nums font-medium text-subtle">x{qty}</p>
-          </button>
-        );
-      })}
+    <div className="space-y-3">
+      {/* Category Tabs */}
+      <div className="flex gap-1.5 border-b border-[rgba(116,135,157,0.3)] pb-2 text-xs">
+        <button
+          type="button"
+          onClick={() => setTab("all")}
+          className={cn(
+            "rounded-lg px-2.5 py-1 font-semibold transition-colors",
+            tab === "all" ? "bg-accent text-white" : "text-muted hover:text-fg"
+          )}
+        >
+          Todos ({entries.length})
+        </button>
+        <button
+          type="button"
+          onClick={() => setTab("food")}
+          className={cn(
+            "rounded-lg px-2.5 py-1 font-semibold transition-colors",
+            tab === "food" ? "bg-accent text-white" : "text-muted hover:text-fg"
+          )}
+        >
+          Alimentos
+        </button>
+        <button
+          type="button"
+          onClick={() => setTab("care")}
+          className={cn(
+            "rounded-lg px-2.5 py-1 font-semibold transition-colors",
+            tab === "care" ? "bg-accent text-white" : "text-muted hover:text-fg"
+          )}
+        >
+          Cuidados
+        </button>
+      </div>
+
+      {filtered.length === 0 ? (
+        <p className="text-sm text-muted py-4 text-center">Nenhum item nesta categoria. Compre na loja ou conquiste no Caminho Digital.</p>
+      ) : (
+        <div className="grid grid-cols-2 gap-2">
+          {filtered.map(([id, qty]) => {
+            const item = ITEMS[id];
+            if (!item) return null;
+            return (
+              <button
+                key={id}
+                type="button"
+                disabled={actionBusy}
+                onClick={() => actions.use(id)}
+                className="ds-card p-3 text-left disabled:cursor-not-allowed disabled:opacity-45 hover:border-accent transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-fg">{item.name}</p>
+                    <span className="rounded-full bg-accent/20 px-2 py-0.5 text-[11px] font-bold text-accent">
+                      x{qty}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-muted">{item.desc}</p>
+                </div>
+                <div className="mt-2 text-[10px] text-muted flex gap-1.5 flex-wrap">
+                  {Object.entries(item.effects).map(([stat, val]) => (
+                    <span key={stat} className="rounded bg-black/5 dark:bg-white/5 px-1 py-0.5 font-medium">
+                      +{val} {stat}
+                    </span>
+                  ))}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
@@ -357,37 +441,208 @@ function Evolution() {
   if (!pet) return null;
   const line = LINES[pet.lineId];
   const list = line?.evolutions ?? [];
+
   return (
-    <div className="space-y-3">
-      <p className="text-sm text-muted">
-        Forma atual: <span className="font-semibold text-fg">{currentName(pet)}</span> · Nv. {pet.level}
-      </p>
-      {list.map((evo, idx) => {
-        const unlocked = pet.evolutionStage >= idx;
-        const nextNeeded = pet.evolutionStage + 1 === idx;
-        return (
-          <div
-            key={evo.id}
-            className={cn(
-              "ds-card p-3",
-              unlocked ? "border-happy/70" : nextNeeded ? "border-accent" : "border-border",
-            )}
-          >
-            <p className="text-sm font-semibold text-fg">
-              {evo.name} <span className="text-xs font-normal text-muted">Nv. {evo.level}</span>
-              {unlocked ? " · desbloqueado" : ""}
-            </p>
-            {nextNeeded ? (
-              <button type="button" disabled={actionBusy} onClick={() => actions.evolve()} className="ds-button ds-button-accent mt-3 h-10 px-4 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-45">
-                Evoluir
-              </button>
-            ) : null}
+    <div className="space-y-4">
+      <div className="ds-card p-3 flex items-center justify-between">
+        <div>
+          <p className="text-xs text-muted">Forma Atual:</p>
+          <p className="text-base font-bold text-fg">{currentName(pet)}</p>
+        </div>
+        <div className="text-right">
+          <span className="rounded-full bg-accent/20 px-2.5 py-1 text-xs font-bold text-accent">
+            Nível {pet.level}
+          </span>
+          <p className="mt-1 text-[11px] text-muted">Felicidade: {pet.happiness}%</p>
+        </div>
+      </div>
+
+      <div className="space-y-2.5">
+        <h4 className="text-xs font-bold uppercase tracking-wider text-muted">Árvore Genealógica Digital</h4>
+        
+        {/* Rookie stage */}
+        <div className="ds-card p-3 border-emerald-500/50 bg-emerald-500/5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-xl">🐣</span>
+            <div>
+              <p className="font-bold text-sm text-fg">{line?.name || "Novato"}</p>
+              <p className="text-[11px] text-muted">Estágio Inicial · Nv. 1</p>
+            </div>
           </div>
-        );
-      })}
+          <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
+            <CheckCircle2 className="size-4" /> Desbloqueado
+          </span>
+        </div>
+
+        {/* Evolution steps */}
+        {list.map((evo, idx) => {
+          const unlocked = pet.evolutionStage >= idx;
+          const nextNeeded = pet.evolutionStage + 1 === idx;
+          const levelMet = pet.level >= evo.level;
+          const bondMet = pet.happiness >= 40;
+          const canEvolve = nextNeeded && levelMet && bondMet;
+
+          return (
+            <div
+              key={evo.id}
+              className={cn(
+                "ds-card p-3 transition-all",
+                unlocked
+                  ? "border-emerald-500/50 bg-emerald-500/5"
+                  : canEvolve
+                  ? "border-accent bg-accent/10 shadow-md"
+                  : "border-border opacity-70"
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">{idx === 0 ? "⚔️" : "👑"}</span>
+                  <div>
+                    <p className="font-bold text-sm text-fg">{evo.name}</p>
+                    <p className="text-[11px] text-muted">
+                      {idx === 0 ? "Estágio Campeão" : "Estágio Extremo / Mega"}
+                    </p>
+                  </div>
+                </div>
+
+                {unlocked ? (
+                  <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
+                    <CheckCircle2 className="size-4" /> Desbloqueado
+                  </span>
+                ) : (
+                  <span className="text-xs font-semibold text-muted">
+                    Requer Nv. {evo.level} e Afinidade 40%
+                  </span>
+                )}
+              </div>
+
+              {nextNeeded && (
+                <div className="mt-3 pt-2 border-t border-[rgba(116,135,157,0.2)]">
+                  {canEvolve ? (
+                    <button
+                      type="button"
+                      disabled={actionBusy}
+                      onClick={() => actions.evolve()}
+                      className="ds-button ds-button-accent w-full py-2 text-sm font-bold animate-pulse"
+                    >
+                      ✨ Evoluir para {evo.name}!
+                    </button>
+                  ) : (
+                    <div className="space-y-1 text-xs text-muted">
+                      <div className="flex justify-between">
+                        <span>Progresso de Nível:</span>
+                        <span className={levelMet ? "text-emerald-500 font-semibold" : "text-amber-500"}>
+                          {pet.level}/{evo.level}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Afinidade (Felicidade):</span>
+                        <span className={bondMet ? "text-emerald-500 font-semibold" : "text-amber-500"}>
+                          {pet.happiness}%/40%
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
+
+function SettingsPanel() {
+  const pet = useGame((s) => s.pet);
+  const reset = useGame((s) => s.reset);
+  const setPanel = useGame((s) => s.setPanel);
+  const [volume, setVolume] = useState(80);
+  const [doubleConfirm, setDoubleConfirm] = useState(false);
+
+  return (
+    <div className="space-y-4 text-xs text-fg">
+      <div className="ds-card p-3 space-y-2">
+        <h4 className="font-semibold text-sm text-fg">Áudio e Visual</h4>
+        <div className="space-y-1">
+          <div className="flex justify-between text-muted">
+            <span>Volume dos Efeitos Sonoros</span>
+            <span>{volume}%</span>
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={volume}
+            onChange={(e) => setVolume(Number(e.target.value))}
+            className="w-full cursor-pointer accent-accent"
+          />
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            if (!document.fullscreenElement) {
+              document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+              document.exitFullscreen().catch(() => {});
+            }
+          }}
+          className="ds-button w-full py-1.5 font-medium mt-2"
+        >
+          ⛶ Alternar Tela Cheia
+        </button>
+      </div>
+
+      <div className="ds-card p-3 space-y-2">
+        <h4 className="font-semibold text-sm text-fg">Integridade do Save</h4>
+        <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+          <ShieldCheck className="size-4" />
+          <span>Save V2 com Espelho de Backup Ativo</span>
+        </div>
+        <p className="text-muted leading-tight">
+          Seus dados são salvos com redundância dupla local (digital_pet_save_v2 e backup). Em caso de corrupção, o sistema recupera o estado automaticamente.
+        </p>
+      </div>
+
+      <div className="ds-card p-3 space-y-2 border-red-500/40 bg-red-500/5">
+        <h4 className="font-semibold text-sm text-red-600 dark:text-red-400">Zona de Perigo</h4>
+        {!doubleConfirm ? (
+          <button
+            type="button"
+            onClick={() => setDoubleConfirm(true)}
+            className="ds-button border-red-500/50 text-red-600 dark:text-red-400 w-full py-2 font-semibold"
+          >
+            Reiniciar Progresso e Save
+          </button>
+        ) : (
+          <div className="space-y-2">
+            <p className="text-red-600 dark:text-red-400 font-medium">Tem certeza absoluta? Todo o progresso do seu Digimon será apagado permanentemente.</p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  reset();
+                  setPanel(null);
+                }}
+                className="ds-button ds-button-accent bg-red-600 hover:bg-red-700 text-white flex-1 py-1.5 font-bold"
+              >
+                Confirmar Reset
+              </button>
+              <button
+                type="button"
+                onClick={() => setDoubleConfirm(false)}
+                className="ds-button flex-1 py-1.5 font-medium"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 
 function DigitalPathEntry() {
   const pet = useGame((s) => s.pet);

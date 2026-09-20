@@ -2,11 +2,11 @@
   "id": "agumon",
   "name": "Agumon",
   "stage": "rookie",
-  "root": "rougue-like-character-sprites/agumon",
+  "root": "sprites/agumon",
   "spriteReady": true,
   "status": "READY",
-  "movementStyle": "2-way",
-  "reason": "51 source frames passed second visual review. 2-way movement adaptation configured with lateral walk fallbacks for vertical movement and basic_2 casting pose with Mega Blast effect for special attack.",
+  "movementStyle": "4-way",
+  "reason": "Estrutura validada com movimento 4-way completo (walk_down e walk_up gerados com baseline y=90 via digimon-4way-sprite-generator), golpes basic_1, basic_2, especial, hit, death e victory.",
   "frame": { "width": 96, "height": 96, "originX": 0.5, "originY": 0.94 },
   "scale": 1,
   "hitbox": { "width": 42, "height": 62, "offsetX": 27, "offsetY": 28 },
@@ -14,110 +14,136 @@
     "idle": {
       "fps": 7, "loop": true,
       "frames": [
-        "rougue-like-character-sprites/agumon/idle/idle_01.png",
-        "rougue-like-character-sprites/agumon/idle/idle_02.png",
-        "rougue-like-character-sprites/agumon/idle/idle_03.png",
-        "rougue-like-character-sprites/agumon/idle/idle_04.png",
-        "rougue-like-character-sprites/agumon/idle/idle_05.png",
-        "rougue-like-character-sprites/agumon/idle/idle_06.png",
-        "rougue-like-character-sprites/agumon/idle/idle_07.png",
-        "rougue-like-character-sprites/agumon/idle/idle_08.png",
-        "rougue-like-character-sprites/agumon/idle/idle_09.png"
+        "sprites/agumon/idle/idle_01.png",
+        "sprites/agumon/idle/idle_02.png",
+        "sprites/agumon/idle/idle_03.png",
+        "sprites/agumon/idle/idle_04.png",
+        "sprites/agumon/idle/idle_05.png",
+        "sprites/agumon/idle/idle_06.png",
+        "sprites/agumon/idle/idle_07.png",
+        "sprites/agumon/idle/idle_08.png",
+        "sprites/agumon/idle/idle_09.png"
       ],
       "sourceIndices": [27, 25, 28, 23, 26, 29, 30, 31, 24]
     },
     "walk_left": {
       "fps": 10, "loop": true,
       "frames": [
-        "rougue-like-character-sprites/agumon/walk/left/walk_left_01.png",
-        "rougue-like-character-sprites/agumon/walk/left/walk_left_02.png",
-        "rougue-like-character-sprites/agumon/walk/left/walk_left_03.png",
-        "rougue-like-character-sprites/agumon/walk/left/walk_left_04.png",
-        "rougue-like-character-sprites/agumon/walk/left/walk_left_05.png",
-        "rougue-like-character-sprites/agumon/walk/left/walk_left_06.png",
-        "rougue-like-character-sprites/agumon/walk/left/walk_left_07.png",
-        "rougue-like-character-sprites/agumon/walk/left/walk_left_08.png",
-        "rougue-like-character-sprites/agumon/walk/left/walk_left_09.png",
-        "rougue-like-character-sprites/agumon/walk/left/walk_left_10.png",
-        "rougue-like-character-sprites/agumon/walk/left/walk_left_11.png"
+        "sprites/agumon/walk/left/walk_left_01.png",
+        "sprites/agumon/walk/left/walk_left_02.png",
+        "sprites/agumon/walk/left/walk_left_03.png",
+        "sprites/agumon/walk/left/walk_left_04.png",
+        "sprites/agumon/walk/left/walk_left_05.png",
+        "sprites/agumon/walk/left/walk_left_06.png",
+        "sprites/agumon/walk/left/walk_left_07.png",
+        "sprites/agumon/walk/left/walk_left_08.png",
+        "sprites/agumon/walk/left/walk_left_09.png",
+        "sprites/agumon/walk/left/walk_left_10.png",
+        "sprites/agumon/walk/left/walk_left_11.png"
       ],
       "sourceIndices": [103, 98, 88, 82, 87, 99, 84, 78, 79, 93, 89]
     },
     "walk_right": {
       "fps": 10, "loop": true,
       "frames": [
-        "rougue-like-character-sprites/agumon/walk/right/walk_right_01.png",
-        "rougue-like-character-sprites/agumon/walk/right/walk_right_02.png",
-        "rougue-like-character-sprites/agumon/walk/right/walk_right_03.png",
-        "rougue-like-character-sprites/agumon/walk/right/walk_right_04.png",
-        "rougue-like-character-sprites/agumon/walk/right/walk_right_05.png",
-        "rougue-like-character-sprites/agumon/walk/right/walk_right_06.png",
-        "rougue-like-character-sprites/agumon/walk/right/walk_right_07.png",
-        "rougue-like-character-sprites/agumon/walk/right/walk_right_08.png",
-        "rougue-like-character-sprites/agumon/walk/right/walk_right_09.png",
-        "rougue-like-character-sprites/agumon/walk/right/walk_right_10.png"
+        "sprites/agumon/walk/right/walk_right_01.png",
+        "sprites/agumon/walk/right/walk_right_02.png",
+        "sprites/agumon/walk/right/walk_right_03.png",
+        "sprites/agumon/walk/right/walk_right_04.png",
+        "sprites/agumon/walk/right/walk_right_05.png",
+        "sprites/agumon/walk/right/walk_right_06.png",
+        "sprites/agumon/walk/right/walk_right_07.png",
+        "sprites/agumon/walk/right/walk_right_08.png",
+        "sprites/agumon/walk/right/walk_right_09.png",
+        "sprites/agumon/walk/right/walk_right_10.png"
       ],
       "sourceIndices": [59, 64, 60, 51, 65, 56, 54, 55, 43, 57]
+    },
+    "walk_down": {
+      "fps": 8,
+      "loop": true,
+      "frames": [
+        "sprites/agumon/walk/down/walk_down_01.png",
+        "sprites/agumon/walk/down/walk_down_02.png",
+        "sprites/agumon/walk/down/walk_down_03.png"
+      ]
+    },
+    "walk_up": {
+      "fps": 8,
+      "loop": true,
+      "frames": [
+        "sprites/agumon/walk/up/walk_up_01.png",
+        "sprites/agumon/walk/up/walk_up_02.png",
+        "sprites/agumon/walk/up/walk_up_03.png"
+      ]
     },
     "attack_basic_1": {
       "fps": 12, "loop": false,
       "frames": [
-        "rougue-like-character-sprites/agumon/attacks/basic_1/attacks_basic_1_01.png",
-        "rougue-like-character-sprites/agumon/attacks/basic_1/attacks_basic_1_02.png",
-        "rougue-like-character-sprites/agumon/attacks/basic_1/attacks_basic_1_03.png",
-        "rougue-like-character-sprites/agumon/attacks/basic_1/attacks_basic_1_04.png",
-        "rougue-like-character-sprites/agumon/attacks/basic_1/attacks_basic_1_05.png",
-        "rougue-like-character-sprites/agumon/attacks/basic_1/attacks_basic_1_06.png"
+        "sprites/agumon/attacks/basic_1/attacks_basic_1_01.png",
+        "sprites/agumon/attacks/basic_1/attacks_basic_1_02.png",
+        "sprites/agumon/attacks/basic_1/attacks_basic_1_03.png",
+        "sprites/agumon/attacks/basic_1/attacks_basic_1_04.png",
+        "sprites/agumon/attacks/basic_1/attacks_basic_1_05.png",
+        "sprites/agumon/attacks/basic_1/attacks_basic_1_06.png"
       ],
       "sourceIndices": [95, 96, 68, 92, 107, 111]
     },
     "attack_basic_2": {
       "fps": 12, "loop": false,
       "frames": [
-        "rougue-like-character-sprites/agumon/attacks/basic_2/attacks_basic_2_01.png",
-        "rougue-like-character-sprites/agumon/attacks/basic_2/attacks_basic_2_02.png",
-        "rougue-like-character-sprites/agumon/attacks/basic_2/attacks_basic_2_03.png",
-        "rougue-like-character-sprites/agumon/attacks/basic_2/attacks_basic_2_04.png"
+        "sprites/agumon/attacks/basic_2/attacks_basic_2_01.png",
+        "sprites/agumon/attacks/basic_2/attacks_basic_2_02.png",
+        "sprites/agumon/attacks/basic_2/attacks_basic_2_03.png",
+        "sprites/agumon/attacks/basic_2/attacks_basic_2_04.png"
       ],
       "sourceIndices": [110, 102, 90, 80],
       "projectile": "projectile_dragon"
     },
     "hit": {
       "fps": 8, "loop": false,
-      "frames": ["rougue-like-character-sprites/agumon/hit/hit_01.png"],
+      "frames": ["sprites/agumon/hit/hit_01.png"],
       "sourceIndices": [36]
     },
     "death": {
       "fps": 5, "loop": false,
-      "frames": ["rougue-like-character-sprites/agumon/death/death_01.png"],
+      "frames": ["sprites/agumon/death/death_01.png"],
       "sourceIndices": [34]
     },
     "victory": {
       "fps": 5, "loop": false,
-      "frames": ["rougue-like-character-sprites/agumon/victory/victory_01.png"],
+      "frames": ["sprites/agumon/victory/victory_01.png"],
       "sourceIndices": [35]
     },
     "heal": {
       "fps": 8, "loop": false,
       "frames": [
-        "rougue-like-character-sprites/agumon/heal/heal_01.png",
-        "rougue-like-character-sprites/agumon/heal/heal_02.png",
-        "rougue-like-character-sprites/agumon/heal/heal_03.png",
-        "rougue-like-character-sprites/agumon/heal/heal_04.png",
-        "rougue-like-character-sprites/agumon/heal/heal_05.png"
+        "sprites/agumon/heal/heal_01.png",
+        "sprites/agumon/heal/heal_02.png",
+        "sprites/agumon/heal/heal_03.png",
+        "sprites/agumon/heal/heal_04.png",
+        "sprites/agumon/heal/heal_05.png"
       ],
       "sourceIndices": [115, 118, 108, 85, 50]
     },
     "projectile_dragon": {
       "fps": 12, "loop": false,
-      "frames": ["rougue-like-character-sprites/agumon/projectiles/dragon/projectiles_dragon_01.png"],
+      "frames": [
+        "sprites/agumon/projectiles/dragon/projectiles_dragon_01.png",
+        "sprites/agumon/projectiles/dragon/projectiles_dragon_02.png",
+        "sprites/agumon/projectiles/dragon/projectiles_dragon_03.png"
+      ],
       "sourceIndices": [104]
     },
     "effect_mega_blast": {
-      "fps": 10, "loop": false,
+      "fps": 12, "loop": false,
       "frames": [
-        "rougue-like-character-sprites/agumon/effects/mega-blast/effects_mega_blast_01.png",
-        "rougue-like-character-sprites/agumon/effects/mega-blast/effects_mega_blast_02.png"
+        "sprites/agumon/effects/mega-blast/effects_mega_blast_01.png",
+        "sprites/agumon/effects/mega-blast/effects_mega_blast_02.png",
+        "sprites/agumon/effects/mega-blast/effects_mega_blast_03.png",
+        "sprites/agumon/effects/mega-blast/effects_mega_blast_04.png",
+        "sprites/agumon/effects/mega-blast/effects_mega_blast_05.png",
+        "sprites/agumon/effects/mega-blast/effects_mega_blast_06.png"
       ],
       "sourceIndices": [39, 38]
     }
@@ -130,8 +156,8 @@
   },
   "roguelike": {
     "walk_left": "validated", "walk_right": "validated",
-    "walk_up": "adapted: 2-way movement using lateral walk with directional flip",
-    "walk_down": "adapted: 2-way movement using lateral walk with directional flip",
+    "walk_up": "validated",
+    "walk_down": "validated",
     "attack_basic_1": "validated",
     "attack_basic_2": "validated with a separate dragon projectile",
     "attack_special": "adapted: basic_2 casting pose combined with effect_mega_blast",

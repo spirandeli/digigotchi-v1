@@ -1,6 +1,13 @@
 import { animationDurationMs, INITIAL_INVENTORY, ITEMS, LINES, type Mood } from "./data";
 import { getSkillForSpecies, QA_XP_MULTIPLIER } from "./skills";
 
+export type DigitalPathProgress = {
+  currentFloor: number;
+  highestFloor: number;
+  defeatedBosses: number[];
+  completed: boolean;
+};
+
 export type PetState = {
   lineId: string;
   speciesId: string;
@@ -20,6 +27,7 @@ export type PetState = {
   createdAt: number;
   evolutionStage: number;
   digitalPathResults?: string[];
+  digitalPath?: DigitalPathProgress;
 };
 
 export type ActionResult = { ok: boolean; msg: string; animation?: string; durationMs?: number };
@@ -92,20 +100,47 @@ function applyEffects(pet: PetState, effects?: Record<string, number>) {
   if (effects.health) pet.health = clamp(pet.health + effects.health);
 }
 
-function addXp(pet: PetState, amount: number) {
-  pet.experience += amount;
-  while (pet.experience >= xpToNext(pet.level)) {
-    pet.experience -= xpToNext(pet.level);
-    pet.level += 1;
-    pet.health = clamp(pet.health + 5);
-    pet.happiness = clamp(pet.happiness + 10);
+export function addDigimonXpToPet(
+  pet: PetState,
+  speciesId: string,
+  amount: number
+): { pet: PetState; leveledUp: boolean; levelsGained: number } {
+  if (amount <= 0) return { pet, leveledUp: false, levelsGained: 0 };
+  if (pet.speciesId !== speciesId && pet.lineId !== speciesId) {
+    console.warn(`[XP Guard] Attempted to award XP to ${speciesId}, but active pet is ${pet.speciesId}`);
+    return { pet, leveledUp: false, levelsGained: 0 };
   }
+
+  const next = { ...pet, inventory: { ...pet.inventory } };
+  next.experience += amount;
+  let levelsGained = 0;
+
+  while (next.experience >= xpToNext(next.level)) {
+    next.experience -= xpToNext(next.level);
+    next.level += 1;
+    levelsGained += 1;
+    next.health = clamp(next.health + 5);
+    next.happiness = clamp(next.happiness + 10);
+  }
+
+  return {
+    pet: next,
+    leveledUp: levelsGained > 0,
+    levelsGained,
+  };
+}
+
+function addXp(pet: PetState, amount: number) {
+  const result = addDigimonXpToPet(pet, pet.speciesId, amount);
+  Object.assign(pet, result.pet);
 }
 
 export function simulateTime(pet: PetState): PetState {
   const next = { ...pet, inventory: { ...pet.inventory } };
   const now = Date.now();
-  const elapsedMs = Math.min(now - next.lastSimulatedAt, 24 * 60 * 60 * 1000);
+  // Cap offline decay to 8 hours max to protect the pet from extreme penalties
+  const MAX_OFFLINE_DECAY_MS = 8 * 60 * 60 * 1000;
+  const elapsedMs = Math.min(now - next.lastSimulatedAt, MAX_OFFLINE_DECAY_MS);
 
   // Sono turbo para QA: a energia sobe rápido o suficiente para testar o fluxo
   // sem esperar vários minutos. Recupera +8 por segundo enquanto dorme.
@@ -128,7 +163,8 @@ export function simulateTime(pet: PetState): PetState {
   next.hygiene = clamp(next.hygiene - ticks * 0.7);
 
   if (next.hunger < 20 || next.hygiene < 20 || next.energy < 15) {
-    next.health = clamp(next.health - ticks * 0.8);
+    // Health is never reduced below 20 purely from offline decay
+    next.health = Math.max(20, clamp(next.health - ticks * 0.8));
   } else if (next.hunger > 60 && next.hygiene > 60 && next.energy > 50) {
     next.health = clamp(next.health + ticks * 0.3);
   }

@@ -1,8 +1,184 @@
 {
   "id": "veemon",
-  "root": "rougue-like-character-sprites/veemon",
-  "spriteReady": false,
-  "status": "BLOCKED",
-  "reason": "Directional labels and mixed movement/combat frames require extraction.",
-  "animations": {}
+  "name": "Veemon",
+  "stage": "rookie",
+  "root": "sprites/veemon",
+  "spriteReady": true,
+  "status": "READY",
+  "movementStyle": "4-way",
+  "reason": "Estrutura validada com movimento 4-way, golpes basic_1 (Vee-Punch), basic_2 (Vee-Laser), especial (Vee-Headbutt), hit, death e vitória.",
+  "frame": {
+    "width": 84,
+    "height": 114,
+    "originX": 0.5,
+    "originY": 0.95
+  },
+  "scale": 0.85,
+  "hitbox": {
+    "width": 40,
+    "height": 58,
+    "offsetX": 22,
+    "offsetY": 45
+  },
+  "animations": {
+    "idle": {
+      "fps": 7,
+      "loop": true,
+      "frames": [
+        "sprites/veemon/idle/idle_01.png",
+        "sprites/veemon/idle/idle_02.png",
+        "sprites/veemon/idle/idle_03.png",
+        "sprites/veemon/idle/idle_04.png"
+      ]
+    },
+    "walk_down": {
+      "fps": 8,
+      "loop": true,
+      "frames": [
+        "sprites/veemon/walk/down/walk_down_01.png",
+        "sprites/veemon/walk/down/walk_down_02.png",
+        "sprites/veemon/walk/down/walk_down_03.png"
+      ]
+    },
+    "walk_up": {
+      "fps": 8,
+      "loop": true,
+      "frames": [
+        "sprites/veemon/walk/up/walk_up_01.png",
+        "sprites/veemon/walk/up/walk_up_02.png",
+        "sprites/veemon/walk/up/walk_up_03.png"
+      ]
+    },
+    "walk_left": {
+      "fps": 8,
+      "loop": true,
+      "frames": [
+        "sprites/veemon/walk/left/walk_left_01.png",
+        "sprites/veemon/walk/left/walk_left_02.png",
+        "sprites/veemon/walk/left/walk_left_03.png"
+      ]
+    },
+    "walk_right": {
+      "fps": 8,
+      "loop": true,
+      "frames": [
+        "sprites/veemon/walk/right/walk_right_01.png",
+        "sprites/veemon/walk/right/walk_right_02.png",
+        "sprites/veemon/walk/right/walk_right_03.png"
+      ]
+    },
+    "attack_basic_1": {
+      "fps": 10,
+      "loop": false,
+      "frames": [
+        "sprites/veemon/attacks/basic_1/attacks_basic_1_01.png",
+        "sprites/veemon/attacks/basic_1/attacks_basic_1_02.png",
+        "sprites/veemon/attacks/basic_1/attacks_basic_1_03.png"
+      ]
+    },
+    "attack_basic_2": {
+      "fps": 8,
+      "loop": false,
+      "frames": [
+        "sprites/veemon/attacks/basic_2/attacks_basic_2_01.png",
+        "sprites/veemon/attacks/basic_2/attacks_basic_2_02.png"
+      ],
+      "projectile": "projectile_laser"
+    },
+    "attack_special": {
+      "fps": 8,
+      "loop": false,
+      "frames": [
+        "sprites/veemon/attacks/special/attacks_special_01.png"
+      ]
+    },
+    "hit": {
+      "fps": 8,
+      "loop": false,
+      "frames": [
+        "sprites/veemon/hit/hit_01.png",
+        "sprites/veemon/hit/hit_02.png",
+        "sprites/veemon/hit/hit_03.png"
+      ]
+    },
+    "death": {
+      "fps": 5,
+      "loop": false,
+      "frames": [
+        "sprites/veemon/death/death_01.png",
+        "sprites/veemon/death/death_02.png",
+        "sprites/veemon/death/death_03.png"
+      ]
+    },
+    "victory": {
+      "fps": 5,
+      "loop": false,
+      "frames": [
+        "sprites/veemon/victory/victory_01.png"
+      ]
+    },
+    "projectile_laser": {
+      "fps": 12,
+      "loop": false,
+      "frames": [
+        "sprites/veemon/projectiles/laser/projectiles_laser_01.png",
+        "sprites/veemon/projectiles/laser/projectiles_laser_02.png"
+      ]
+    },
+    "effects_attack_1": {
+      "fps": 12,
+      "loop": false,
+      "frames": [
+        "sprites/veemon/effects/attack_01/effects_attack_01_01.png",
+        "sprites/veemon/effects/attack_01/effects_attack_01_02.png",
+        "sprites/veemon/effects/attack_01/effects_attack_01_03.png"
+      ]
+    },
+    "effects_special": {
+      "fps": 12,
+      "loop": false,
+      "frames": [
+        "sprites/veemon/effects/special_attack/effects_special_attack_01.png",
+        "sprites/veemon/effects/special_attack/effects_special_attack_02.png",
+        "sprites/veemon/effects/special_attack/effects_special_attack_03.png"
+      ]
+    },
+    "effects_attack_2": {
+      "fps": 10,
+      "loop": false,
+      "frames": [
+        "sprites/veemon/effects/attack_02/effects_attack_02_01.png",
+        "sprites/veemon/effects/attack_02/effects_attack_02_02.png"
+      ]
+    },
+    "effects_hit": {
+      "fps": 8,
+      "loop": false,
+      "frames": [
+        "sprites/veemon/effects/hit/effects_hit_01.png"
+      ]
+    }
+  },
+  "tamagotchiActions": {
+    "idle": "validated in source",
+    "eat": "unknown",
+    "sleep": "unknown",
+    "wake": "unknown",
+    "play": "unknown",
+    "clean": "unknown",
+    "heal": "unknown",
+    "evolve": "unknown"
+  },
+  "roguelike": {
+    "walk_left": "validated",
+    "walk_right": "validated",
+    "walk_up": "validated",
+    "walk_down": "validated",
+    "attack_basic_1": "validated",
+    "attack_basic_2": "validated",
+    "attack_special": "validated",
+    "hit": "validated",
+    "death": "validated",
+    "victory": "validated"
+  }
 }

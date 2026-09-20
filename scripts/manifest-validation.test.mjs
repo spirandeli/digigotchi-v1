@@ -29,15 +29,33 @@ function validateSpriteManifest(manifest) {
   });
 }
 
-test("Agumon manifest is valid and runtime-ready with 2-way movement adaptation", () => {
-  const agumon = JSON.parse(readFileSync(resolve("docs/digital-path/manifests/agumon.json"), "utf8"));
-  assert.equal(agumon.spriteReady, true);
-  assert.equal(agumon.movementStyle, "2-way");
-  assert.equal(validateSpriteManifest(agumon), true);
+const ALL_SPECIES = [
+  "veemon", "agumon", "gabumon", "garurumon", "geogreymon",
+  "wargreymon", "weregarurumon", "xvmon", "flamedramon",
+  "etemon", "metaletemon", "kingetemon"
+];
 
-  const walkUp = resolveManifestAnimation(agumon, "walk_up");
-  assert.equal(Boolean(walkUp?.frames.length), true);
+for (const species of ALL_SPECIES) {
+  test(`${species} manifest is valid and runtime-ready with 4-way movement`, () => {
+    const mfPath = resolve(`docs/digital-path/manifests/${species}.json`);
+    const manifest = JSON.parse(readFileSync(mfPath, "utf8"));
+    assert.equal(manifest.spriteReady, true);
+    assert.equal(manifest.movementStyle, "4-way");
+    assert.equal(validateSpriteManifest(manifest), true);
 
-  const special = resolveManifestAnimation(agumon, "attack_special");
-  assert.equal(Boolean(special?.frames.length), true);
-});
+    const walkUp = resolveManifestAnimation(manifest, "walk_up");
+    assert.equal(Boolean(walkUp?.frames.length), true);
+
+    const walkDown = resolveManifestAnimation(manifest, "walk_down");
+    assert.equal(Boolean(walkDown?.frames.length), true);
+
+    const walkLeft = resolveManifestAnimation(manifest, "walk_left");
+    assert.equal(Boolean(walkLeft?.frames.length), true);
+
+    const walkRight = resolveManifestAnimation(manifest, "walk_right");
+    assert.equal(Boolean(walkRight?.frames.length), true);
+
+    const special = resolveManifestAnimation(manifest, "attack_special");
+    assert.equal(Boolean(special?.frames.length), true);
+  });
+}

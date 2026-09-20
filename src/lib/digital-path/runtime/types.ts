@@ -38,6 +38,12 @@ export type DigitalPathStartOptions = {
   parent: string | HTMLElement;
   input: DigitalPathRunInput;
   manifest: DigitalPathSpriteManifest;
+  originalSpeciesId?: string;
+  settings?: {
+    screenShake?: boolean;
+    damageNumbers?: boolean;
+    sfxVolume?: number;
+  };
   seed: number;
   floorNumber?: number;
   onRoomChange?: (roomIndex: number, totalRooms: number, roomTitle: string, biome: string, floor: number, isBoss: boolean) => void;
@@ -49,5 +55,14 @@ export type DigitalPathStartOptions = {
   onTriggerRestModal?: (onRestHp: () => void, onBuffAtk: () => void) => void;
   onTriggerShopModal?: (items: ShopItem[], onBuy: (item: ShopItem) => boolean, onClose: () => void) => void;
   onPauseToggle?: (isPaused: boolean) => void;
-  onFinish: (result: { runId: string; outcome: "victory" | "defeat" | "abandoned"; xp: number; coins: number; itemsWon?: Record<string, number> }) => void;
+  onAwardXp?: (speciesId: string, amount: number) => void;
+  onSaveCheckpoint?: (nextFloor: number, bossDefeated?: number) => void;
+  onFinish: (result: {
+    runId: string;
+    outcome: "victory" | "defeat" | "abandoned";
+    xp: number;
+    coins: number;
+    itemsWon?: Record<string, number>;
+    alreadyAwardedXp?: boolean;
+  }) => void;
 };

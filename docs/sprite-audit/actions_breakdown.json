@@ -1,0 +1,1973 @@
+{
+  "agumon": {
+    "idle": {
+      "status": "HAS_PNGS",
+      "pngs": 18,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "walk": {
+      "status": "EMPTY_DIR",
+      "pngs": 0,
+      "files": []
+    },
+    "walk/down": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/up": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/left": {
+      "status": "HAS_PNGS",
+      "pngs": 11,
+      "sample": [
+        "walk_left_01.png",
+        "walk_left_02.png",
+        "walk_left_03.png"
+      ]
+    },
+    "walk/right": {
+      "status": "HAS_PNGS",
+      "pngs": 10,
+      "sample": [
+        "walk_right_01.png",
+        "walk_right_02.png",
+        "walk_right_03.png"
+      ]
+    },
+    "run": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_1": {
+      "status": "HAS_PNGS",
+      "pngs": 6,
+      "sample": [
+        "attacks_basic_1_01.png",
+        "attacks_basic_1_02.png",
+        "attacks_basic_1_03.png"
+      ]
+    },
+    "attacks/basic_2": {
+      "status": "HAS_PNGS",
+      "pngs": 4,
+      "sample": [
+        "attacks_basic_2_01.png",
+        "attacks_basic_2_02.png",
+        "attacks_basic_2_03.png"
+      ]
+    },
+    "attacks/special": {
+      "status": "HAS_PNGS",
+      "pngs": 3,
+      "sample": [
+        "attacks_special_01.png",
+        "attacks_special_02.png",
+        "attacks_special_03.png"
+      ]
+    },
+    "hit": {
+      "status": "HAS_PNGS",
+      "pngs": 1,
+      "sample": [
+        "hit_01.png"
+      ]
+    },
+    "death": {
+      "status": "HAS_PNGS",
+      "pngs": 1,
+      "sample": [
+        "death_01.png"
+      ]
+    },
+    "victory": {
+      "status": "HAS_PNGS",
+      "pngs": 1,
+      "sample": [
+        "victory_01.png"
+      ]
+    },
+    "eat": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "sleep": {
+      "status": "HAS_PNGS",
+      "pngs": 12,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "wake": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "play": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "clean": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "heal": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "evolution": {
+      "status": "HAS_PNGS",
+      "pngs": 28,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "attack-pepper-breath": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    }
+  },
+  "etemon": {
+    "idle": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "walk": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/down": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/up": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_1": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_2": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/special": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "hit": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "death": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "victory": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "eat": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "sleep": {
+      "status": "HAS_PNGS",
+      "pngs": 12,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "wake": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "play": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "clean": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "heal": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "evolution": {
+      "status": "HAS_PNGS",
+      "pngs": 28,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "attack-love-serenade": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    }
+  },
+  "flamedramon": {
+    "idle": {
+      "status": "HAS_PNGS",
+      "pngs": 4,
+      "sample": [
+        "00.png",
+        "01.png",
+        "idle_01.png"
+      ]
+    },
+    "walk": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/down": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/up": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_1": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_2": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/special": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "hit": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "death": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "victory": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "eat": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "sleep": {
+      "status": "HAS_PNGS",
+      "pngs": 12,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "wake": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "play": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "clean": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "heal": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "evolution": {
+      "status": "HAS_PNGS",
+      "pngs": 28,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "attack-fire-rocket": {
+      "status": "HAS_PNGS",
+      "pngs": 2,
+      "sample": [
+        "attack-fire-rocket_05.png",
+        "attack-fire-rocket_08.png"
+      ]
+    }
+  },
+  "gabumon": {
+    "idle": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "walk": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/down": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/up": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_1": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_2": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/special": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "hit": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "death": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "victory": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "eat": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "sleep": {
+      "status": "HAS_PNGS",
+      "pngs": 12,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "wake": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "play": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "clean": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "heal": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "evolution": {
+      "status": "HAS_PNGS",
+      "pngs": 28,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "attack-blue-blaster": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    }
+  },
+  "garurumon": {
+    "idle": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "walk": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/down": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/up": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_1": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_2": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/special": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "hit": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "death": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "victory": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "eat": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "sleep": {
+      "status": "HAS_PNGS",
+      "pngs": 12,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "wake": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "play": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "clean": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "heal": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "evolution": {
+      "status": "HAS_PNGS",
+      "pngs": 28,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "attack-howling-blaster": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    }
+  },
+  "geogreymon": {
+    "idle": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "walk": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/down": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/up": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_1": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_2": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/special": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "hit": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "death": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "victory": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "eat": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "sleep": {
+      "status": "HAS_PNGS",
+      "pngs": 12,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "wake": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "play": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "clean": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "heal": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "evolution": {
+      "status": "HAS_PNGS",
+      "pngs": 28,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "attack-mega-flame": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    }
+  },
+  "kingetemon": {
+    "idle": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/down": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/up": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_1": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_2": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/special": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "hit": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "death": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "victory": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "eat": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "sleep": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "wake": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "play": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "clean": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "heal": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "evolution": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    }
+  },
+  "metaletemon": {
+    "idle": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "walk": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/down": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/up": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_1": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_2": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/special": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "hit": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "death": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "victory": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "eat": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "sleep": {
+      "status": "HAS_PNGS",
+      "pngs": 12,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "wake": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "play": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "clean": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "heal": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "evolution": {
+      "status": "HAS_PNGS",
+      "pngs": 28,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "attack-banana-slip": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    }
+  },
+  "wargreymon": {
+    "idle": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "walk": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/down": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/up": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_1": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_2": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/special": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "hit": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "death": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "victory": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "eat": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "sleep": {
+      "status": "HAS_PNGS",
+      "pngs": 12,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "wake": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "play": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "clean": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "heal": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "evolution": {
+      "status": "HAS_PNGS",
+      "pngs": 28,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "attack-terra-force": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    }
+  },
+  "weregarurumon": {
+    "idle": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "walk": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/down": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/up": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_1": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_2": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/special": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "hit": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "death": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "victory": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "eat": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "sleep": {
+      "status": "HAS_PNGS",
+      "pngs": 12,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "wake": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "play": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "clean": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "heal": {
+      "status": "HAS_PNGS",
+      "pngs": 20,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "evolution": {
+      "status": "HAS_PNGS",
+      "pngs": 28,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "attack-wolf-claw": {
+      "status": "HAS_PNGS",
+      "pngs": 24,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    }
+  },
+  "xvmon": {
+    "idle": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "walk": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/down": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/up": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "walk/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/left": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "run/right": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_1": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/basic_2": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "attacks/special": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "hit": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "death": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "victory": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "eat": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "sleep": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "wake": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "play": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "clean": {
+      "status": "GITKEEP_EMPTY",
+      "pngs": 0,
+      "files": [
+        ".gitkeep"
+      ]
+    },
+    "heal": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "evolution": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    },
+    "attack-vee-laser": {
+      "status": "HAS_PNGS",
+      "pngs": 16,
+      "sample": [
+        "00.png",
+        "01.png",
+        "02.png"
+      ]
+    }
+  }
+}

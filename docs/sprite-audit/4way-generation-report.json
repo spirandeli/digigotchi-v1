@@ -1,0 +1,143 @@
+{
+  "generated_at": "2026-09-20T20:48:00Z",
+  "total_frames_generated": 6,
+  "frames_accepted": 6,
+  "frames_rejected": 0,
+  "records": [
+    {
+      "digimon": "agumon",
+      "action": "walk",
+      "direction": "down",
+      "frame_index": 1,
+      "target_file": "sprites/agumon/walk/down/walk_down_01.png",
+      "source": "generated_4way",
+      "references": [
+        "sprites/agumon/idle/idle_01.png",
+        "sprites/agumon/walk/right/walk_right_01.png"
+      ],
+      "canvas": "96x96",
+      "baseline_y": 90,
+      "center_x": 47,
+      "bbox": [
+        8,
+        3,
+        87,
+        90
+      ],
+      "validation_status": "ACCEPTED"
+    },
+    {
+      "digimon": "agumon",
+      "action": "walk",
+      "direction": "down",
+      "frame_index": 2,
+      "target_file": "sprites/agumon/walk/down/walk_down_02.png",
+      "source": "generated_4way",
+      "references": [
+        "sprites/agumon/idle/idle_01.png",
+        "sprites/agumon/walk/right/walk_right_02.png"
+      ],
+      "canvas": "96x96",
+      "baseline_y": 90,
+      "center_x": 47,
+      "bbox": [
+        8,
+        2,
+        87,
+        90
+      ],
+      "validation_status": "ACCEPTED"
+    },
+    {
+      "digimon": "agumon",
+      "action": "walk",
+      "direction": "down",
+      "frame_index": 3,
+      "target_file": "sprites/agumon/walk/down/walk_down_03.png",
+      "source": "generated_4way",
+      "references": [
+        "sprites/agumon/idle/idle_01.png",
+        "sprites/agumon/walk/right/walk_right_03.png"
+      ],
+      "canvas": "96x96",
+      "baseline_y": 90,
+      "center_x": 47,
+      "bbox": [
+        8,
+        3,
+        87,
+        90
+      ],
+      "validation_status": "ACCEPTED"
+    },
+    {
+      "digimon": "agumon",
+      "action": "walk",
+      "direction": "up",
+      "frame_index": 1,
+      "target_file": "sprites/agumon/walk/up/walk_up_01.png",
+      "source": "generated_4way",
+      "references": [
+        "sprites/agumon/walk/down/walk_down_01.png",
+        "sprites/agumon/walk/right/walk_right_01.png",
+        "sprites/agumon/idle/idle_01.png"
+      ],
+      "canvas": "96x96",
+      "baseline_y": 90,
+      "center_x": 47,
+      "bbox": [
+        8,
+        3,
+        87,
+        90
+      ],
+      "validation_status": "ACCEPTED"
+    },
+    {
+      "digimon": "agumon",
+      "action": "walk",
+      "direction": "up",
+      "frame_index": 2,
+      "target_file": "sprites/agumon/walk/up/walk_up_02.png",
+      "source": "generated_4way",
+      "references": [
+        "sprites/agumon/walk/down/walk_down_02.png",
+        "sprites/agumon/walk/right/walk_right_02.png",
+        "sprites/agumon/idle/idle_01.png"
+      ],
+      "canvas": "96x96",
+      "baseline_y": 90,
+      "center_x": 47,
+      "bbox": [
+        8,
+        2,
+        87,
+        90
+      ],
+      "validation_status": "ACCEPTED"
+    },
+    {
+      "digimon": "agumon",
+      "action": "walk",
+      "direction": "up",
+      "frame_index": 3,
+      "target_file": "sprites/agumon/walk/up/walk_up_03.png",
+      "source": "generated_4way",
+      "references": [
+        "sprites/agumon/walk/down/walk_down_03.png",
+        "sprites/agumon/walk/right/walk_right_03.png",
+        "sprites/agumon/idle/idle_01.png"
+      ],
+      "canvas": "96x96",
+      "baseline_y": 90,
+      "center_x": 47,
+      "bbox": [
+        8,
+        3,
+        87,
+        90
+      ],
+      "validation_status": "ACCEPTED"
+    }
+  ]
+}

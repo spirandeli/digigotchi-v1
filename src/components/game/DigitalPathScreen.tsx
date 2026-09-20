@@ -5,6 +5,9 @@ import { DigitalPathGame } from "@/lib/digital-path/runtime/DigitalPathGame";
 import { createRunInput } from "@/lib/pet/digital-path-bridge";
 import type { UpgradeDefinition } from "@/lib/digital-path/combat/upgrades";
 import type { EventChoice, ShopItem } from "@/lib/digital-path/runtime/types";
+import { getSpeciesCombatProfile } from "@/lib/digital-path/combat/loadout";
+import { xpToNext } from "@/lib/pet/engine";
+import { DIGITAL_PATH_CONFIG } from "@/lib/digital-path/combat/bosses";
 
 export function DigitalPathScreen() {
   const pet = useGame((s) => s.pet);
@@ -24,6 +27,9 @@ export function DigitalPathScreen() {
   const [biome, setBiome] = useState("digital");
   const [floorNumber, setFloorNumber] = useState(1);
   const [isBossRoom, setIsBossRoom] = useState(false);
+  const [screenShake, setScreenShake] = useState(true);
+  const [damageNumbers, setDamageNumbers] = useState(true);
+
 
   // Boss Battle State
   const [bossInfo, setBossInfo] = useState<{
@@ -77,7 +83,6 @@ export function DigitalPathScreen() {
     onClose: () => void;
   } | null>(null);
 
-  // Run outcome modal
   const [runResult, setRunResult] = useState<{
     outcome: "victory" | "defeat" | "abandoned";
     xp: number;
@@ -85,28 +90,22 @@ export function DigitalPathScreen() {
     itemsWon?: Readonly<Record<string, number>>;
   } | null>(null);
 
+  const [unreadySpecies, setUnreadySpecies] = useState<string | null>(null);
+
   // 1. Initialize Run once on mount (decoupled from pet tick!)
   useEffect(() => {
     if (!pet || !containerRef.current) return;
 
-    let manifest = getDigitalPathManifest(pet.speciesId);
-    let effectiveRunInput = createRunInput(pet);
+    const manifest = getDigitalPathManifest(pet.speciesId);
+    const effectiveRunInput = createRunInput(pet);
     if (!effectiveRunInput) {
       exitDigitalPath();
       return;
     }
 
     if (!manifest || !manifest.spriteReady) {
-      console.warn(`Manifest not ready for ${pet.speciesId}. Using agumon as visual proxy while manual spritesheet organization is pending.`);
-      manifest = getDigitalPathManifest("agumon");
-      if (!manifest || !manifest.spriteReady) {
-        exitDigitalPath();
-        return;
-      }
-      effectiveRunInput = {
-        ...effectiveRunInput,
-        speciesId: manifest.id,
-      };
+      setUnreadySpecies(pet.speciesId);
+      return;
     }
 
     if (containerRef.current) {
@@ -124,7 +123,27 @@ export function DigitalPathScreen() {
         parent: containerRef.current,
         input: effectiveRunInput,
         manifest,
+        originalSpeciesId: pet.speciesId,
+        settings: {
+          screenShake,
+          damageNumbers,
+        },
         seed: (Date.now() ^ Math.floor(Math.random() * 100000)) >>> 0,
+        floorNumber: pet.digitalPath?.currentFloor || 1,
+        onAwardXp: (speciesId, amount) => {
+          useGame.getState().addDigimonXp(speciesId, amount);
+        },
+        onSaveCheckpoint: (nextFloor, bossDefeated) => {
+          const currentDefeated = useGame.getState().pet?.digitalPath?.defeatedBosses ?? [];
+          const newDefeated = bossDefeated ? Array.from(new Set([...currentDefeated, bossDefeated])) : currentDefeated;
+          useGame.getState().saveDigitalPathProgress({
+            currentFloor: Math.min(300, nextFloor),
+            highestFloor: Math.max(nextFloor, useGame.getState().pet?.digitalPath?.highestFloor ?? 1),
+            defeatedBosses: newDefeated,
+            completed: nextFloor >= 300 && Boolean(bossDefeated && bossDefeated >= 300),
+          });
+        },
+
         onRoomChange: (rIndex, total, title, rBiome, floor, boss) => {
           setRoomIndex(rIndex);
           setTotalRooms(total);
@@ -262,6 +281,35 @@ export function DigitalPathScreen() {
 
   const currentBiomeBadge = biomeBadgeStyle[biome] || biomeBadgeStyle.digital;
 
+  const combatProfile = getSpeciesCombatProfile(pet.speciesId);
+  const speciesEmoji = pet.speciesId.includes("veemon") ? "⚡" : pet.speciesId.includes("gabumon") ? "🐺" : "🦖";
+  if (unreadySpecies) {
+    return (
+      <div className="relative flex h-screen w-screen flex-col items-center justify-center overflow-hidden bg-slate-950 font-sans text-slate-100 select-none p-6 text-center">
+        <div className="w-full max-w-md rounded-2xl border border-amber-500/40 bg-slate-900/95 p-6 shadow-2xl backdrop-blur-md">
+          <div className="text-4xl mb-3">📁</div>
+          <h2 className="text-lg font-bold text-white mb-2">Estrutura Pronta — Sprites Pendentes</h2>
+          <p className="text-sm text-neutral-300 mb-3">
+            A estrutura de pastas para <span className="font-semibold text-amber-400 capitalize">{unreadySpecies}</span> já está padronizada em:
+          </p>
+          <div className="bg-black/60 px-3 py-2 rounded text-xs font-mono text-amber-300 break-all mb-4">
+            public/sprites/{unreadySpecies}/
+          </div>
+          <p className="text-xs text-neutral-400 mb-6 leading-relaxed">
+            O Caminho Digital estará disponível para este personagem assim que as animações forem adicionadas às respectivas pastas.
+          </p>
+          <button
+            type="button"
+            onClick={exitDigitalPath}
+            className="w-full py-2.5 px-4 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-semibold rounded-lg transition cursor-pointer"
+          >
+            Voltar ao Hub
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative flex h-screen w-screen flex-col overflow-hidden bg-slate-950 font-sans text-slate-100 select-none">
       {/* 1. Fixed Top HUD */}
@@ -270,23 +318,23 @@ export function DigitalPathScreen() {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <div className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-cyan-500/30 bg-cyan-950/50">
-              <span className="text-xl">🦖</span>
+              <span className="text-xl">{speciesEmoji}</span>
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold tracking-wide text-cyan-300">{pet.nickname}</span>
-                <span className="rounded bg-cyan-500/20 px-1.5 py-0.5 text-xs font-semibold text-cyan-400">
-                  Nv. {pet.level}
+                <span className="font-bold tracking-wide text-cyan-300 uppercase">{pet.nickname}</span>
+                <span className="rounded bg-cyan-500/20 px-1.5 py-0.5 text-xs font-bold text-cyan-300">
+                  Lv. {pet.level}
                 </span>
               </div>
-              <span className="text-[11px] text-slate-400">
-                {pet.evolutionStage <= -1 ? "Novato (Rookie)" : pet.evolutionStage === 0 ? "Campeão" : pet.evolutionStage === 1 ? "Ultimate" : "Mega"}
+              <span className="text-[11px] text-purple-300 font-medium">
+                XP {pet.experience} / {xpToNext(pet.level)}
               </span>
             </div>
           </div>
 
           {/* HP Bar */}
-          <div className="w-36 sm:w-52">
+          <div className="w-36 sm:w-48">
             <div className="flex justify-between text-[11px] font-semibold">
               <span className="text-emerald-400">HP</span>
               <span className="text-slate-300">
@@ -305,32 +353,43 @@ export function DigitalPathScreen() {
             </div>
           </div>
 
-          {/* XP & Coins */}
+          {/* In-Run Bits */}
           <div className="hidden items-center gap-3 text-xs sm:flex">
-            <div className="rounded border border-purple-500/20 bg-purple-950/40 px-2 py-1 font-semibold text-purple-300">
-              ⚡ +{xp} XP
-            </div>
             <div className="rounded border border-amber-500/20 bg-amber-950/40 px-2 py-1 font-semibold text-amber-300">
               🪙 {coins} Bits
             </div>
           </div>
         </div>
 
-        {/* Center: Current Room & Biome Indicator */}
+        {/* Center: Digital Path Room & Boss Area Indicator */}
         <div className="hidden flex-col items-center md:flex">
           <div className="flex items-center gap-2">
-            <span className={`rounded-full border px-2.5 py-0.5 text-[11px] font-bold tracking-wider ${currentBiomeBadge.color} ${currentBiomeBadge.border}`}>
-              {currentBiomeBadge.label} • ANDAR {floorNumber}
-            </span>
-            <div className={`rounded-full border px-3 py-0.5 text-xs font-bold tracking-wider ${
-              isBossRoom
-                ? "border-red-500/50 bg-red-950/80 text-red-300 animate-pulse"
-                : "border-cyan-500/30 bg-cyan-950/60 text-cyan-300"
-            }`}>
-              {isBossRoom ? "⚡ CONFRONTO FINAL" : `SALA ${roomIndex} / ${totalRooms}`}
-            </div>
+            {isBossRoom ? (
+              <div className="rounded-full border border-red-500/60 bg-red-950/90 px-3 py-1 text-xs font-black tracking-wider text-red-300 animate-pulse flex items-center gap-1.5 shadow-lg shadow-red-900/40">
+                <span>⚠️ SALA {roomIndex} / {totalRooms || 300}</span>
+                <span className="rounded bg-red-600/40 px-1.5 py-0.2 text-[10px] text-red-100 uppercase">ÁREA DE CHEFE</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <span className={`rounded-full border px-2.5 py-0.5 text-[11px] font-bold tracking-wider ${currentBiomeBadge.color} ${currentBiomeBadge.border}`}>
+                  {currentBiomeBadge.label}
+                </span>
+                <div className="rounded-full border border-cyan-500/40 bg-cyan-950/70 px-3 py-0.5 text-xs font-bold tracking-wider text-cyan-300">
+                  CAMINHO DIGITAL • SALA {roomIndex} / {totalRooms || 300}
+                </div>
+                <span className="rounded bg-slate-800/80 px-2 py-0.5 text-[11px] text-slate-300 font-semibold">
+                  Inimigos Lv. ~{roomIndex}
+                </span>
+              </div>
+            )}
           </div>
-          <span className="mt-0.5 text-[11px] text-slate-400">{roomTitle}</span>
+          <div className="mt-1 flex items-center gap-3 text-[11px] text-slate-400">
+            <span>{roomTitle}</span>
+            <span>•</span>
+            <span className="text-amber-400 font-medium">
+              Bosses derrotados: {pet.digitalPath?.defeatedBosses?.length ?? 0} / {Math.floor((totalRooms || 300) / 10)}
+            </span>
+          </div>
         </div>
 
         {/* Right: Controls Guide, Cooldowns, Pause & Abandon */}
@@ -345,7 +404,7 @@ export function DigitalPathScreen() {
               }`}
             >
               <kbd className="rounded bg-black/40 px-1 text-[10px]">J/Espaço</kbd>
-              <span>Golpe</span>
+              <span>{combatProfile.basic1.name}</span>
             </div>
 
             <div
@@ -356,7 +415,7 @@ export function DigitalPathScreen() {
               }`}
             >
               <kbd className="rounded bg-black/40 px-1 text-[10px]">K</kbd>
-              <span>Disparo</span>
+              <span>{combatProfile.basic2.name}</span>
             </div>
 
             <div
@@ -367,9 +426,10 @@ export function DigitalPathScreen() {
               }`}
             >
               <kbd className="rounded bg-black/40 px-1 text-[10px]">L</kbd>
-              <span>Especial</span>
+              <span>{combatProfile.special.name}</span>
             </div>
           </div>
+
 
           {/* Pause Button */}
           <button
@@ -725,6 +785,50 @@ export function DigitalPathScreen() {
               </div>
             </div>
 
+            {/* Run Settings */}
+            <div className="my-3 rounded-xl border border-slate-800 bg-slate-950/70 p-3 text-left text-xs text-slate-300 space-y-2">
+              <span className="font-bold text-cyan-400 block mb-1 uppercase tracking-wider text-[10px]">Configurações da Run</span>
+              <label className="flex items-center justify-between cursor-pointer">
+                <span>Tremor de Tela (Shake)</span>
+                <input
+                  type="checkbox"
+                  checked={screenShake}
+                  onChange={(e) => {
+                    const val = e.target.checked;
+                    setScreenShake(val);
+                    gameRef.current?.setSettings({ screenShake: val });
+                  }}
+                  className="rounded border-slate-700 bg-slate-800 text-cyan-500"
+                />
+              </label>
+              <label className="flex items-center justify-between cursor-pointer">
+                <span>Números de Dano (Damage Numbers)</span>
+                <input
+                  type="checkbox"
+                  checked={damageNumbers}
+                  onChange={(e) => {
+                    const val = e.target.checked;
+                    setDamageNumbers(val);
+                    gameRef.current?.setSettings({ damageNumbers: val });
+                  }}
+                  className="rounded border-slate-700 bg-slate-800 text-cyan-500"
+                />
+              </label>
+              <button
+                type="button"
+                onClick={() => {
+                  if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(() => {});
+                  } else {
+                    document.exitFullscreen().catch(() => {});
+                  }
+                }}
+                className="w-full mt-1 rounded-lg border border-slate-700 bg-slate-900 py-1.5 text-center text-[11px] font-semibold text-slate-300 hover:bg-slate-800 transition-colors"
+              >
+                ⛶ Alternar Tela Cheia
+              </button>
+            </div>
+
             <div className="flex flex-col gap-2">
               <button
                 id="btn-resume-expedition"
@@ -743,6 +847,7 @@ export function DigitalPathScreen() {
           </div>
         </div>
       )}
+
 
       {/* 8. Modal Confirmar Abandono */}
       {confirmAbandon && (
@@ -778,15 +883,30 @@ export function DigitalPathScreen() {
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
           <div className="w-full max-w-md rounded-2xl border border-cyan-500/30 bg-slate-900 p-8 text-center shadow-2xl">
             {runResult.outcome === "victory" ? (
-              <>
-                <div className="text-5xl">🏆</div>
-                <h2 className="mt-3 text-2xl font-black tracking-wide text-emerald-400">
-                  EXPEDIÇÃO CONCLUÍDA!
-                </h2>
-                <p className="mt-1 text-sm text-slate-300">
-                  O Caminho Digital foi purificado com sucesso pelo seu Digimon!
-                </p>
-              </>
+              roomIndex >= (totalRooms || 300) || floorNumber >= (totalRooms || 300) ? (
+                <>
+                  <div className="text-5xl animate-bounce">👑</div>
+                  <h2 className="mt-3 text-2xl font-black tracking-wide text-amber-300">
+                    CAMINHO DIGITAL CONCLUÍDO!
+                  </h2>
+                  <p className="mt-1 text-sm text-slate-200 font-medium">
+                    Você venceu todas as {totalRooms || 300} salas da expedição e derrotou o Chefe Final!
+                  </p>
+                  <div className="my-3 rounded-lg bg-amber-500/20 border border-amber-500/40 p-2.5 text-xs text-amber-200">
+                    ✨ Parabéns! O Caminho Digital foi totalmente purificado.
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="text-5xl">🏆</div>
+                  <h2 className="mt-3 text-2xl font-black tracking-wide text-emerald-400">
+                    SALA {roomIndex} CONCLUÍDA!
+                  </h2>
+                  <p className="mt-1 text-sm text-slate-300">
+                    O setor foi purificado com sucesso pelo seu Digimon!
+                  </p>
+                </>
+              )
             ) : runResult.outcome === "defeat" ? (
               <>
                 <div className="text-5xl">💀</div>

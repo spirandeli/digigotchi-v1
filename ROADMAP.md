@@ -47,8 +47,25 @@ Combinação contínua de Tamagotchi / Virtual Pet com Roguelike de Ação 2D To
 
 ---
 
-## MARCO 5 — Árvore de Habilidades, Evolução em Batalha e Progressão Permanente
-- [ ] Árvore de talentos e passivas do parceiro Digimon.
-- [ ] Transformação temporária ou evolução definitiva no meio da masmorra.
-- [ ] Linhas evolutivas completas e sincronizadas com a fase de vida do Tamagotchi.
+## MARCO 5 — ALPHA JOGÁVEL, POLIMENTO, CONTEÚDO E ESTABILIDADE
+- [x] **Loadouts & Perfis de Espécie:** Agumon (Garra / Chama Bebê / Bafo de Pimenta), Veemon (Vee-Punch / Vee-Laser / Vee-Headbutt) e Gabumon (Horn Thrust / Blue Blaster / Garuru-Aura) com atributos, alcances e efeitos temáticos distintos.
+- [x] **Motor de Efeitos de Status (DoT & CC):** Queimadura (Burn - dano periódico com VFX laranja), Lentidão (Slow - velocidade reduzida com VFX azul) e Eletrocutado (Shock - atordoamento/interrupção) com atualização limpa de duração.
+- [x] **Multi-Bosses em 2 Fases com Fúria:** Kuwagamon da Fenda (Andar 1), Meramon Vulcânico (Andar 2) e Seadramon Abissal (Andar 3), com projéteis temáticos, transição de fúria aos 50% de vida, telegrafia e disparos quádruplos.
+- [x] **Perigos de Terreno Dinâmicos (Hazards):** Poças de lava com queima contínua e zonas de descarga elétrica telegrafadas que aplicam choque caso o jogador não se esquive a tempo.
+- [x] **Game Feel, Feedback & Combate:**
+  - *Input Buffering (120ms):* Enfileiramento de comandos para execução suave de ataques sem perda de inputs entre frames.
+  - *Hitstop (45ms):* Micro-pausa de impacto em acertos críticos, finalizações e troca de fases do chefe.
+  - *Opções Visuais e Tremor:* Toggles em tempo real no menu de pausa para Tremor de Tela (Screen Shake) e Números de Dano (Damage Numbers).
+- [x] **Polimento e UX do Hub Tamagotchi:**
+  - *Árvore de Evolução Visual:* Painel detalhado exibindo a linha genealógica do parceiro, requisitos de nível e afinidade/felicidade e progresso em tempo real.
+  - *Inventário Categorizado:* Abas com filtros ("Todos", "Alimentos", "Cuidados") e contadores de itens.
+  - *Painel de Configurações & Integridade:* Controle de volume de SFX, atalho de tela cheia, selo de integridade do save espelho e reinício de save com confirmação em duas etapas.
+  - *Offline Decay Cap:* Limite de degradação off-line de até 8 horas com piso de segurança para proteger o pet contra morte imediata em ausências prolongadas.
+- [x] **Integridade & Recuperação de Save (Mirror Backup):**
+  - Redundância dupla com salvamento simultâneo em `digital_pet_save_v2` e `digital_pet_save_v2_backup`.
+  - Auto-recuperação resiliente caso a chave primária sofra corrupção acidental ou parsing inválido.
+- [x] **Estabilidade e Validação Total:**
+  - 82 testes unitários passando (`npx tsx --test`).
+  - Suíte E2E automatizada Playwright (`scripts/qa-m5-alpha-full.mjs`) com 10 etapas e 0 erros de console.
+  - Testes de renderização e paridade no servidor de build (`browser-smoke.mjs`) em Desktop e Mobile sem divergências.
 

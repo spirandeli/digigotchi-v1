@@ -1,8 +1,145 @@
 {
   "id": "xvmon",
-  "root": "rougue-like-character-sprites/xvmon",
-  "spriteReady": false,
-  "status": "BLOCKED",
-  "reason": "Reference panel, flight poses and effects are mixed without runtime naming.",
-  "animations": {}
+  "name": "XV-mon",
+  "stage": "champion",
+  "root": "sprites/xvmon",
+  "spriteReady": true,
+  "status": "READY",
+  "movementStyle": "4-way",
+  "reason": "Estrutura validada com movimento 4-way completo, golpes basic_1, basic_2, especial, hit, death e victory ancorados em canvas 96x96 baseline y=90.",
+  "frame": {
+    "width": 96,
+    "height": 96,
+    "originX": 0.5,
+    "originY": 0.94
+  },
+  "scale": 1.0,
+  "hitbox": {
+    "width": 42,
+    "height": 60,
+    "offsetX": 27,
+    "offsetY": 30
+  },
+  "animations": {
+    "idle": {
+      "fps": 7,
+      "loop": true,
+      "frames": [
+        "sprites/xvmon/idle/idle_01.png",
+        "sprites/xvmon/idle/idle_02.png",
+        "sprites/xvmon/idle/idle_03.png",
+        "sprites/xvmon/idle/idle_04.png",
+        "sprites/xvmon/idle/idle_05.png",
+        "sprites/xvmon/idle/idle_06.png",
+        "sprites/xvmon/idle/idle_07.png",
+        "sprites/xvmon/idle/idle_08.png"
+      ]
+    },
+    "walk_down": {
+      "fps": 8,
+      "loop": true,
+      "frames": [
+        "sprites/xvmon/walk/down/walk_down_01.png",
+        "sprites/xvmon/walk/down/walk_down_02.png",
+        "sprites/xvmon/walk/down/walk_down_03.png"
+      ]
+    },
+    "walk_up": {
+      "fps": 8,
+      "loop": true,
+      "frames": [
+        "sprites/xvmon/walk/up/walk_up_01.png",
+        "sprites/xvmon/walk/up/walk_up_02.png",
+        "sprites/xvmon/walk/up/walk_up_03.png"
+      ]
+    },
+    "walk_left": {
+      "fps": 8,
+      "loop": true,
+      "frames": [
+        "sprites/xvmon/walk/left/walk_left_01.png",
+        "sprites/xvmon/walk/left/walk_left_02.png",
+        "sprites/xvmon/walk/left/walk_left_03.png"
+      ]
+    },
+    "walk_right": {
+      "fps": 8,
+      "loop": true,
+      "frames": [
+        "sprites/xvmon/walk/right/walk_right_01.png",
+        "sprites/xvmon/walk/right/walk_right_02.png",
+        "sprites/xvmon/walk/right/walk_right_03.png"
+      ]
+    },
+    "attack_basic_1": {
+      "fps": 10,
+      "loop": false,
+      "frames": [
+        "sprites/xvmon/attacks/basic_1/attacks_basic_1_01.png",
+        "sprites/xvmon/attacks/basic_1/attacks_basic_1_02.png",
+        "sprites/xvmon/attacks/basic_1/attacks_basic_1_03.png"
+      ]
+    },
+    "attack_basic_2": {
+      "fps": 8,
+      "loop": false,
+      "frames": [
+        "sprites/xvmon/attacks/basic_2/attacks_basic_2_01.png",
+        "sprites/xvmon/attacks/basic_2/attacks_basic_2_02.png",
+        "sprites/xvmon/attacks/basic_2/attacks_basic_2_03.png"
+      ]
+    },
+    "attack_special": {
+      "fps": 8,
+      "loop": false,
+      "frames": [
+        "sprites/xvmon/attacks/special/attacks_special_01.png",
+        "sprites/xvmon/attacks/special/attacks_special_02.png",
+        "sprites/xvmon/attacks/special/attacks_special_03.png"
+      ]
+    },
+    "hit": {
+      "fps": 8,
+      "loop": false,
+      "frames": [
+        "sprites/xvmon/hit/hit_01.png"
+      ]
+    },
+    "death": {
+      "fps": 5,
+      "loop": false,
+      "frames": [
+        "sprites/xvmon/death/death_01.png"
+      ]
+    },
+    "victory": {
+      "fps": 5,
+      "loop": false,
+      "frames": [
+        "sprites/xvmon/victory/victory_01.png"
+      ]
+    }
+  },
+  "tamagotchiActions": {
+    "idle": "validated",
+    "eat": "validated",
+    "sleep": "validated",
+    "wake": "validated",
+    "play": "validated",
+    "clean": "validated",
+    "heal": "validated",
+    "evolution": "validated"
+  },
+  "roguelike": {
+    "walk_left": "validated",
+    "walk_right": "validated",
+    "walk_up": "validated",
+    "walk_down": "validated",
+    "attack_basic_1": "validated",
+    "attack_basic_2": "validated",
+    "attack_special": "validated",
+    "hit": "validated",
+    "death": "validated",
+    "victory": "validated"
+  }
 }

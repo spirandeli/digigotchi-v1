@@ -1,8 +1,139 @@
 {
   "id": "flamedramon",
-  "root": "rougue-like-character-sprites/flamedramon",
-  "spriteReady": false,
-  "status": "BLOCKED",
-  "reason": "Actions and effects are not separated into verified runtime sequences.",
-  "animations": {}
+  "name": "Flamedramon",
+  "stage": "ultimate",
+  "root": "sprites/flamedramon",
+  "spriteReady": true,
+  "status": "READY",
+  "movementStyle": "4-way",
+  "reason": "Estrutura validada com movimento 4-way completo, golpes basic_1, basic_2, especial, hit, death e victory ancorados em canvas 96x96 baseline y=90.",
+  "frame": {
+    "width": 96,
+    "height": 96,
+    "originX": 0.5,
+    "originY": 0.94
+  },
+  "scale": 1.0,
+  "hitbox": {
+    "width": 42,
+    "height": 60,
+    "offsetX": 27,
+    "offsetY": 30
+  },
+  "animations": {
+    "idle": {
+      "fps": 7,
+      "loop": true,
+      "frames": [
+        "sprites/flamedramon/idle/idle_01.png",
+        "sprites/flamedramon/idle/idle_07.png"
+      ]
+    },
+    "walk_down": {
+      "fps": 8,
+      "loop": true,
+      "frames": [
+        "sprites/flamedramon/walk/down/walk_down_01.png",
+        "sprites/flamedramon/walk/down/walk_down_02.png",
+        "sprites/flamedramon/walk/down/walk_down_03.png"
+      ]
+    },
+    "walk_up": {
+      "fps": 8,
+      "loop": true,
+      "frames": [
+        "sprites/flamedramon/walk/up/walk_up_01.png",
+        "sprites/flamedramon/walk/up/walk_up_02.png",
+        "sprites/flamedramon/walk/up/walk_up_03.png"
+      ]
+    },
+    "walk_left": {
+      "fps": 8,
+      "loop": true,
+      "frames": [
+        "sprites/flamedramon/walk/left/walk_left_01.png",
+        "sprites/flamedramon/walk/left/walk_left_02.png",
+        "sprites/flamedramon/walk/left/walk_left_03.png"
+      ]
+    },
+    "walk_right": {
+      "fps": 8,
+      "loop": true,
+      "frames": [
+        "sprites/flamedramon/walk/right/walk_right_01.png",
+        "sprites/flamedramon/walk/right/walk_right_02.png",
+        "sprites/flamedramon/walk/right/walk_right_03.png"
+      ]
+    },
+    "attack_basic_1": {
+      "fps": 10,
+      "loop": false,
+      "frames": [
+        "sprites/flamedramon/attacks/basic_1/attacks_basic_1_01.png",
+        "sprites/flamedramon/attacks/basic_1/attacks_basic_1_02.png",
+        "sprites/flamedramon/attacks/basic_1/attacks_basic_1_03.png"
+      ]
+    },
+    "attack_basic_2": {
+      "fps": 8,
+      "loop": false,
+      "frames": [
+        "sprites/flamedramon/attacks/basic_2/attacks_basic_2_01.png",
+        "sprites/flamedramon/attacks/basic_2/attacks_basic_2_02.png",
+        "sprites/flamedramon/attacks/basic_2/attacks_basic_2_03.png"
+      ]
+    },
+    "attack_special": {
+      "fps": 8,
+      "loop": false,
+      "frames": [
+        "sprites/flamedramon/attacks/special/attacks_special_01.png",
+        "sprites/flamedramon/attacks/special/attacks_special_02.png",
+        "sprites/flamedramon/attacks/special/attacks_special_03.png"
+      ]
+    },
+    "hit": {
+      "fps": 8,
+      "loop": false,
+      "frames": [
+        "sprites/flamedramon/hit/hit_01.png"
+      ]
+    },
+    "death": {
+      "fps": 5,
+      "loop": false,
+      "frames": [
+        "sprites/flamedramon/death/death_01.png"
+      ]
+    },
+    "victory": {
+      "fps": 5,
+      "loop": false,
+      "frames": [
+        "sprites/flamedramon/victory/victory_01.png"
+      ]
+    }
+  },
+  "tamagotchiActions": {
+    "idle": "validated",
+    "eat": "validated",
+    "sleep": "validated",
+    "wake": "validated",
+    "play": "validated",
+    "clean": "validated",
+    "heal": "validated",
+    "evolution": "validated"
+  },
+  "roguelike": {
+    "walk_left": "validated",
+    "walk_right": "validated",
+    "walk_up": "validated",
+    "walk_down": "validated",
+    "attack_basic_1": "validated",
+    "attack_basic_2": "validated",
+    "attack_special": "validated",
+    "hit": "validated",
+    "death": "validated",
+    "victory": "validated"
+  }
 }

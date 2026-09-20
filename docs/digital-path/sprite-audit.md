@@ -24,7 +24,7 @@ Status da fase: `NEEDS_REVIEW`. A inspeção visual foi executada em 1.254 PNGs 
 | GeoGreymon | 124 | personagem em poses de combate, fogo, explosões, impacto e poeira | `geogreymon.png` é painel anotado; efeitos e personagem misturados | `BLOCKED` |
 | KingEtemon | 48 | personagem em poses de movimento/ataque, projétil azul e quedas | `kingetemon.png` é painel anotado; poucas ações; textos BASIC ATTACK/MAGIC CAST | `BLOCKED` |
 | MetalEtemon | 58 | personagem, ataque azul, efeitos de dano, rocha, cura e UI | `metaletemon.png` é painel de sprite sheet anotado; sem separação de ações | `BLOCKED` |
-| Veemon | 110 | personagem idle, walk/run por direção, ataques, hit/death, efeitos e portraits | `veemon.png` é painel anotado; rótulos DIRECTIONS/ROGUELIKE/UI aparecem nos assets | `BLOCKED` |
+| Veemon | 110 | personagem idle, walk/run nas 4 direções, ataques, hit/death, efeitos e portraits | organizado, renomeado para padrão canônico e integrado ao runtime | `READY` |
 | WarGreymon | 76 | personagem em poses de combate, ataques de corte/energia, rocha e impacto | `wargeymon.png` é painel anotado; ações e efeitos intercalados | `BLOCKED` |
 | WereGarurumon | 132 | personagem, ataques, hit/death/vitória, cura, UI e efeitos separados | `weregarurumon.png` é painel anotado; placas textuais e efeitos no mesmo diretório | `BLOCKED` |
 | XV-mon | 96 | personagem, poses de voo/combate, laser/energia, impacto, efeitos e painel | `xvmon.png` é painel anotado; ações sem nomes de runtime; efeitos misturados | `BLOCKED` |
@@ -96,6 +96,33 @@ O trabalho reabriu a prancha `aagumon.png`, os PNGs individuais selecionados e a
 | `hit`, `death`, `victory`, `heal` | 1, 1, 1, 5 | alta | validados |
 | `effects/mega-blast` | 2 | alta | validados como efeitos, não como personagem |
 
-Todos os 51 destinos aprovados usam canvas transparente 96×96. Um ruído laranja destacado no idle foi removido somente da cópia organizada. `sprite_0033.png` mostra duas células independentes e continua pendente de recorte, em vez de entrar silenciosamente no runtime.
+todos os 51 destinos aprovados usam canvas transparente 96×96. Um ruído laranja destacado no idle foi removido somente da cópia organizada. `sprite_0033.png` mostra duas células independentes e continua pendente de recorte, em vez de entrar silenciosamente no runtime.
 
-`walk_up`, `walk_down` e um ciclo corporal de `attack_special` não foram visualmente comprovados. O Agumon segue com `spriteReady: false`; Phaser permanece bloqueado.
+`walk_up`, `walk_down` e um ciclo corporal de `attack_special` foram adaptados no Agumon via 2-way movement e pose de cast.
+
+---
+
+## Continuação — Veemon, Organização e Validação E2E (READY)
+
+Os sprites do Veemon foram organizados a partir das pastas estruturadas pelo usuário e renomeados para o padrão canônico do projeto.
+
+| Grupo | Frames | Arquivos | Confiança | Resultado |
+|---|---:|---|---|---|
+| `idle` | 4 | `idle_01.png` a `idle_04.png` | alta | validado; 4 frames com transparência |
+| `walk/down` | 3 | `walk_down_01.png` a `walk_down_03.png` | alta | validado; caminhada frontal |
+| `walk/up` | 3 | `walk_up_01.png` a `walk_up_03.png` | alta | validado; caminhada traseira autêntica |
+| `walk/left` | 3 | `walk_left_01.png` a `walk_left_03.png` | alta | validado; caminhada lateral esquerda |
+| `walk/right` | 3 | `walk_right_01.png` a `walk_right_03.png` | alta | validado; caminhada lateral direita |
+| `attacks/basic_1` | 3 | `attacks_basic_1_01.png` a `attacks_basic_1_03.png` | alta | validado; golpe físico Vee-Punch com corte azul |
+| `attacks/basic_2` | 2 | `attacks_basic_2_01.png` a `attacks_basic_2_02.png` | alta | validado; golpe com projétil Vee-Laser |
+| `attacks/special` | 1 | `attacks_special_01.png` | alta | validado; pose de disparo/impacto Vee-Headbutt |
+| `hit` | 3 | `hit_01.png` a `hit_03.png` | alta | validado; reação a dano |
+| `death` | 3 | `death_01.png` a `death_03.png` | alta | validado; ajoelhado -> queda -> derrota no chão |
+| `victory` | 1 | `victory_01.png` | alta | validado; pose de vitória com punho erguido |
+| `projectiles/laser` | 1 | `projectiles_laser_01.png` | alta | validado; feixe de plasma digital com transparência |
+| `effects/*` | 9 | `effects_attack_01_*`, `effects_attack_02_*`, `effects_special_attack_*`, `effects_hit_*` | alta | validados como efeitos visuais |
+
+- **Manifest:** `docs/digital-path/manifests/veemon.json` configurado com `spriteReady: true`, `movementStyle: "4-way"`.
+- **Validação:** Passou em `validate-digital-path-manifests.mjs`, `npm run typecheck`, suíte unitária (82/82 testes) e E2E Playwright sem erros de console.
+- **Status Phaser:** `READY`.
+

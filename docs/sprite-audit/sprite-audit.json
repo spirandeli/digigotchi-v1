@@ -1,0 +1,2087 @@
+{
+  "agumon": {
+    "digimon": "agumon",
+    "status": "PARTIAL",
+    "total_files": 450,
+    "png_count": 440,
+    "non_png_count": 10,
+    "sheets_count": 2,
+    "individual_frames_count": 426,
+    "raw_slices_count": 133,
+    "effects_count": 8,
+    "projectiles_count": 4,
+    "duplicates_count": 116,
+    "empty_frames_count": 0,
+    "complete_actions": 17,
+    "partial_actions": 0,
+    "missing_actions": 3,
+    "actions": {
+      "idle": {
+        "status": "COMPLETE",
+        "frames": 18,
+        "unique_frames": 9,
+        "details": "9 unique frames in idle/"
+      },
+      "walk_left": {
+        "status": "COMPLETE",
+        "frames": 11,
+        "details": "11 frames"
+      },
+      "walk_right": {
+        "status": "COMPLETE",
+        "frames": 10,
+        "details": "10 frames"
+      },
+      "walk_down": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "walk_up": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "dash": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_1": {
+        "status": "COMPLETE",
+        "frames": 6,
+        "details": "6 frames"
+      },
+      "attack_basic_2": {
+        "status": "COMPLETE",
+        "frames": 4,
+        "details": "4 frames"
+      },
+      "attack_special": {
+        "status": "COMPLETE",
+        "frames": 3,
+        "details": "3 frames"
+      },
+      "hit": {
+        "status": "COMPLETE",
+        "frames": 1,
+        "details": "1 frames"
+      },
+      "death": {
+        "status": "COMPLETE",
+        "frames": 1,
+        "details": "1 frames"
+      },
+      "victory": {
+        "status": "COMPLETE",
+        "frames": 1,
+        "details": "1 frames"
+      },
+      "eat": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "sleep": {
+        "status": "COMPLETE",
+        "frames": 12,
+        "unique_frames": 6,
+        "details": "6 unique frames (total files: 12)"
+      },
+      "wake": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "play": {
+        "status": "COMPLETE",
+        "frames": 24,
+        "unique_frames": 12,
+        "details": "12 unique frames (total files: 24)"
+      },
+      "clean": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "heal": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "evolution": {
+        "status": "COMPLETE",
+        "frames": 28,
+        "unique_frames": 14,
+        "details": "14 unique frames (total files: 28)"
+      },
+      "signature_attack": {
+        "status": "COMPLETE",
+        "frames": 48,
+        "unique_frames": 12,
+        "attack_name": "attack-pepper-breath",
+        "details": "12 unique frames for attack-pepper-breath"
+      }
+    },
+    "needs_review": [
+      {
+        "subject": "Master Spritesheets in _raw (1 sheets)",
+        "files": [
+          "aagumon.png"
+        ],
+        "reason": "Master reference boards containing uncut animations, VFX and UI panels. Require visual grid segmentation mapping."
+      }
+    ],
+    "sheets": [
+      {
+        "path": "spritesheets/agumon.png",
+        "dimensions": "1002x1040"
+      },
+      {
+        "path": "_raw/aagumon.png",
+        "dimensions": "1536x1024"
+      }
+    ],
+    "sample_duplicates": [
+      {
+        "file": "portrait.png",
+        "duplicate_of": "agumon.png"
+      },
+      {
+        "file": "wake/04.png",
+        "duplicate_of": "wake/wake_05.png"
+      },
+      {
+        "file": "wake/07.png",
+        "duplicate_of": "wake/wake_08.png"
+      },
+      {
+        "file": "wake/05.png",
+        "duplicate_of": "wake/wake_06.png"
+      },
+      {
+        "file": "wake/01.png",
+        "duplicate_of": "wake/wake_02.png"
+      },
+      {
+        "file": "wake/02.png",
+        "duplicate_of": "wake/wake_03.png"
+      },
+      {
+        "file": "wake/wake_07.png",
+        "duplicate_of": "wake/06.png"
+      },
+      {
+        "file": "wake/03.png",
+        "duplicate_of": "wake/wake_04.png"
+      },
+      {
+        "file": "wake/wake_01.png",
+        "duplicate_of": "wake/00.png"
+      },
+      {
+        "file": "eat/00.png",
+        "duplicate_of": "eat/eat_01.png"
+      }
+    ]
+  },
+  "etemon": {
+    "digimon": "etemon",
+    "status": "PARTIAL",
+    "total_files": 381,
+    "png_count": 359,
+    "non_png_count": 22,
+    "sheets_count": 2,
+    "individual_frames_count": 357,
+    "raw_slices_count": 147,
+    "effects_count": 0,
+    "projectiles_count": 0,
+    "duplicates_count": 136,
+    "empty_frames_count": 0,
+    "complete_actions": 9,
+    "partial_actions": 0,
+    "missing_actions": 11,
+    "actions": {
+      "idle": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 5,
+        "details": "5 unique frames in idle/"
+      },
+      "walk_left": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_right": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_down": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "walk_up": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "dash": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_1": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_2": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_special": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "hit": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "death": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "victory": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "eat": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "sleep": {
+        "status": "COMPLETE",
+        "frames": 12,
+        "unique_frames": 6,
+        "details": "6 unique frames (total files: 12)"
+      },
+      "wake": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "play": {
+        "status": "COMPLETE",
+        "frames": 24,
+        "unique_frames": 7,
+        "details": "7 unique frames (total files: 24)"
+      },
+      "clean": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "heal": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "evolution": {
+        "status": "COMPLETE",
+        "frames": 28,
+        "unique_frames": 14,
+        "details": "14 unique frames (total files: 28)"
+      },
+      "signature_attack": {
+        "status": "COMPLETE",
+        "frames": 48,
+        "unique_frames": 10,
+        "attack_name": "attack-love-serenade",
+        "details": "10 unique frames for attack-love-serenade"
+      }
+    },
+    "needs_review": [
+      {
+        "subject": "Master Spritesheets in _raw (1 sheets)",
+        "files": [
+          "etemon.png"
+        ],
+        "reason": "Master reference boards containing uncut animations, VFX and UI panels. Require visual grid segmentation mapping."
+      },
+      {
+        "subject": "Raw Slices in _raw (147 frames)",
+        "reason": "Digimon has 147 raw extracted slices in _raw/ waiting for semantic mapping to Roguelike actions."
+      }
+    ],
+    "sheets": [
+      {
+        "path": "spritesheets/etemon.png",
+        "dimensions": "829x602"
+      },
+      {
+        "path": "_raw/etemon.png",
+        "dimensions": "1254x1254"
+      }
+    ],
+    "sample_duplicates": [
+      {
+        "file": "portrait.png",
+        "duplicate_of": "etemon.png"
+      },
+      {
+        "file": "wake/04.png",
+        "duplicate_of": "wake/wake_05.png"
+      },
+      {
+        "file": "wake/07.png",
+        "duplicate_of": "wake/wake_08.png"
+      },
+      {
+        "file": "wake/05.png",
+        "duplicate_of": "wake/wake_06.png"
+      },
+      {
+        "file": "wake/01.png",
+        "duplicate_of": "wake/wake_02.png"
+      },
+      {
+        "file": "wake/02.png",
+        "duplicate_of": "wake/wake_03.png"
+      },
+      {
+        "file": "wake/wake_07.png",
+        "duplicate_of": "wake/06.png"
+      },
+      {
+        "file": "wake/03.png",
+        "duplicate_of": "wake/wake_04.png"
+      },
+      {
+        "file": "wake/wake_01.png",
+        "duplicate_of": "wake/00.png"
+      },
+      {
+        "file": "eat/00.png",
+        "duplicate_of": "eat/eat_01.png"
+      }
+    ]
+  },
+  "flamedramon": {
+    "digimon": "flamedramon",
+    "status": "PARTIAL",
+    "total_files": 311,
+    "png_count": 289,
+    "non_png_count": 22,
+    "sheets_count": 2,
+    "individual_frames_count": 287,
+    "raw_slices_count": 96,
+    "effects_count": 0,
+    "projectiles_count": 0,
+    "duplicates_count": 119,
+    "empty_frames_count": 0,
+    "complete_actions": 7,
+    "partial_actions": 2,
+    "missing_actions": 11,
+    "actions": {
+      "idle": {
+        "status": "PARTIAL",
+        "frames": 4,
+        "unique_frames": 2,
+        "details": "Only 2 unique frames"
+      },
+      "walk_left": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_right": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_down": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "walk_up": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "dash": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_1": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_2": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_special": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "hit": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "death": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "victory": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "eat": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "sleep": {
+        "status": "COMPLETE",
+        "frames": 12,
+        "unique_frames": 6,
+        "details": "6 unique frames (total files: 12)"
+      },
+      "wake": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "play": {
+        "status": "PARTIAL",
+        "frames": 24,
+        "unique_frames": 3,
+        "details": "3 unique frames (total files: 24)"
+      },
+      "clean": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "heal": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "evolution": {
+        "status": "COMPLETE",
+        "frames": 28,
+        "unique_frames": 14,
+        "details": "14 unique frames (total files: 28)"
+      },
+      "signature_attack": {
+        "status": "COMPLETE",
+        "frames": 4,
+        "unique_frames": 4,
+        "attack_name": "attack-fire-rocket",
+        "details": "4 unique frames for attack-fire-rocket"
+      }
+    },
+    "needs_review": [
+      {
+        "subject": "Master Spritesheets in _raw (1 sheets)",
+        "files": [
+          "flamedramon.png"
+        ],
+        "reason": "Master reference boards containing uncut animations, VFX and UI panels. Require visual grid segmentation mapping."
+      },
+      {
+        "subject": "Raw Slices in _raw (96 frames)",
+        "reason": "Digimon has 96 raw extracted slices in _raw/ waiting for semantic mapping to Roguelike actions."
+      }
+    ],
+    "sheets": [
+      {
+        "path": "spritesheets/flamedramon.png",
+        "dimensions": "264x306"
+      },
+      {
+        "path": "_raw/flamedramon.png",
+        "dimensions": "1448x1086"
+      }
+    ],
+    "sample_duplicates": [
+      {
+        "file": "attack_01_11.png",
+        "duplicate_of": "attack-fire-rocket_01.png"
+      },
+      {
+        "file": "04.png",
+        "duplicate_of": "idle_10.png"
+      },
+      {
+        "file": "10.png",
+        "duplicate_of": "attack-fire-rocket_01.png"
+      },
+      {
+        "file": "07.png",
+        "duplicate_of": "attack-fire-rocket_01.png"
+      },
+      {
+        "file": "idle_08.png",
+        "duplicate_of": "attack-fire-rocket_01.png"
+      },
+      {
+        "file": "idle_02.png",
+        "duplicate_of": "06.png"
+      },
+      {
+        "file": "attack_01_06.png",
+        "duplicate_of": "attack-fire-rocket_07.png"
+      },
+      {
+        "file": "00.png",
+        "duplicate_of": "attack-fire-rocket_01.png"
+      },
+      {
+        "file": "attack_01_12.png",
+        "duplicate_of": "idle_09.png"
+      },
+      {
+        "file": "attack_01_01.png",
+        "duplicate_of": "attack-fire-rocket_01.png"
+      }
+    ]
+  },
+  "gabumon": {
+    "digimon": "gabumon",
+    "status": "PARTIAL",
+    "total_files": 361,
+    "png_count": 339,
+    "non_png_count": 22,
+    "sheets_count": 2,
+    "individual_frames_count": 337,
+    "raw_slices_count": 127,
+    "effects_count": 0,
+    "projectiles_count": 0,
+    "duplicates_count": 117,
+    "empty_frames_count": 0,
+    "complete_actions": 9,
+    "partial_actions": 0,
+    "missing_actions": 11,
+    "actions": {
+      "idle": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames in idle/"
+      },
+      "walk_left": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_right": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_down": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "walk_up": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "dash": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_1": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_2": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_special": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "hit": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "death": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "victory": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "eat": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "sleep": {
+        "status": "COMPLETE",
+        "frames": 12,
+        "unique_frames": 6,
+        "details": "6 unique frames (total files: 12)"
+      },
+      "wake": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "play": {
+        "status": "COMPLETE",
+        "frames": 24,
+        "unique_frames": 12,
+        "details": "12 unique frames (total files: 24)"
+      },
+      "clean": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "heal": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "evolution": {
+        "status": "COMPLETE",
+        "frames": 28,
+        "unique_frames": 14,
+        "details": "14 unique frames (total files: 28)"
+      },
+      "signature_attack": {
+        "status": "COMPLETE",
+        "frames": 48,
+        "unique_frames": 12,
+        "attack_name": "attack-blue-blaster",
+        "details": "12 unique frames for attack-blue-blaster"
+      }
+    },
+    "needs_review": [
+      {
+        "subject": "Master Spritesheets in _raw (1 sheets)",
+        "files": [
+          "ggabumon.png"
+        ],
+        "reason": "Master reference boards containing uncut animations, VFX and UI panels. Require visual grid segmentation mapping."
+      },
+      {
+        "subject": "Raw Slices in _raw (127 frames)",
+        "reason": "Digimon has 127 raw extracted slices in _raw/ waiting for semantic mapping to Roguelike actions."
+      }
+    ],
+    "sheets": [
+      {
+        "path": "spritesheets/gabumon.png",
+        "dimensions": "1002x1130"
+      },
+      {
+        "path": "_raw/ggabumon.png",
+        "dimensions": "1447x1087"
+      }
+    ],
+    "sample_duplicates": [
+      {
+        "file": "portrait.png",
+        "duplicate_of": "gabumon.png"
+      },
+      {
+        "file": "wake/04.png",
+        "duplicate_of": "wake/wake_05.png"
+      },
+      {
+        "file": "wake/07.png",
+        "duplicate_of": "wake/wake_08.png"
+      },
+      {
+        "file": "wake/05.png",
+        "duplicate_of": "wake/wake_06.png"
+      },
+      {
+        "file": "wake/01.png",
+        "duplicate_of": "wake/wake_02.png"
+      },
+      {
+        "file": "wake/02.png",
+        "duplicate_of": "wake/wake_03.png"
+      },
+      {
+        "file": "wake/wake_07.png",
+        "duplicate_of": "wake/06.png"
+      },
+      {
+        "file": "wake/03.png",
+        "duplicate_of": "wake/wake_04.png"
+      },
+      {
+        "file": "wake/wake_01.png",
+        "duplicate_of": "wake/00.png"
+      },
+      {
+        "file": "eat/00.png",
+        "duplicate_of": "eat/eat_01.png"
+      }
+    ]
+  },
+  "garurumon": {
+    "digimon": "garurumon",
+    "status": "PARTIAL",
+    "total_files": 336,
+    "png_count": 314,
+    "non_png_count": 22,
+    "sheets_count": 2,
+    "individual_frames_count": 312,
+    "raw_slices_count": 102,
+    "effects_count": 0,
+    "projectiles_count": 0,
+    "duplicates_count": 137,
+    "empty_frames_count": 0,
+    "complete_actions": 8,
+    "partial_actions": 1,
+    "missing_actions": 11,
+    "actions": {
+      "idle": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 6,
+        "details": "6 unique frames in idle/"
+      },
+      "walk_left": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_right": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_down": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "walk_up": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "dash": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_1": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_2": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_special": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "hit": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "death": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "victory": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "eat": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "sleep": {
+        "status": "COMPLETE",
+        "frames": 12,
+        "unique_frames": 6,
+        "details": "6 unique frames (total files: 12)"
+      },
+      "wake": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "play": {
+        "status": "PARTIAL",
+        "frames": 24,
+        "unique_frames": 3,
+        "details": "3 unique frames (total files: 24)"
+      },
+      "clean": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "heal": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "evolution": {
+        "status": "COMPLETE",
+        "frames": 28,
+        "unique_frames": 14,
+        "details": "14 unique frames (total files: 28)"
+      },
+      "signature_attack": {
+        "status": "COMPLETE",
+        "frames": 48,
+        "unique_frames": 7,
+        "attack_name": "attack-howling-blaster",
+        "details": "7 unique frames for attack-howling-blaster"
+      }
+    },
+    "needs_review": [
+      {
+        "subject": "Master Spritesheets in _raw (1 sheets)",
+        "files": [
+          "garurumon.png"
+        ],
+        "reason": "Master reference boards containing uncut animations, VFX and UI panels. Require visual grid segmentation mapping."
+      },
+      {
+        "subject": "Raw Slices in _raw (102 frames)",
+        "reason": "Digimon has 102 raw extracted slices in _raw/ waiting for semantic mapping to Roguelike actions."
+      }
+    ],
+    "sheets": [
+      {
+        "path": "spritesheets/garurumon.png",
+        "dimensions": "688x216"
+      },
+      {
+        "path": "_raw/garurumon.png",
+        "dimensions": "1254x1254"
+      }
+    ],
+    "sample_duplicates": [
+      {
+        "file": "portrait.png",
+        "duplicate_of": "garurumon.png"
+      },
+      {
+        "file": "wake/04.png",
+        "duplicate_of": "wake/wake_05.png"
+      },
+      {
+        "file": "wake/07.png",
+        "duplicate_of": "wake/wake_08.png"
+      },
+      {
+        "file": "wake/05.png",
+        "duplicate_of": "wake/wake_06.png"
+      },
+      {
+        "file": "wake/01.png",
+        "duplicate_of": "wake/wake_02.png"
+      },
+      {
+        "file": "wake/02.png",
+        "duplicate_of": "wake/wake_03.png"
+      },
+      {
+        "file": "wake/wake_07.png",
+        "duplicate_of": "wake/06.png"
+      },
+      {
+        "file": "wake/03.png",
+        "duplicate_of": "wake/wake_04.png"
+      },
+      {
+        "file": "wake/wake_01.png",
+        "duplicate_of": "wake/00.png"
+      },
+      {
+        "file": "eat/00.png",
+        "duplicate_of": "eat/eat_01.png"
+      }
+    ]
+  },
+  "geogreymon": {
+    "digimon": "geogreymon",
+    "status": "PARTIAL",
+    "total_files": 357,
+    "png_count": 335,
+    "non_png_count": 22,
+    "sheets_count": 2,
+    "individual_frames_count": 333,
+    "raw_slices_count": 123,
+    "effects_count": 0,
+    "projectiles_count": 0,
+    "duplicates_count": 117,
+    "empty_frames_count": 0,
+    "complete_actions": 9,
+    "partial_actions": 0,
+    "missing_actions": 11,
+    "actions": {
+      "idle": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames in idle/"
+      },
+      "walk_left": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_right": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_down": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "walk_up": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "dash": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_1": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_2": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_special": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "hit": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "death": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "victory": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "eat": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "sleep": {
+        "status": "COMPLETE",
+        "frames": 12,
+        "unique_frames": 6,
+        "details": "6 unique frames (total files: 12)"
+      },
+      "wake": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "play": {
+        "status": "COMPLETE",
+        "frames": 24,
+        "unique_frames": 12,
+        "details": "12 unique frames (total files: 24)"
+      },
+      "clean": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "heal": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "evolution": {
+        "status": "COMPLETE",
+        "frames": 28,
+        "unique_frames": 14,
+        "details": "14 unique frames (total files: 28)"
+      },
+      "signature_attack": {
+        "status": "COMPLETE",
+        "frames": 48,
+        "unique_frames": 12,
+        "attack_name": "attack-mega-flame",
+        "details": "12 unique frames for attack-mega-flame"
+      }
+    },
+    "needs_review": [
+      {
+        "subject": "Master Spritesheets in _raw (1 sheets)",
+        "files": [
+          "greymon.png"
+        ],
+        "reason": "Master reference boards containing uncut animations, VFX and UI panels. Require visual grid segmentation mapping."
+      },
+      {
+        "subject": "Raw Slices in _raw (123 frames)",
+        "reason": "Digimon has 123 raw extracted slices in _raw/ waiting for semantic mapping to Roguelike actions."
+      }
+    ],
+    "sheets": [
+      {
+        "path": "spritesheets/geogreymon.png",
+        "dimensions": "342x275"
+      },
+      {
+        "path": "_raw/greymon.png",
+        "dimensions": "1448x1086"
+      }
+    ],
+    "sample_duplicates": [
+      {
+        "file": "portrait.png",
+        "duplicate_of": "geogreymon.png"
+      },
+      {
+        "file": "attack-mega-flame/10.png",
+        "duplicate_of": "attack-mega-flame/attack-mega-flame_11.png"
+      },
+      {
+        "file": "attack-mega-flame/06.png",
+        "duplicate_of": "attack-mega-flame/attack-mega-flame_07.png"
+      },
+      {
+        "file": "attack-mega-flame/05.png",
+        "duplicate_of": "attack-mega-flame/attack-mega-flame_06.png"
+      },
+      {
+        "file": "attack-mega-flame/01.png",
+        "duplicate_of": "attack-mega-flame/attack-mega-flame_02.png"
+      },
+      {
+        "file": "attack-mega-flame/02.png",
+        "duplicate_of": "attack-mega-flame/attack-mega-flame_03.png"
+      },
+      {
+        "file": "attack-mega-flame/attack-mega-flame_08.png",
+        "duplicate_of": "attack-mega-flame/07.png"
+      },
+      {
+        "file": "attack-mega-flame/attack-mega-flame_01.png",
+        "duplicate_of": "attack-mega-flame/00.png"
+      },
+      {
+        "file": "attack-mega-flame/11.png",
+        "duplicate_of": "attack-mega-flame/attack-mega-flame_12.png"
+      },
+      {
+        "file": "attack-mega-flame/08.png",
+        "duplicate_of": "attack-mega-flame/attack-mega-flame_09.png"
+      }
+    ]
+  },
+  "kingetemon": {
+    "digimon": "kingetemon",
+    "status": "MISSING",
+    "total_files": 80,
+    "png_count": 48,
+    "non_png_count": 32,
+    "sheets_count": 1,
+    "individual_frames_count": 47,
+    "raw_slices_count": 47,
+    "effects_count": 0,
+    "projectiles_count": 0,
+    "duplicates_count": 0,
+    "empty_frames_count": 0,
+    "complete_actions": 0,
+    "partial_actions": 0,
+    "missing_actions": 20,
+    "actions": {
+      "idle": {
+        "status": "MISSING",
+        "frames": 0,
+        "unique_frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_left": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_right": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_down": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "walk_up": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "dash": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_1": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_2": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_special": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "hit": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "death": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "victory": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "eat": {
+        "status": "MISSING",
+        "frames": 0,
+        "unique_frames": 0,
+        "details": "0 unique frames (total files: 0)"
+      },
+      "sleep": {
+        "status": "MISSING",
+        "frames": 0,
+        "unique_frames": 0,
+        "details": "0 unique frames (total files: 0)"
+      },
+      "wake": {
+        "status": "MISSING",
+        "frames": 0,
+        "unique_frames": 0,
+        "details": "0 unique frames (total files: 0)"
+      },
+      "play": {
+        "status": "MISSING",
+        "frames": 0,
+        "unique_frames": 0,
+        "details": "0 unique frames (total files: 0)"
+      },
+      "clean": {
+        "status": "MISSING",
+        "frames": 0,
+        "unique_frames": 0,
+        "details": "0 unique frames (total files: 0)"
+      },
+      "heal": {
+        "status": "MISSING",
+        "frames": 0,
+        "unique_frames": 0,
+        "details": "0 unique frames (total files: 0)"
+      },
+      "evolution": {
+        "status": "MISSING",
+        "frames": 0,
+        "unique_frames": 0,
+        "details": "0 unique frames (total files: 0)"
+      },
+      "signature_attack": {
+        "status": "MISSING",
+        "frames": 0,
+        "unique_frames": 0,
+        "attack_name": "attack-monkey-claw",
+        "details": "0 unique frames for attack-monkey-claw"
+      }
+    },
+    "needs_review": [
+      {
+        "subject": "Master Spritesheets in _raw (1 sheets)",
+        "files": [
+          "kingetemon.png"
+        ],
+        "reason": "Master reference boards containing uncut animations, VFX and UI panels. Require visual grid segmentation mapping."
+      },
+      {
+        "subject": "Raw Slices in _raw (47 frames)",
+        "reason": "Digimon has 47 raw extracted slices in _raw/ waiting for semantic mapping to Roguelike actions."
+      }
+    ],
+    "sheets": [
+      {
+        "path": "_raw/kingetemon.png",
+        "dimensions": "1448x1086"
+      }
+    ],
+    "sample_duplicates": []
+  },
+  "metaletemon": {
+    "digimon": "metaletemon",
+    "status": "PARTIAL",
+    "total_files": 291,
+    "png_count": 269,
+    "non_png_count": 22,
+    "sheets_count": 2,
+    "individual_frames_count": 267,
+    "raw_slices_count": 57,
+    "effects_count": 0,
+    "projectiles_count": 0,
+    "duplicates_count": 134,
+    "empty_frames_count": 0,
+    "complete_actions": 9,
+    "partial_actions": 0,
+    "missing_actions": 11,
+    "actions": {
+      "idle": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 4,
+        "details": "4 unique frames in idle/"
+      },
+      "walk_left": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_right": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_down": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "walk_up": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "dash": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_1": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_2": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_special": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "hit": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "death": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "victory": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "eat": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "sleep": {
+        "status": "COMPLETE",
+        "frames": 12,
+        "unique_frames": 6,
+        "details": "6 unique frames (total files: 12)"
+      },
+      "wake": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "play": {
+        "status": "COMPLETE",
+        "frames": 24,
+        "unique_frames": 5,
+        "details": "5 unique frames (total files: 24)"
+      },
+      "clean": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "heal": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "evolution": {
+        "status": "COMPLETE",
+        "frames": 28,
+        "unique_frames": 14,
+        "details": "14 unique frames (total files: 28)"
+      },
+      "signature_attack": {
+        "status": "COMPLETE",
+        "frames": 48,
+        "unique_frames": 11,
+        "attack_name": "attack-banana-slip",
+        "details": "11 unique frames for attack-banana-slip"
+      }
+    },
+    "needs_review": [
+      {
+        "subject": "Master Spritesheets in _raw (1 sheets)",
+        "files": [
+          "mmetaletemon.png"
+        ],
+        "reason": "Master reference boards containing uncut animations, VFX and UI panels. Require visual grid segmentation mapping."
+      },
+      {
+        "subject": "Raw Slices in _raw (57 frames)",
+        "reason": "Digimon has 57 raw extracted slices in _raw/ waiting for semantic mapping to Roguelike actions."
+      }
+    ],
+    "sheets": [
+      {
+        "path": "spritesheets/metaletemon.png",
+        "dimensions": "412x419"
+      },
+      {
+        "path": "_raw/mmetaletemon.png",
+        "dimensions": "1448x1086"
+      }
+    ],
+    "sample_duplicates": [
+      {
+        "file": "portrait.png",
+        "duplicate_of": "metaletemon.png"
+      },
+      {
+        "file": "wake/04.png",
+        "duplicate_of": "wake/wake_05.png"
+      },
+      {
+        "file": "wake/07.png",
+        "duplicate_of": "wake/wake_08.png"
+      },
+      {
+        "file": "wake/05.png",
+        "duplicate_of": "wake/wake_06.png"
+      },
+      {
+        "file": "wake/01.png",
+        "duplicate_of": "wake/wake_02.png"
+      },
+      {
+        "file": "wake/02.png",
+        "duplicate_of": "wake/wake_03.png"
+      },
+      {
+        "file": "wake/wake_07.png",
+        "duplicate_of": "wake/06.png"
+      },
+      {
+        "file": "wake/03.png",
+        "duplicate_of": "wake/wake_04.png"
+      },
+      {
+        "file": "wake/wake_01.png",
+        "duplicate_of": "wake/00.png"
+      },
+      {
+        "file": "eat/00.png",
+        "duplicate_of": "eat/eat_01.png"
+      }
+    ]
+  },
+  "wargreymon": {
+    "digimon": "wargreymon",
+    "status": "PARTIAL",
+    "total_files": 309,
+    "png_count": 287,
+    "non_png_count": 22,
+    "sheets_count": 2,
+    "individual_frames_count": 285,
+    "raw_slices_count": 75,
+    "effects_count": 0,
+    "projectiles_count": 0,
+    "duplicates_count": 117,
+    "empty_frames_count": 0,
+    "complete_actions": 9,
+    "partial_actions": 0,
+    "missing_actions": 11,
+    "actions": {
+      "idle": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames in idle/"
+      },
+      "walk_left": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_right": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_down": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "walk_up": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "dash": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_1": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_2": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_special": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "hit": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "death": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "victory": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "eat": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "sleep": {
+        "status": "COMPLETE",
+        "frames": 12,
+        "unique_frames": 6,
+        "details": "6 unique frames (total files: 12)"
+      },
+      "wake": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "play": {
+        "status": "COMPLETE",
+        "frames": 24,
+        "unique_frames": 12,
+        "details": "12 unique frames (total files: 24)"
+      },
+      "clean": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "heal": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "evolution": {
+        "status": "COMPLETE",
+        "frames": 28,
+        "unique_frames": 14,
+        "details": "14 unique frames (total files: 28)"
+      },
+      "signature_attack": {
+        "status": "COMPLETE",
+        "frames": 48,
+        "unique_frames": 12,
+        "attack_name": "attack-terra-force",
+        "details": "12 unique frames for attack-terra-force"
+      }
+    },
+    "needs_review": [
+      {
+        "subject": "Master Spritesheets in _raw (1 sheets)",
+        "files": [
+          "wwargreymon.png"
+        ],
+        "reason": "Master reference boards containing uncut animations, VFX and UI panels. Require visual grid segmentation mapping."
+      },
+      {
+        "subject": "Raw Slices in _raw (75 frames)",
+        "reason": "Digimon has 75 raw extracted slices in _raw/ waiting for semantic mapping to Roguelike actions."
+      }
+    ],
+    "sheets": [
+      {
+        "path": "spritesheets/wargreymon.png",
+        "dimensions": "615x635"
+      },
+      {
+        "path": "_raw/wwargreymon.png",
+        "dimensions": "1448x1086"
+      }
+    ],
+    "sample_duplicates": [
+      {
+        "file": "portrait.png",
+        "duplicate_of": "wargreymon.png"
+      },
+      {
+        "file": "wake/04.png",
+        "duplicate_of": "wake/wake_05.png"
+      },
+      {
+        "file": "wake/07.png",
+        "duplicate_of": "wake/wake_08.png"
+      },
+      {
+        "file": "wake/05.png",
+        "duplicate_of": "wake/wake_06.png"
+      },
+      {
+        "file": "wake/01.png",
+        "duplicate_of": "wake/wake_02.png"
+      },
+      {
+        "file": "wake/02.png",
+        "duplicate_of": "wake/wake_03.png"
+      },
+      {
+        "file": "wake/wake_07.png",
+        "duplicate_of": "wake/06.png"
+      },
+      {
+        "file": "wake/03.png",
+        "duplicate_of": "wake/wake_04.png"
+      },
+      {
+        "file": "wake/wake_01.png",
+        "duplicate_of": "wake/00.png"
+      },
+      {
+        "file": "eat/00.png",
+        "duplicate_of": "eat/eat_01.png"
+      }
+    ]
+  },
+  "weregarurumon": {
+    "digimon": "weregarurumon",
+    "status": "PARTIAL",
+    "total_files": 363,
+    "png_count": 341,
+    "non_png_count": 22,
+    "sheets_count": 2,
+    "individual_frames_count": 339,
+    "raw_slices_count": 131,
+    "effects_count": 0,
+    "projectiles_count": 0,
+    "duplicates_count": 141,
+    "empty_frames_count": 0,
+    "complete_actions": 8,
+    "partial_actions": 1,
+    "missing_actions": 11,
+    "actions": {
+      "idle": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 5,
+        "details": "5 unique frames in idle/"
+      },
+      "walk_left": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_right": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_down": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "walk_up": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "dash": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_1": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_2": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_special": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "hit": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "death": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "victory": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "eat": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "sleep": {
+        "status": "COMPLETE",
+        "frames": 12,
+        "unique_frames": 6,
+        "details": "6 unique frames (total files: 12)"
+      },
+      "wake": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "play": {
+        "status": "PARTIAL",
+        "frames": 24,
+        "unique_frames": 3,
+        "details": "3 unique frames (total files: 24)"
+      },
+      "clean": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "heal": {
+        "status": "COMPLETE",
+        "frames": 20,
+        "unique_frames": 10,
+        "details": "10 unique frames (total files: 20)"
+      },
+      "evolution": {
+        "status": "COMPLETE",
+        "frames": 28,
+        "unique_frames": 14,
+        "details": "14 unique frames (total files: 28)"
+      },
+      "signature_attack": {
+        "status": "COMPLETE",
+        "frames": 48,
+        "unique_frames": 7,
+        "attack_name": "attack-wolf-claw",
+        "details": "7 unique frames for attack-wolf-claw"
+      }
+    },
+    "needs_review": [
+      {
+        "subject": "Master Spritesheets in _raw (1 sheets)",
+        "files": [
+          "weregarurumon.png"
+        ],
+        "reason": "Master reference boards containing uncut animations, VFX and UI panels. Require visual grid segmentation mapping."
+      },
+      {
+        "subject": "Raw Slices in _raw (131 frames)",
+        "reason": "Digimon has 131 raw extracted slices in _raw/ waiting for semantic mapping to Roguelike actions."
+      }
+    ],
+    "sheets": [
+      {
+        "path": "spritesheets/weregarurumon.png",
+        "dimensions": "688x216"
+      },
+      {
+        "path": "_raw/weregarurumon.png",
+        "dimensions": "1299x1211"
+      }
+    ],
+    "sample_duplicates": [
+      {
+        "file": "wake/04.png",
+        "duplicate_of": "wake/wake_05.png"
+      },
+      {
+        "file": "wake/07.png",
+        "duplicate_of": "wake/wake_08.png"
+      },
+      {
+        "file": "wake/05.png",
+        "duplicate_of": "wake/wake_06.png"
+      },
+      {
+        "file": "wake/01.png",
+        "duplicate_of": "wake/wake_02.png"
+      },
+      {
+        "file": "wake/02.png",
+        "duplicate_of": "wake/wake_03.png"
+      },
+      {
+        "file": "wake/wake_07.png",
+        "duplicate_of": "wake/06.png"
+      },
+      {
+        "file": "wake/03.png",
+        "duplicate_of": "wake/wake_04.png"
+      },
+      {
+        "file": "wake/wake_01.png",
+        "duplicate_of": "wake/00.png"
+      },
+      {
+        "file": "eat/00.png",
+        "duplicate_of": "eat/eat_01.png"
+      },
+      {
+        "file": "eat/eat_05.png",
+        "duplicate_of": "eat/04.png"
+      }
+    ]
+  },
+  "xvmon": {
+    "digimon": "xvmon",
+    "status": "PARTIAL",
+    "total_files": 298,
+    "png_count": 275,
+    "non_png_count": 23,
+    "sheets_count": 2,
+    "individual_frames_count": 257,
+    "raw_slices_count": 95,
+    "effects_count": 0,
+    "projectiles_count": 16,
+    "duplicates_count": 97,
+    "empty_frames_count": 0,
+    "complete_actions": 8,
+    "partial_actions": 0,
+    "missing_actions": 12,
+    "actions": {
+      "idle": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames in idle/"
+      },
+      "walk_left": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_right": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "Folder empty (.gitkeep)"
+      },
+      "walk_down": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "walk_up": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "dash": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_1": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_basic_2": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "attack_special": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "hit": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "death": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "victory": {
+        "status": "MISSING",
+        "frames": 0,
+        "details": "0 frames"
+      },
+      "eat": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "sleep": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "wake": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "play": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "clean": {
+        "status": "MISSING",
+        "frames": 0,
+        "unique_frames": 0,
+        "details": "0 unique frames (total files: 0)"
+      },
+      "heal": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "evolution": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "details": "8 unique frames (total files: 16)"
+      },
+      "signature_attack": {
+        "status": "COMPLETE",
+        "frames": 16,
+        "unique_frames": 8,
+        "attack_name": "attack-vee-laser",
+        "details": "8 unique frames for attack-vee-laser"
+      }
+    },
+    "needs_review": [
+      {
+        "subject": "Master Spritesheets in _raw (1 sheets)",
+        "files": [
+          "xxvmon.png"
+        ],
+        "reason": "Master reference boards containing uncut animations, VFX and UI panels. Require visual grid segmentation mapping."
+      },
+      {
+        "subject": "Raw Slices in _raw (95 frames)",
+        "reason": "Digimon has 95 raw extracted slices in _raw/ waiting for semantic mapping to Roguelike actions."
+      }
+    ],
+    "sheets": [
+      {
+        "path": "spritesheets/xvmon.png",
+        "dimensions": "342x172"
+      },
+      {
+        "path": "_raw/xxvmon.png",
+        "dimensions": "1447x1087"
+      }
+    ],
+    "sample_duplicates": [
+      {
+        "file": "portrait.png",
+        "duplicate_of": "xvmon.png"
+      },
+      {
+        "file": "attack-vee-laser/04.png",
+        "duplicate_of": "attack-vee-laser/attack-vee-laser_05.png"
+      },
+      {
+        "file": "attack-vee-laser/attack-vee-laser_07.png",
+        "duplicate_of": "attack-vee-laser/06.png"
+      },
+      {
+        "file": "attack-vee-laser/00.png",
+        "duplicate_of": "attack-vee-laser/attack-vee-laser_01.png"
+      },
+      {
+        "file": "attack-vee-laser/01.png",
+        "duplicate_of": "attack-vee-laser/attack-vee-laser_02.png"
+      },
+      {
+        "file": "attack-vee-laser/attack-vee-laser_08.png",
+        "duplicate_of": "attack-vee-laser/07.png"
+      },
+      {
+        "file": "attack-vee-laser/attack-vee-laser_03.png",
+        "duplicate_of": "attack-vee-laser/02.png"
+      },
+      {
+        "file": "attack-vee-laser/attack-vee-laser_06.png",
+        "duplicate_of": "attack-vee-laser/05.png"
+      },
+      {
+        "file": "attack-vee-laser/attack-vee-laser_04.png",
+        "duplicate_of": "attack-vee-laser/03.png"
+      },
+      {
+        "file": "jump/jump_01.png",
+        "duplicate_of": "jump/00.png"
+      }
+    ]
+  }
+}

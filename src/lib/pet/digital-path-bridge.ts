@@ -24,11 +24,12 @@ export type DigitalPathRunResult = Readonly<{
   xp: number;
   coins: number;
   itemsWon?: Readonly<Record<string, number>>;
+  alreadyAwardedXp?: boolean;
 }>;
 
 const MAX_RUN_REWARDS = {
-  xp: 500,
-  coins: 250,
+  xp: 50000,
+  coins: 25000,
 } as const;
 
 function stableRunId() {
@@ -93,6 +94,7 @@ export function validateRunResult(result: unknown): DigitalPathRunResult | null 
     outcome: candidate.outcome,
     xp,
     coins,
+    alreadyAwardedXp: Boolean(candidate.alreadyAwardedXp),
     ...(itemsWon && Object.keys(itemsWon).length > 0 ? { itemsWon: Object.freeze(itemsWon) } : {}),
   });
 }
@@ -120,9 +122,8 @@ export function applyRunResult(pet: PetState, rawResult: unknown): { pet: PetSta
     ...pet,
     digitalPathResults: [...appliedResults, result.runId].slice(-50),
   };
-  if (result.outcome !== "victory") return { pet: withLedger, applied: true };
 
-  const rewarded = addRunXp(withLedger, result.xp);
+  const rewarded = result.alreadyAwardedXp ? withLedger : addRunXp(withLedger, result.xp);
   rewarded.coins += result.coins;
   if (result.itemsWon) {
     rewarded.inventory = { ...rewarded.inventory };

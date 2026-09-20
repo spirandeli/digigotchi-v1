@@ -11,7 +11,7 @@ export type SpriteAnimation = {
 };
 
 const ACTION_FRAME_COUNTS: Record<string, Record<string, number>> = {
-  agumon: { idle: 8, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-pepper-breath": 12 },
+  agumon: { idle: 9, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-pepper-breath": 12 },
   geogreymon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-mega-flame": 12 },
   wargreymon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-terra-force": 12 },
   etemon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-love-serenade": 12 },
@@ -19,10 +19,16 @@ const ACTION_FRAME_COUNTS: Record<string, Record<string, number>> = {
   gabumon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-blue-blaster": 12 },
   garurumon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-howling-blaster": 12 },
   weregarurumon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-wolf-claw": 12 },
-  veemon: { idle: 14, eat: 8, play: 8, sleep: 8, wake: 8, clean: 8, heal: 8, evolve: 8, "attack-vee-headbutt": 8 },
+  veemon: { idle: 4, eat: 8, play: 8, sleep: 8, wake: 8, clean: 8, heal: 8, evolve: 8, "attack-vee-headbutt": 8 },
   flamedramon: { idle: 10, eat: 10, play: 12, sleep: 6, wake: 8, clean: 10, heal: 10, evolve: 14, "attack-fire-rocket": 12 },
   xvmon: { idle: 8, eat: 8, play: 8, sleep: 8, wake: 8, clean: 8, heal: 8, evolve: 8, jump: 8, "attack-vee-laser": 8, attack: 8 },
 };
+
+export function getDigimonSpritePath(species: string, action: string, frameIndex: number): string {
+  const normalizedAction = action === "evolve" ? "evolution" : action;
+  const num = String(frameIndex).padStart(2, "0");
+  return `/sprites/${species}/${normalizedAction}/${normalizedAction}_${num}.png`;
+}
 
 function animationFrames(species: string, action: string, fallbackCount: number) {
   const actualCount = ACTION_FRAME_COUNTS[species]?.[action] ?? fallbackCount;
@@ -30,8 +36,8 @@ function animationFrames(species: string, action: string, fallbackCount: number)
   const frameCycle = Math.max(1, actualCount);
 
   return Array.from({ length: loopCount }, (_, index) => {
-    const frameIndex = index % frameCycle;
-    return `/sprites/animated/${species}/${action}/${String(frameIndex).padStart(2, "0")}.png`;
+    const frameIndex = (index % frameCycle) + 1;
+    return getDigimonSpritePath(species, action, frameIndex);
   });
 }
 
@@ -39,8 +45,9 @@ function animationSet(
   species: string,
   attackAction: string,
 ): Record<string, SpriteAnimation> {
+  const idleCount = ACTION_FRAME_COUNTS[species]?.idle ?? 10;
   return {
-    idle: { frames: animationFrames(species, "idle", 10), fps: 7, loop: true },
+    idle: { frames: animationFrames(species, "idle", idleCount), fps: 7, loop: true },
     eat: { frames: animationFrames(species, "eat", 10), fps: 9, loop: false },
     play: { frames: animationFrames(species, "play", 12), fps: 10, loop: false },
     sleep: { frames: animationFrames(species, "sleep", 6), fps: 5, loop: true },
@@ -178,8 +185,8 @@ export const LINES: Record<string, LineDef> = {
     blurb: "Fiel e protetor.",
     sprite: "/sprites/gabumon.png",
     evolutions: [
-      { id: "garurumon", name: "Garurumon", level: 5, sprite: "/sprites/animated/garurumon/idle/00.png" },
-      { id: "weregarurumon", name: "WereGarurumon", level: 10, sprite: "/sprites/animated/weregarurumon/idle/00.png" },
+      { id: "garurumon", name: "Garurumon", level: 5, sprite: "/sprites/garurumon/idle/idle_01.png" },
+      { id: "weregarurumon", name: "WereGarurumon", level: 10, sprite: "/sprites/weregarurumon/idle/idle_01.png" },
     ],
     phrases: {
       idle: ["Estou aqui!", "Confio em voce.", "Vamos juntos!"],
