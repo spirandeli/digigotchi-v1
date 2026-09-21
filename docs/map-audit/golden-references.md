@@ -1,0 +1,364 @@
+# Golden References por Tema de Mapa
+
+Seleção dos sprites de maior pureza estilística, escala e fidelidade artística para servirem como padrão ouro de cada tema.
+
+## LIGHTING_GOLDEN_REFERENCES
+
+- **Fonte de Verdade Local:** `ChatGPT Image 19_09_2026, 10_32_14.png`
+- **Tile Size Original:** 114x114 px
+- **Tile Render Size no Phaser:** 48x48 px (`setDisplaySize`)
+- **Perspectiva:** Top-down com elevação 3/4 frontal
+- **Contorno & Iluminação:** Pixel art nítida com contornos escuros e iluminação zenital levemente vinda do topo
+
+### Floor
+- `/sprites/maps/lighting/floor/normal/floor_normal_01.png`
+- `/sprites/maps/lighting/floor/normal/floor_normal_02.png`
+- `/sprites/maps/lighting/floor/normal/floor_normal_03.png`
+- `/sprites/maps/lighting/floor/cracked/floor_cracked_01.png`
+- `/sprites/maps/lighting/floor/cracked/floor_cracked_02.png`
+- `/sprites/maps/lighting/floor/alternate/floor_alternate_01.png`
+- `/sprites/maps/lighting/floor/alternate/floor_alternate_02.png`
+- `/sprites/maps/lighting/floor/special/floor_special_01.png`
+- `/sprites/maps/lighting/floor/special/floor_special_02.png`
+
+### Walls
+- `/sprites/maps/lighting/walls/horizontal/wall_horizontal_01.png`
+- `/sprites/maps/lighting/walls/vertical/wall_vertical_01.png`
+- `/sprites/maps/lighting/walls/top/wall_top_01.png`
+- `/sprites/maps/lighting/walls/bottom/wall_bottom_01.png`
+- `/sprites/maps/lighting/walls/left/wall_left_01.png`
+- `/sprites/maps/lighting/walls/right/wall_right_01.png`
+- `/sprites/maps/lighting/walls/special/wall_special_01.png`
+- `/sprites/maps/lighting/walls/special/wall_special_02.png`
+- `/sprites/maps/lighting/walls/special/wall_special_03.png`
+- `/sprites/maps/lighting/walls/special/wall_special_04.png`
+- `/sprites/maps/lighting/walls/special/wall_special_05.png`
+- `/sprites/maps/lighting/walls/special/wall_special_06.png`
+- `/sprites/maps/lighting/walls/special/wall_special_07.png`
+- `/sprites/maps/lighting/walls/special/wall_special_08.png`
+- `/sprites/maps/lighting/walls/special/wall_special_09.png`
+- `/sprites/maps/lighting/walls/special/wall_special_10.png`
+
+### Corners
+- `/sprites/maps/lighting/corners/outer/top_left/corner_outer_top_left.png`
+- `/sprites/maps/lighting/corners/outer/top_right/corner_outer_top_right.png`
+- `/sprites/maps/lighting/corners/outer/bottom_left/corner_outer_bottom_left.png`
+- `/sprites/maps/lighting/corners/outer/bottom_right/corner_outer_bottom_right.png`
+- `/sprites/maps/lighting/corners/inner/top_left/corner_inner_top_left.png`
+- `/sprites/maps/lighting/corners/inner/top_right/corner_inner_top_right.png`
+- `/sprites/maps/lighting/corners/inner/bottom_left/corner_inner_bottom_left.png`
+- `/sprites/maps/lighting/corners/inner/bottom_right/corner_inner_bottom_right.png`
+
+### Doors
+- `/sprites/maps/lighting/doors/vertical/closed/door_vertical_closed_01.png`
+- `/sprites/maps/lighting/doors/vertical/open/door_vertical_open_01.png`
+
+### Interactables
+- `/sprites/maps/lighting/interactables/chest/closed/chest_closed_01.png`
+- `/sprites/maps/lighting/interactables/chest/closed/chest_closed_02.png`
+- `/sprites/maps/lighting/interactables/chest/closed/chest_closed_03.png`
+- `/sprites/maps/lighting/interactables/chest/open/chest_open_01.png`
+- `/sprites/maps/lighting/interactables/chest/open/chest_open_02.png`
+- `/sprites/maps/lighting/interactables/chest/open/chest_open_03.png`
+
+### Decorations
+- `/sprites/maps/lighting/decorations/floor/decor_floor_01.png`
+- `/sprites/maps/lighting/decorations/floor/decor_floor_02.png`
+- `/sprites/maps/lighting/decorations/floor/decor_floor_03.png`
+- `/sprites/maps/lighting/decorations/floor/decor_floor_04.png`
+- `/sprites/maps/lighting/decorations/medium/decor_medium_01.png`
+- `/sprites/maps/lighting/decorations/medium/decor_medium_02.png`
+- `/sprites/maps/lighting/decorations/wall/decor_wall_01.png`
+- `/sprites/maps/lighting/decorations/wall/decor_wall_02.png`
+
+### Environment
+- `/sprites/maps/lighting/environment/ambient/env_ambient_01.png`
+- `/sprites/maps/lighting/environment/rocks/env_rocks_01.png`
+- `/sprites/maps/lighting/environment/ruins/env_ruins_01.png`
+- `/sprites/maps/lighting/environment/ruins/env_ruins_02.png`
+- `/sprites/maps/lighting/environment/elemental/env_elemental_01.png`
+- `/sprites/maps/lighting/environment/elemental/env_elemental_02.png`
+
+### Hazards
+- `/sprites/maps/lighting/hazards/floor/hazard_floor_01.png`
+- `/sprites/maps/lighting/hazards/floor/hazard_floor_02.png`
+- `/sprites/maps/lighting/hazards/floor/hazard_floor_03.png`
+
+### Landmarks
+- `/sprites/maps/lighting/landmarks/landmark_01.png`
+- `/sprites/maps/lighting/landmarks/landmark_02.png`
+- `/sprites/maps/lighting/landmarks/landmark_03.png`
+- `/sprites/maps/lighting/landmarks/landmark_04.png`
+
+---
+
+## FIRE_GOLDEN_REFERENCES
+
+- **Fonte de Verdade Local:** `ChatGPT Image 19_09_2026, 10_32_26.png`
+- **Tile Size Original:** 114x114 px
+- **Tile Render Size no Phaser:** 48x48 px (`setDisplaySize`)
+- **Perspectiva:** Top-down com elevação 3/4 frontal
+- **Contorno & Iluminação:** Pixel art nítida com contornos escuros e iluminação zenital levemente vinda do topo
+
+### Floor
+- `/sprites/maps/fire/floor/normal/floor_normal_01.png`
+- `/sprites/maps/fire/floor/normal/floor_normal_02.png`
+- `/sprites/maps/fire/floor/normal/floor_normal_03.png`
+- `/sprites/maps/fire/floor/cracked/floor_cracked_01.png`
+- `/sprites/maps/fire/floor/cracked/floor_cracked_02.png`
+- `/sprites/maps/fire/floor/alternate/floor_alternate_01.png`
+- `/sprites/maps/fire/floor/alternate/floor_alternate_02.png`
+- `/sprites/maps/fire/floor/special/floor_special_01.png`
+- `/sprites/maps/fire/floor/special/floor_special_02.png`
+
+### Walls
+- `/sprites/maps/fire/walls/horizontal/wall_horizontal_01.png`
+- `/sprites/maps/fire/walls/vertical/wall_vertical_01.png`
+- `/sprites/maps/fire/walls/top/wall_top_01.png`
+- `/sprites/maps/fire/walls/bottom/wall_bottom_01.png`
+- `/sprites/maps/fire/walls/left/wall_left_01.png`
+- `/sprites/maps/fire/walls/right/wall_right_01.png`
+- `/sprites/maps/fire/walls/special/wall_special_01.png`
+- `/sprites/maps/fire/walls/special/wall_special_02.png`
+- `/sprites/maps/fire/walls/special/wall_special_03.png`
+- `/sprites/maps/fire/walls/special/wall_special_04.png`
+- `/sprites/maps/fire/walls/special/wall_special_05.png`
+- `/sprites/maps/fire/walls/special/wall_special_06.png`
+- `/sprites/maps/fire/walls/special/wall_special_07.png`
+- `/sprites/maps/fire/walls/special/wall_special_08.png`
+- `/sprites/maps/fire/walls/special/wall_special_09.png`
+- `/sprites/maps/fire/walls/special/wall_special_10.png`
+
+### Corners
+- `/sprites/maps/fire/corners/outer/top_left/corner_outer_top_left.png`
+- `/sprites/maps/fire/corners/outer/top_right/corner_outer_top_right.png`
+- `/sprites/maps/fire/corners/outer/bottom_left/corner_outer_bottom_left.png`
+- `/sprites/maps/fire/corners/outer/bottom_right/corner_outer_bottom_right.png`
+- `/sprites/maps/fire/corners/inner/top_left/corner_inner_top_left.png`
+- `/sprites/maps/fire/corners/inner/top_right/corner_inner_top_right.png`
+- `/sprites/maps/fire/corners/inner/bottom_left/corner_inner_bottom_left.png`
+- `/sprites/maps/fire/corners/inner/bottom_right/corner_inner_bottom_right.png`
+
+### Doors
+- `/sprites/maps/fire/doors/vertical/closed/door_vertical_closed_01.png`
+- `/sprites/maps/fire/doors/vertical/open/door_vertical_open_01.png`
+
+### Interactables
+- `/sprites/maps/fire/interactables/chest/closed/chest_closed_01.png`
+- `/sprites/maps/fire/interactables/chest/closed/chest_closed_02.png`
+- `/sprites/maps/fire/interactables/chest/closed/chest_closed_03.png`
+- `/sprites/maps/fire/interactables/chest/open/chest_open_01.png`
+- `/sprites/maps/fire/interactables/chest/open/chest_open_02.png`
+- `/sprites/maps/fire/interactables/chest/open/chest_open_03.png`
+
+### Decorations
+- `/sprites/maps/fire/decorations/floor/decor_floor_01.png`
+- `/sprites/maps/fire/decorations/floor/decor_floor_02.png`
+- `/sprites/maps/fire/decorations/floor/decor_floor_03.png`
+- `/sprites/maps/fire/decorations/floor/decor_floor_04.png`
+- `/sprites/maps/fire/decorations/medium/decor_medium_01.png`
+- `/sprites/maps/fire/decorations/medium/decor_medium_02.png`
+- `/sprites/maps/fire/decorations/wall/decor_wall_01.png`
+- `/sprites/maps/fire/decorations/wall/decor_wall_02.png`
+
+### Environment
+- `/sprites/maps/fire/environment/ambient/env_ambient_01.png`
+- `/sprites/maps/fire/environment/rocks/env_rocks_01.png`
+- `/sprites/maps/fire/environment/ruins/env_ruins_01.png`
+- `/sprites/maps/fire/environment/ruins/env_ruins_02.png`
+- `/sprites/maps/fire/environment/elemental/env_elemental_01.png`
+- `/sprites/maps/fire/environment/elemental/env_elemental_02.png`
+
+### Hazards
+- `/sprites/maps/fire/hazards/floor/hazard_floor_01.png`
+- `/sprites/maps/fire/hazards/floor/hazard_floor_02.png`
+- `/sprites/maps/fire/hazards/floor/hazard_floor_03.png`
+
+### Landmarks
+- `/sprites/maps/fire/landmarks/landmark_01.png`
+- `/sprites/maps/fire/landmarks/landmark_02.png`
+- `/sprites/maps/fire/landmarks/landmark_03.png`
+- `/sprites/maps/fire/landmarks/landmark_04.png`
+
+---
+
+## ICE_GOLDEN_REFERENCES
+
+- **Fonte de Verdade Local:** `ChatGPT Image 19_09_2026, 10_32_39.png`
+- **Tile Size Original:** 114x114 px
+- **Tile Render Size no Phaser:** 48x48 px (`setDisplaySize`)
+- **Perspectiva:** Top-down com elevação 3/4 frontal
+- **Contorno & Iluminação:** Pixel art nítida com contornos escuros e iluminação zenital levemente vinda do topo
+
+### Floor
+- `/sprites/maps/ice/floor/normal/floor_normal_01.png`
+- `/sprites/maps/ice/floor/normal/floor_normal_02.png`
+- `/sprites/maps/ice/floor/normal/floor_normal_03.png`
+- `/sprites/maps/ice/floor/cracked/floor_cracked_01.png`
+- `/sprites/maps/ice/floor/cracked/floor_cracked_02.png`
+- `/sprites/maps/ice/floor/alternate/floor_alternate_01.png`
+- `/sprites/maps/ice/floor/alternate/floor_alternate_02.png`
+- `/sprites/maps/ice/floor/special/floor_special_01.png`
+- `/sprites/maps/ice/floor/special/floor_special_02.png`
+
+### Walls
+- `/sprites/maps/ice/walls/horizontal/wall_horizontal_01.png`
+- `/sprites/maps/ice/walls/vertical/wall_vertical_01.png`
+- `/sprites/maps/ice/walls/top/wall_top_01.png`
+- `/sprites/maps/ice/walls/bottom/wall_bottom_01.png`
+- `/sprites/maps/ice/walls/left/wall_left_01.png`
+- `/sprites/maps/ice/walls/right/wall_right_01.png`
+- `/sprites/maps/ice/walls/special/wall_special_01.png`
+- `/sprites/maps/ice/walls/special/wall_special_02.png`
+- `/sprites/maps/ice/walls/special/wall_special_03.png`
+- `/sprites/maps/ice/walls/special/wall_special_04.png`
+- `/sprites/maps/ice/walls/special/wall_special_05.png`
+- `/sprites/maps/ice/walls/special/wall_special_06.png`
+- `/sprites/maps/ice/walls/special/wall_special_07.png`
+- `/sprites/maps/ice/walls/special/wall_special_08.png`
+- `/sprites/maps/ice/walls/special/wall_special_09.png`
+- `/sprites/maps/ice/walls/special/wall_special_10.png`
+
+### Corners
+- `/sprites/maps/ice/corners/outer/top_left/corner_outer_top_left.png`
+- `/sprites/maps/ice/corners/outer/top_right/corner_outer_top_right.png`
+- `/sprites/maps/ice/corners/outer/bottom_left/corner_outer_bottom_left.png`
+- `/sprites/maps/ice/corners/outer/bottom_right/corner_outer_bottom_right.png`
+- `/sprites/maps/ice/corners/inner/top_left/corner_inner_top_left.png`
+- `/sprites/maps/ice/corners/inner/top_right/corner_inner_top_right.png`
+- `/sprites/maps/ice/corners/inner/bottom_left/corner_inner_bottom_left.png`
+- `/sprites/maps/ice/corners/inner/bottom_right/corner_inner_bottom_right.png`
+
+### Doors
+- `/sprites/maps/ice/doors/vertical/closed/door_vertical_closed_01.png`
+- `/sprites/maps/ice/doors/vertical/open/door_vertical_open_01.png`
+
+### Interactables
+- `/sprites/maps/ice/interactables/chest/closed/chest_closed_01.png`
+- `/sprites/maps/ice/interactables/chest/closed/chest_closed_02.png`
+- `/sprites/maps/ice/interactables/chest/closed/chest_closed_03.png`
+- `/sprites/maps/ice/interactables/chest/open/chest_open_01.png`
+- `/sprites/maps/ice/interactables/chest/open/chest_open_02.png`
+- `/sprites/maps/ice/interactables/chest/open/chest_open_03.png`
+
+### Decorations
+- `/sprites/maps/ice/decorations/floor/decor_floor_01.png`
+- `/sprites/maps/ice/decorations/floor/decor_floor_02.png`
+- `/sprites/maps/ice/decorations/floor/decor_floor_03.png`
+- `/sprites/maps/ice/decorations/floor/decor_floor_04.png`
+- `/sprites/maps/ice/decorations/medium/decor_medium_01.png`
+- `/sprites/maps/ice/decorations/medium/decor_medium_02.png`
+- `/sprites/maps/ice/decorations/wall/decor_wall_01.png`
+- `/sprites/maps/ice/decorations/wall/decor_wall_02.png`
+
+### Environment
+- `/sprites/maps/ice/environment/ambient/env_ambient_01.png`
+- `/sprites/maps/ice/environment/rocks/env_rocks_01.png`
+- `/sprites/maps/ice/environment/ruins/env_ruins_01.png`
+- `/sprites/maps/ice/environment/ruins/env_ruins_02.png`
+- `/sprites/maps/ice/environment/elemental/env_elemental_01.png`
+- `/sprites/maps/ice/environment/elemental/env_elemental_02.png`
+
+### Hazards
+- `/sprites/maps/ice/hazards/floor/hazard_floor_01.png`
+- `/sprites/maps/ice/hazards/floor/hazard_floor_02.png`
+- `/sprites/maps/ice/hazards/floor/hazard_floor_03.png`
+
+### Landmarks
+- `/sprites/maps/ice/landmarks/landmark_01.png`
+- `/sprites/maps/ice/landmarks/landmark_02.png`
+- `/sprites/maps/ice/landmarks/landmark_03.png`
+- `/sprites/maps/ice/landmarks/landmark_04.png`
+
+---
+
+## TECH_GOLDEN_REFERENCES
+
+- **Fonte de Verdade Local:** `ChatGPT Image 19_09_2026, 10_35_14.png`
+- **Tile Size Original:** 114x114 px
+- **Tile Render Size no Phaser:** 48x48 px (`setDisplaySize`)
+- **Perspectiva:** Top-down com elevação 3/4 frontal
+- **Contorno & Iluminação:** Pixel art nítida com contornos escuros e iluminação zenital levemente vinda do topo
+
+### Floor
+- `/sprites/maps/tech/floor/normal/floor_normal_01.png`
+- `/sprites/maps/tech/floor/normal/floor_normal_02.png`
+- `/sprites/maps/tech/floor/normal/floor_normal_03.png`
+- `/sprites/maps/tech/floor/cracked/floor_cracked_01.png`
+- `/sprites/maps/tech/floor/cracked/floor_cracked_02.png`
+- `/sprites/maps/tech/floor/alternate/floor_alternate_01.png`
+- `/sprites/maps/tech/floor/alternate/floor_alternate_02.png`
+- `/sprites/maps/tech/floor/special/floor_special_01.png`
+- `/sprites/maps/tech/floor/special/floor_special_02.png`
+
+### Walls
+- `/sprites/maps/tech/walls/horizontal/wall_horizontal_01.png`
+- `/sprites/maps/tech/walls/vertical/wall_vertical_01.png`
+- `/sprites/maps/tech/walls/top/wall_top_01.png`
+- `/sprites/maps/tech/walls/bottom/wall_bottom_01.png`
+- `/sprites/maps/tech/walls/left/wall_left_01.png`
+- `/sprites/maps/tech/walls/right/wall_right_01.png`
+- `/sprites/maps/tech/walls/special/wall_special_01.png`
+- `/sprites/maps/tech/walls/special/wall_special_02.png`
+- `/sprites/maps/tech/walls/special/wall_special_03.png`
+- `/sprites/maps/tech/walls/special/wall_special_04.png`
+- `/sprites/maps/tech/walls/special/wall_special_05.png`
+- `/sprites/maps/tech/walls/special/wall_special_06.png`
+- `/sprites/maps/tech/walls/special/wall_special_07.png`
+- `/sprites/maps/tech/walls/special/wall_special_08.png`
+- `/sprites/maps/tech/walls/special/wall_special_09.png`
+- `/sprites/maps/tech/walls/special/wall_special_10.png`
+
+### Corners
+- `/sprites/maps/tech/corners/outer/top_left/corner_outer_top_left.png`
+- `/sprites/maps/tech/corners/outer/top_right/corner_outer_top_right.png`
+- `/sprites/maps/tech/corners/outer/bottom_left/corner_outer_bottom_left.png`
+- `/sprites/maps/tech/corners/outer/bottom_right/corner_outer_bottom_right.png`
+- `/sprites/maps/tech/corners/inner/top_left/corner_inner_top_left.png`
+- `/sprites/maps/tech/corners/inner/top_right/corner_inner_top_right.png`
+- `/sprites/maps/tech/corners/inner/bottom_left/corner_inner_bottom_left.png`
+- `/sprites/maps/tech/corners/inner/bottom_right/corner_inner_bottom_right.png`
+
+### Doors
+- `/sprites/maps/tech/doors/vertical/closed/door_vertical_closed_01.png`
+- `/sprites/maps/tech/doors/vertical/open/door_vertical_open_01.png`
+
+### Interactables
+- `/sprites/maps/tech/interactables/chest/closed/chest_closed_01.png`
+- `/sprites/maps/tech/interactables/chest/closed/chest_closed_02.png`
+- `/sprites/maps/tech/interactables/chest/closed/chest_closed_03.png`
+- `/sprites/maps/tech/interactables/chest/open/chest_open_01.png`
+- `/sprites/maps/tech/interactables/chest/open/chest_open_02.png`
+- `/sprites/maps/tech/interactables/chest/open/chest_open_03.png`
+
+### Decorations
+- `/sprites/maps/tech/decorations/floor/decor_floor_01.png`
+- `/sprites/maps/tech/decorations/floor/decor_floor_02.png`
+- `/sprites/maps/tech/decorations/floor/decor_floor_03.png`
+- `/sprites/maps/tech/decorations/floor/decor_floor_04.png`
+- `/sprites/maps/tech/decorations/medium/decor_medium_01.png`
+- `/sprites/maps/tech/decorations/medium/decor_medium_02.png`
+- `/sprites/maps/tech/decorations/wall/decor_wall_01.png`
+- `/sprites/maps/tech/decorations/wall/decor_wall_02.png`
+
+### Environment
+- `/sprites/maps/tech/environment/ambient/env_ambient_01.png`
+- `/sprites/maps/tech/environment/rocks/env_rocks_01.png`
+- `/sprites/maps/tech/environment/ruins/env_ruins_01.png`
+- `/sprites/maps/tech/environment/ruins/env_ruins_02.png`
+- `/sprites/maps/tech/environment/elemental/env_elemental_01.png`
+- `/sprites/maps/tech/environment/elemental/env_elemental_02.png`
+
+### Hazards
+- `/sprites/maps/tech/hazards/floor/hazard_floor_01.png`
+- `/sprites/maps/tech/hazards/floor/hazard_floor_02.png`
+- `/sprites/maps/tech/hazards/floor/hazard_floor_03.png`
+
+### Landmarks
+- `/sprites/maps/tech/landmarks/landmark_01.png`
+- `/sprites/maps/tech/landmarks/landmark_02.png`
+- `/sprites/maps/tech/landmarks/landmark_03.png`
+- `/sprites/maps/tech/landmarks/landmark_04.png`
+
+---
+

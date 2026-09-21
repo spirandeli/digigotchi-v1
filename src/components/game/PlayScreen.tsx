@@ -21,7 +21,6 @@ import { currentName, currentSprite, getMood, xpToNext } from "@/lib/pet/engine"
 import { actions, useGame } from "@/lib/pet/store";
 import { createRunInput } from "@/lib/pet/digital-path-bridge";
 import { maybePlayIdleSound, preloadDigimonAudio } from "@/lib/pet/audio";
-import { getSkillForSpecies, QA_XP_MULTIPLIER } from "@/lib/pet/skills";
 import { getDigitalPathManifest } from "@/lib/digital-path/runtime/manifests";
 import { cn } from "@/lib/utils";
 
@@ -179,8 +178,6 @@ export function PlayScreen() {
                     ? "Inventário"
                     : panel === "shop"
                     ? "Loja"
-                    : panel === "training"
-                    ? "Treino"
                     : panel === "digital-path"
                     ? "Caminho Digital"
                     : panel === "settings"
@@ -194,7 +191,6 @@ export function PlayScreen() {
               {panel === "inventory" ? <Inventory /> : null}
               {panel === "shop" ? <Shop /> : null}
               {panel === "evolution" ? <Evolution /> : null}
-              {panel === "training" ? <Training /> : null}
               {panel === "digital-path" ? <DigitalPathEntry /> : null}
               {panel === "settings" ? <SettingsPanel /> : null}
             </div>
@@ -704,7 +700,7 @@ function DigitalPathEntry() {
               <li>Ataque básico físico com <strong>Espaço</strong> ou <strong>J</strong>.</li>
               <li>Ataque de projétil à distância com a tecla <strong>K</strong>.</li>
               <li>Especial explosivo em área com a tecla <strong>L</strong>.</li>
-              <li>Derrote os inimigos para abrir o portão e avançar pelas 6 salas até o Boss!</li>
+              <li>Derrote os inimigos para abrir o portão e avançar pelas salas até os Bosses e Marcos de Andar!</li>
             </ul>
           </div>
 
@@ -726,44 +722,6 @@ function DigitalPathEntry() {
   );
 }
 
-function Training() {
-  const pet = useGame((s) => s.pet);
-  const actionBusy = useGame((s) => s.busyUntil > Date.now());
-  if (!pet) return null;
-  const skill = getSkillForSpecies(pet.speciesId);
-  if (!skill) return <p className="text-sm text-muted">Nenhuma habilidade configurada para esta forma.</p>;
-  const xp = skill.xpGain * QA_XP_MULTIPLIER;
-  const canTrain = !actionBusy && !pet.isSleeping && pet.energy >= skill.energyCost;
-
-  return (
-    <div className="space-y-3">
-      <div className="ds-card p-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">Habilidade atual</p>
-        <h3 className="mt-1 text-lg font-semibold text-fg">{skill.name}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-muted">{skill.description}</p>
-        <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-          <div className="ds-slot px-3 py-2">
-            <span className="text-muted">Custo</span>
-            <p className="mt-0.5 font-semibold text-fg">{skill.energyCost} Energia</p>
-          </div>
-          <div className="ds-slot px-3 py-2">
-            <span className="text-muted">Ganho</span>
-            <p className="mt-0.5 font-semibold text-fg">+{xp} XP</p>
-          </div>
-        </div>
-        <p className="mt-2 text-[11px] text-subtle">Modo de teste: multiplicador de XP x{QA_XP_MULTIPLIER}.</p>
-      </div>
-      <button
-        type="button"
-        disabled={!canTrain}
-        onClick={() => actions.train()}
-        className="ds-button ds-button-accent h-12 w-full text-sm font-semibold disabled:opacity-45"
-      >
-        {actionBusy ? "Aguarde a animacao" : pet.isSleeping ? "Acorde para treinar" : pet.energy < skill.energyCost ? "Energia insuficiente" : "TREINAR"}
-      </button>
-    </div>
-  );
-}
 
 function moodLabel(mood: string) {
   const map: Record<string, string> = {

@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-09-21T13:37:36.632Z",
+  "targetUrl": "http://127.0.0.1:8080/",
+  "consoleLogs": [
+    "[debug] [vite] connecting...",
+    "[debug] [vite] connected.",
+    "[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+  ],
+  "consoleWarnings": [],
+  "consoleErrors": [],
+  "failedRequests": [],
+  "tamagotchi": {
+    "treinoTextFound": false,
+    "treinoButtonFound": false,
+    "buttons": {
+      "alimentar": false,
+      "limpar": false,
+      "dormir": false,
+      "caminhoDigital": false
+    }
+  },
+  "digitalPath": {},
+  "roguelike": {
+    "canvasFound": false
+  },
+  "combat": {},
+  "deathAndRestart": {},
+  "sync": {},
+  "summary": []
+}

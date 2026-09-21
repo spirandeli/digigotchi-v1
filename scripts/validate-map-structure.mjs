@@ -10,37 +10,23 @@ const MANIFEST_FILE = path.join(MAPS_ROOT, 'map_sprite_manifest.json');
 const ELEMENTS = ['fire', 'ice', 'lighting', 'tech'];
 
 const SUBCATEGORIES = {
-  floor: ['normal', 'alternate', 'cracked', 'damaged', 'decorated', 'edge', 'special', 'transition'],
+  floor: ['normal', 'alternate', 'cracked', 'special'],
   walls: ['horizontal', 'vertical', 'top', 'bottom', 'left', 'right', 'special'],
   corners: [
-    'outer/top_left', 'outer/top_right', 'outer/bottom_left', 'outer/bottom_right',
-    'inner/top_left', 'inner/top_right', 'inner/bottom_left', 'inner/bottom_right'
+    'outer', 'inner'
   ],
-  borders: ['horizontal', 'vertical', 'top', 'bottom', 'left', 'right'],
-  doors: ['horizontal/closed', 'horizontal/open', 'vertical/closed', 'vertical/open'],
-  obstacles: ['small', 'medium', 'large', 'blocking'],
-  decorations: ['floor', 'wall', 'small', 'medium', 'large', 'ambient'],
-  hazards: ['floor', 'projectile', 'environmental', 'trap', 'animated'],
-  interactables: ['chest/closed', 'chest/open', 'altar', 'switch', 'terminal', 'portal', 'shrine', 'lever', 'event'],
-  breakables: [
-    'crate/idle', 'crate/breaking', 'crate/broken',
-    'barrel/idle', 'barrel/breaking', 'barrel/broken',
-    'pottery/idle', 'pottery/breaking', 'pottery/broken',
-    'crystal/idle', 'crystal/breaking', 'crystal/broken',
-    'custom/idle', 'custom/breaking', 'custom/broken'
-  ],
-  structures: ['pillar', 'bridge', 'stairs', 'platform', 'ruins', 'gate', 'arch', 'special'],
-  environment: ['rocks', 'vegetation', 'crystals', 'elemental', 'technology', 'ruins', 'ambient'],
-  transitions: ['floor_to_floor', 'floor_to_wall', 'biome', 'room', 'corridor', 'special'],
-  spawn: ['player', 'enemy', 'item', 'event', 'exit'],
-  boss: ['floor', 'walls', 'entrance', 'exit', 'decorations', 'hazards', 'structures'],
-  minimap: ['room', 'corridor', 'player', 'enemy', 'boss', 'chest', 'event', 'entrance', 'exit'],
+  doors: ['vertical'],
+  decorations: ['floor', 'wall', 'medium'],
+  environment: ['ambient', 'elemental', 'rocks', 'ruins'],
+  hazards: ['floor'],
+  interactables: ['chest'],
+  landmarks: [],
 };
 
 let allOk = true;
 const elementStatus = {};
 
-// 1. Validate directories for each element (single visual theme, NO day/night)
+// 1. Validate directories for each element
 for (const element of ELEMENTS) {
   let elemOk = true;
   const elementPath = path.join(MAPS_ROOT, element);
@@ -52,15 +38,13 @@ for (const element of ELEMENTS) {
     continue;
   }
 
-  // lighting is the reference complete theme
-  if (element === 'lighting') {
-    for (const [cat] of Object.entries(SUBCATEGORIES)) {
-      const p = path.join(elementPath, cat);
-      if (!fs.existsSync(p)) {
-        elemOk = false;
-        allOk = false;
-        console.error(`ERRO: Subdiretório faltando em lighting: ${p}`);
-      }
+  // Check required category directories
+  for (const cat of Object.keys(SUBCATEGORIES)) {
+    const p = path.join(elementPath, cat);
+    if (!fs.existsSync(p)) {
+      elemOk = false;
+      allOk = false;
+      console.error(`ERRO: Subdiretório faltando em ${element}: ${p}`);
     }
   }
   elementStatus[element] = elemOk ? 'OK' : 'ERROR';
@@ -118,9 +102,10 @@ if (!fs.existsSync(MANIFEST_FILE)) {
           manifestOk = false;
           console.error(`ERRO no manifesto: '${element}.enabled' flag ausente`);
         }
-        if (!Array.isArray(data[element].floor)) {
+        const floorList = data[element].categories?.floor || data[element].floor;
+        if (!Array.isArray(floorList)) {
           manifestOk = false;
-          console.error(`ERRO no manifesto: '${element}.floor' ausente`);
+          console.error(`ERRO no manifesto: '${element}.floor' ou '${element}.categories.floor' ausente`);
         }
       }
     }

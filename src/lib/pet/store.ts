@@ -11,7 +11,6 @@ import {
   simulateTime,
   sleepToggle,
   tryEvolve,
-  trainSkill,
   useItem,
   xpToNext,
   type ActionResult,
@@ -26,7 +25,7 @@ import {
 } from "./digital-path-bridge";
 
 export type Screen = "start" | "choose" | "play" | "digital-path";
-export type Panel = "inventory" | "shop" | "evolution" | "training" | "digital-path" | "settings" | null;
+export type Panel = "inventory" | "shop" | "evolution" | "digital-path" | "settings" | null;
 
 
 export type GameStore = {
@@ -247,7 +246,6 @@ export const actions = {
   heal: () => useGame.getState().apply((p) => heal(p)),
   buy: (id: string) => useGame.getState().apply((p) => buy(p, id)),
   evolve: () => useGame.getState().apply(tryEvolve),
-  train: () => useGame.getState().apply(trainSkill),
   startDigitalPath: () => useGame.getState().startDigitalPath(),
   exitDigitalPath: () => useGame.getState().exitDigitalPath(),
   createDigitalPathRunInput: () => useGame.getState().createDigitalPathRunInput(),

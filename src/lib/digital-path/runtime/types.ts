@@ -46,6 +46,7 @@ export type DigitalPathStartOptions = {
   };
   seed: number;
   floorNumber?: number;
+  themeId?: string;
   onRoomChange?: (roomIndex: number, totalRooms: number, roomTitle: string, biome: string, floor: number, isBoss: boolean) => void;
   onPlayerStatsChange?: (stats: { currentHp: number; maxHp: number; xp: number; coins: number; isBossFighting?: boolean; bossHp?: number; bossMaxHp?: number; bossName?: string; bossPhase?: number }) => void;
   onCooldownChange?: (slot: "basic_1" | "basic_2" | "special", remainingMs: number, maxMs: number) => void;

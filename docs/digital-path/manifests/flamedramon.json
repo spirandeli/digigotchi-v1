@@ -26,7 +26,7 @@
       "loop": true,
       "frames": [
         "sprites/flamedramon/idle/idle_01.png",
-        "sprites/flamedramon/idle/idle_07.png"
+        "sprites/flamedramon/idle/idle_02.png"
       ]
     },
     "walk_down": {

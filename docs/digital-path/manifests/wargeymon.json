@@ -1,8 +1,0 @@
-{
-  "id": "wargeymon",
-  "root": "sprites/wargeymon",
-  "spriteReady": false,
-  "status": "BLOCKED",
-  "reason": "Reference panel, character poses, effects and attacks are mixed.",
-  "animations": {}
-}

@@ -7,14 +7,27 @@ export type RoomKind = "start" | "combat" | "treasure" | "elite" | "boss" | "eve
 export type BiomeKind = "digital" | "fire" | "ice" | "storm" | "dark";
 
 export type RoomShape =
+  | "arena"
+  | "corridor"
+  | "cross"
+  | "L_shape"
+  | "T_shape"
+  | "open"
+  | "compact"
+  | "multi_room"
+  | "asymmetric"
+  | "winding"
+  | "chokepoint"
+  | "central_arena"
+  // Legacy aliases
   | "rectangle"
   | "L"
   | "T"
   | "U"
-  | "cross"
   | "pillars_arena"
   | "central_island"
   | "divided_chambers";
+
 export type RoomSizeCategory = "small" | "medium" | "large" | "arena";
 
 export type EnemyKind = "melee" | "ranged" | "elite" | "boss" | "miniboss" | "bug" | "beast";
@@ -59,7 +72,7 @@ export type RoomNode = Readonly<{
 export type RoomEdge = Readonly<{
   from: string;
   to: string;
-  width: number; // 1, 2, or 3
+  width: number;
   isLoop?: boolean;
 }>;
 
@@ -68,6 +81,26 @@ export type DungeonGraph = Readonly<{
   edges: readonly RoomEdge[];
   hasLoops: boolean;
   hasDeadEnds: boolean;
+}>;
+
+export type ClusterType = "rubble" | "crystal" | "energy" | "tech" | "hazard" | "structure";
+export type RoomZoneType = "spawn_zone" | "combat_zone" | "treasure_zone" | "hazard_zone" | "landmark_zone" | "exit_zone";
+
+export type EnvironmentCluster = Readonly<{
+  id: string;
+  type: ClusterType;
+  zone: RoomZoneType;
+  centerX: number;
+  centerY: number;
+  tiles: readonly { x: number; y: number; role?: string }[];
+}>;
+
+export type EnvironmentLandmark = Readonly<{
+  id: string;
+  name: string;
+  tileX: number;
+  tileY: number;
+  size: { width: number; height: number };
 }>;
 
 export type RoomData = Readonly<{
@@ -87,6 +120,10 @@ export type RoomData = Readonly<{
   props: readonly PropSpawn[];
   shape?: RoomShape;
   graph?: DungeonGraph;
+  clusters?: readonly EnvironmentCluster[];
+  landmark?: EnvironmentLandmark;
+  emptySpaceRatio?: number;
+  budgetUsed?: number;
 }>;
 
 export type RunDefinition = Readonly<{
@@ -138,7 +175,7 @@ export const MAP_CONFIG = {
   maxCorridorWidth: 3,
   loopChance: 0.35,
   deadEndChance: 0.25,
-  irregularRoomChance: 0.40,
+  irregularRoomChance: 0.50,
   obstacleDensity: 0.07,
   maxGenerationAttempts: 15,
   roomSizeCategories: {
@@ -146,6 +183,12 @@ export const MAP_CONFIG = {
     medium: { width: 28, height: 18 },
     large: { width: 34, height: 22 },
     arena: { width: 36, height: 24 },
+  },
+  environmentBudget: {
+    small: 8,
+    medium: 15,
+    large: 25,
+    arena: 35,
   },
 } as const;
 
@@ -203,7 +246,10 @@ export const CHEST_ROOMS = Array.from(
  * Strict Depth/Layer hierarchy to ensure proper visual stacking:
  * BACKGROUND (0)
  * -> FLOOR (1)
- * -> DECORATIONS / HAZARDS / SPAWN_RING (2-4)
+ * -> FLOOR_DECOR (2)
+ * -> FLOOR_HAZARD (3)
+ * -> SPAWN_RING (4)
+ * -> LOW_PROPS / PROPS_SHADOW (5-8)
  * -> ENTITIES: Player, Enemies, Bosses, Chests, Props (10)
  * -> ENTITIES_OVERLAY: Healthbars, Prompts, Badges (11)
  * -> WALL_BASE: Lower wall body behind entities (2)
@@ -219,6 +265,7 @@ export const RENDER_DEPTH = {
   FLOOR_DECOR: 2,
   FLOOR_HAZARD: 3,
   SPAWN_RING: 4,
+  LOW_PROPS: 5,
   PROPS_SHADOW: 8,
   ENTITIES: 10,
   ENTITIES_OVERLAY: 11,
@@ -251,39 +298,32 @@ export function calculateEnemyCount(
     return 1;
   }
   if (roomNumber % MINIBOSS_INTERVAL === MINIBOSS_OFFSET) {
-    return sizeCategory === "small" ? 1 : rng.int(1, 2);
-  }
-  const kind = getRoomKind(roomNumber);
-  if (kind === "treasure" || kind === "rest") {
-    return rng.int(1, 2);
+    return 1;
   }
 
-  let minCount: number;
-  let maxCount: number;
-  let baseCount: number;
+  let minCount = 3;
+  let maxCount = 5;
 
-  const tier = Math.min(6, Math.floor((roomNumber - 1) / 50) + 1);
-
-  if (tier === 1) {
-    minCount = 3;
-    maxCount = 5;
-    baseCount = rng.int(3, 4);
-  } else if (tier <= 3) {
-    minCount = 4;
-    maxCount = 7;
-    baseCount = rng.int(4, 6);
-  } else {
+  if (roomNumber >= 150) {
     minCount = 5;
     maxCount = 9;
-    baseCount = rng.int(6, 8);
+  } else if (roomNumber >= 50) {
+    minCount = 4;
+    maxCount = 7;
+  } else {
+    minCount = 3;
+    maxCount = 5;
   }
 
-  let sizeBonus = 0;
-  if (sizeCategory === "small") sizeBonus = -1;
-  else if (sizeCategory === "large") sizeBonus = 1;
-  else if (sizeCategory === "arena") sizeBonus = 2;
+  if (sizeCategory === "small") {
+    minCount = Math.max(2, minCount - 1);
+    maxCount = Math.max(3, maxCount - 1);
+  } else if (sizeCategory === "large") {
+    minCount += 1;
+    maxCount += 1;
+  }
 
-  return Math.max(minCount, Math.min(maxCount, baseCount + sizeBonus));
+  return rng.int(minCount, maxCount);
 }
 
 export function calculateEnemyStats(
@@ -294,145 +334,63 @@ export function calculateEnemyStats(
   baseCooldown: number,
   baseXp: number,
   baseCoins: number,
-  enemyLevel: number,
+  roomNumber: number,
   isBoss: boolean = false,
   isMiniBoss: boolean = false
 ) {
-  const level = Math.max(1, Math.min(MAX_LEVEL, enemyLevel));
-  const tier = Math.min(6, Math.floor((level - 1) / 50) + 1);
-  const tierMultiplier = 1 + (tier - 1) * 0.25;
-  const levelWithinTier = (level - 1) % 50;
+  const level = Math.max(1, Math.min(MAX_LEVEL, roomNumber));
+  const hpMultiplier = isBoss ? 3.5 : isMiniBoss ? 2.2 : 1.0;
+  const statScale = 1 + (level - 1) * 0.055;
 
-  if (isBoss) {
-    const bossHpMult = tierMultiplier * (1 + levelWithinTier * 0.05);
-    const bossAtkMult = (1 + (tier - 1) * 0.15) * (1 + levelWithinTier * 0.035);
-    const bossDefBonus = Math.floor((tier - 1) * 2 + levelWithinTier * 0.15);
-    return {
-      level,
-      hp: Math.round(baseHp * bossHpMult),
-      maxHp: Math.round(baseHp * bossHpMult),
-      attack: Math.round(baseAtk * bossAtkMult),
-      defense: baseDef + bossDefBonus,
-      speed: Math.min(90, baseSpeed + (tier - 1) * 2 + Math.floor(levelWithinTier * 0.2)),
-      attackCooldownMs: Math.max(850, baseCooldown - (tier - 1) * 50 - levelWithinTier * 8),
-      xpReward: Math.round(baseXp * tierMultiplier * (1 + levelWithinTier * 0.04)),
-      coinReward: Math.round((baseCoins + level * 2) * tierMultiplier),
-    };
-  }
-
-  if (isMiniBoss) {
-    const mbHpMult = tierMultiplier * (1 + levelWithinTier * 0.045);
-    const mbAtkMult = (1 + (tier - 1) * 0.12) * (1 + levelWithinTier * 0.03);
-    const mbDefBonus = Math.floor((tier - 1) * 1.5 + levelWithinTier * 0.12);
-    return {
-      level,
-      hp: Math.round(baseHp * mbHpMult),
-      maxHp: Math.round(baseHp * mbHpMult),
-      attack: Math.round(baseAtk * mbAtkMult),
-      defense: baseDef + mbDefBonus,
-      speed: Math.min(85, baseSpeed + Math.floor(levelWithinTier * 0.2)),
-      attackCooldownMs: Math.max(950, baseCooldown - levelWithinTier * 6),
-      xpReward: Math.round(baseXp * tierMultiplier * 1.2),
-      coinReward: Math.round(baseCoins * tierMultiplier * 1.2),
-    };
-  }
-
-  const hpMult = tierMultiplier * (1 + levelWithinTier * 0.04);
-  const atkMult = (1 + (tier - 1) * 0.12) * (1 + levelWithinTier * 0.03);
-  const defBonus = Math.floor((tier - 1) + levelWithinTier / 8);
-  const speed = Math.min(95, baseSpeed + Math.floor(levelWithinTier * 0.25));
-  const attackCooldownMs = Math.max(850, baseCooldown - levelWithinTier * 8);
-  const xpReward = Math.round(baseXp * tierMultiplier * (1 + levelWithinTier * 0.03));
-  const coinReward = Math.round(baseCoins + level * 1.5);
-
-  const finalHp = Math.round(baseHp * hpMult);
-  const finalAtk = Math.round(baseAtk * atkMult);
-  const finalDef = baseDef + defBonus;
+  const hp = Math.round(baseHp * statScale * hpMultiplier);
+  const attack = Math.round(baseAtk * (1 + (level - 1) * 0.04));
+  const defense = Math.round(baseDef * (1 + (level - 1) * 0.035));
+  const speed = Math.min(180, Math.round(baseSpeed * (1 + (level - 1) * 0.01)));
+  const attackCooldown = Math.max(700, Math.round(baseCooldown * (1 - (level - 1) * 0.002)));
+  const xpReward = Math.round(baseXp * (1 + (level - 1) * 0.08));
+  const coinReward = Math.round(baseCoins * (1 + (level - 1) * 0.05));
 
   return {
     level,
-    hp: finalHp,
-    maxHp: finalHp,
-    attack: finalAtk,
-    defense: finalDef,
+    hp,
+    maxHp: hp,
+    attack,
+    defense,
     speed,
-    attackCooldownMs,
+    attackCooldown,
     xpReward,
     coinReward,
   };
 }
 
 export function findValidSpawnTile(room: RoomData): { x: number; y: number } {
-  const { width, height, tiles, spawn, exit, props, enemies } = room;
-
-  const isSafeTile = (tx: number, ty: number) => {
-    if (tx < 1 || tx >= width - 1 || ty < 1 || ty >= height - 1) return false;
-    if (tiles[ty]?.[tx] !== "floor") return false;
-    if (props && props.some((p) => p.tileX === tx && p.tileY === ty)) return false;
-    if (enemies && enemies.some((e) => e.tileX === tx && e.tileY === ty)) return false;
-    if (exit.x === tx && exit.y === ty) return false;
-    return isPathConnected(tiles, { x: tx, y: ty }, exit, width, height);
-  };
-
-  if (isSafeTile(spawn.x, spawn.y)) {
-    return spawn;
+  if (room.spawn && room.tiles[room.spawn.y]?.[room.spawn.x] === "floor") {
+    return room.spawn;
   }
-
-  const queue: Array<[number, number]> = [[spawn.x, spawn.y]];
-  const visited = new Set<string>([`${spawn.x},${spawn.y}`]);
-  const dirs = [
-    [0, 1],
-    [1, 0],
-    [0, -1],
-    [-1, 0],
-    [1, 1],
-    [-1, 1],
-    [1, -1],
-    [-1, -1],
-  ];
-
-  while (queue.length > 0) {
-    const [cx, cy] = queue.shift()!;
-    if (isSafeTile(cx, cy)) {
-      return { x: cx, y: cy };
-    }
-
-    for (const [dx, dy] of dirs) {
-      const nx = cx + dx;
-      const ny = cy + dy;
-      const key = `${nx},${ny}`;
-      if (nx >= 0 && nx < width && ny >= 0 && ny < height && !visited.has(key)) {
-        visited.add(key);
-        queue.push([nx, ny]);
+  for (let y = 1; y < room.height - 1; y++) {
+    for (let x = 1; x < room.width - 1; x++) {
+      if (room.tiles[y][x] === "floor") {
+        return { x, y };
       }
     }
   }
-
-  return spawn;
+  return { x: 1, y: 1 };
 }
 
-/**
- * Validates with BFS if there is an unobstructed walkable path from start to exit.
- */
 export function isPathConnected(
   tiles: readonly Tile[][],
   start: { x: number; y: number },
-  exit: { x: number; y: number },
-  width?: number,
-  height?: number
+  end: { x: number; y: number },
+  actualWidth: number,
+  actualHeight: number
 ): boolean {
-  const actualHeight = height ?? tiles.length;
-  const actualWidth = width ?? (tiles[0]?.length ?? 0);
-
-  if (actualHeight === 0 || actualWidth === 0) return false;
-  if (tiles[start.y]?.[start.x] !== "floor" || tiles[exit.y]?.[exit.x] !== "floor") {
+  if (tiles[start.y]?.[start.x] !== "floor" || tiles[end.y]?.[end.x] !== "floor") {
     return false;
   }
 
   const queue: Array<[number, number]> = [[start.x, start.y]];
   const visited = new Set<string>([`${start.x},${start.y}`]);
-
-  const directions = [
+  const dirs = [
     [0, 1],
     [0, -1],
     [1, 0],
@@ -441,11 +399,9 @@ export function isPathConnected(
 
   while (queue.length > 0) {
     const [cx, cy] = queue.shift()!;
-    if (cx === exit.x && cy === exit.y) {
-      return true;
-    }
+    if (cx === end.x && cy === end.y) return true;
 
-    for (const [dx, dy] of directions) {
+    for (const [dx, dy] of dirs) {
       const nx = cx + dx;
       const ny = cy + dy;
       const key = `${nx},${ny}`;
@@ -467,9 +423,6 @@ export function isPathConnected(
   return false;
 }
 
-/**
- * Generates a fallback guaranteed safe room layout (+15% scale).
- */
 function createSafeFallbackRoom(
   id: string,
   index: number,
@@ -505,13 +458,12 @@ function createSafeFallbackRoom(
     exit,
     enemies: [],
     props: [],
-    shape: "rectangle",
+    shape: "arena",
+    emptySpaceRatio: 0.85,
+    budgetUsed: 0,
   };
 }
 
-/**
- * Carves an axis-aligned rectangular corridor between (x1, y1) and (x2, y2) with specified corridor width.
- */
 function carveCorridor(
   tiles: Tile[][],
   x1: number,
@@ -524,7 +476,6 @@ function carveCorridor(
 ) {
   const half = Math.floor(corridorWidth / 2);
 
-  // Horizontal first then vertical
   const minX = Math.min(x1, x2);
   const maxX = Math.max(x1, x2);
   for (let x = minX; x <= maxX; x++) {
@@ -548,9 +499,6 @@ function carveCorridor(
   }
 }
 
-/**
- * Returns all floor tiles that can be reached from start via orthogonal traversal.
- */
 export function findReachableFloorTiles(
   tiles: readonly Tile[][],
   start: { x: number; y: number },
@@ -598,7 +546,8 @@ export function findReachableFloorTiles(
 
 /**
  * Generates a single procedural room/level with guaranteed spawn -> exit connectivity,
- * irregular shapes, structured tactical pillars, mini-boss support, and validated BFS reachability.
+ * 12 room archetypes, microareas, semantic environment clusters, landmarks,
+ * environment budget control and validated BFS reachability.
  */
 export function generateSingleRoom(
   id: string,
@@ -613,7 +562,7 @@ export function generateSingleRoom(
 ): RoomData {
   const rng = new RunRNG(seed ^ (index * 7919) ^ (floor * 3571));
 
-  // Determine size category and dimensions (+15% average)
+  // Determine size category and dimensions
   let sizeCategory: RoomSizeCategory = "medium";
   if (kind === "boss") {
     sizeCategory = "arena";
@@ -631,22 +580,29 @@ export function generateSingleRoom(
   const width = customWidth ?? baseDimensions.width;
   const height = customHeight ?? baseDimensions.height;
 
-  // Decide shape
-  let shape: RoomShape = "rectangle";
+  // Decide 12 Room Archetypes
+  let shape: RoomShape = "arena";
   if (kind === "boss") {
-    shape = "rectangle";
+    shape = "arena";
   } else if (kind === "miniboss") {
-    shape = rng.chance(0.5) ? "pillars_arena" : "rectangle";
+    shape = rng.pick(["arena", "central_arena", "cross", "open"] as const);
   } else if (rng.chance(MAP_CONFIG.irregularRoomChance)) {
     shape = rng.pick([
-      "pillars_arena",
-      "central_island",
-      "divided_chambers",
-      "L",
-      "T",
-      "U",
+      "arena",
+      "corridor",
       "cross",
+      "L_shape",
+      "T_shape",
+      "open",
+      "compact",
+      "multi_room",
+      "asymmetric",
+      "winding",
+      "chokepoint",
+      "central_arena",
     ] as const);
+  } else {
+    shape = "arena";
   }
 
   const roomTitles: Record<RoomKind, string> = {
@@ -685,20 +641,66 @@ export function generateSingleRoom(
     const spawn = { x: 3, y: Math.floor(height / 2) };
     const exit = { x: width - 4, y: Math.floor(height / 2) };
 
-    // 3. Carve room based on shape
-    if (shape === "rectangle" || kind === "boss") {
-      // Main central hall
+    // 3. Carve room based on 12 Archetypes
+    if (shape === "arena" || (shape as string) === "rectangle" || kind === "boss") {
+      // Spacious arena with clean open combat floor
       for (let y = 1; y < height - 1; y++) {
         for (let x = 1; x < width - 1; x++) {
           tiles[y][x] = "floor";
         }
       }
-    } else if (shape === "pillars_arena") {
-      // Spacious arena with 4 symmetric 2x2 pillars
+    } else if (shape === "corridor") {
+      // Long central corridor with tactical side alcoves
+      const cy = Math.floor(height / 2);
+      for (let y = cy - 2; y <= cy + 2; y++) {
+        for (let x = 1; x < width - 1; x++) tiles[y][x] = "floor";
+      }
+      // Add 2 side alcoves
+      const alcoveX1 = Math.floor(width * 0.3);
+      const alcoveX2 = Math.floor(width * 0.7);
       for (let y = 1; y < height - 1; y++) {
-        for (let x = 1; x < width - 1; x++) {
-          tiles[y][x] = "floor";
+        for (let dx = -1; dx <= 1; dx++) {
+          if (alcoveX1 + dx > 0 && alcoveX1 + dx < width - 1) tiles[y][alcoveX1 + dx] = "floor";
+          if (alcoveX2 + dx > 0 && alcoveX2 + dx < width - 1) tiles[y][alcoveX2 + dx] = "floor";
         }
+      }
+    } else if (shape === "cross") {
+      // Cross (+) shape: central horizontal + central vertical bands
+      const hStartY = Math.floor(height * 0.25);
+      const hEndY = Math.floor(height * 0.75);
+      const vStartX = Math.floor(width * 0.25);
+      const vEndX = Math.floor(width * 0.75);
+      for (let y = hStartY; y < hEndY; y++) {
+        for (let x = 1; x < width - 1; x++) tiles[y][x] = "floor";
+      }
+      for (let y = 1; y < height - 1; y++) {
+        for (let x = vStartX; x < vEndX; x++) tiles[y][x] = "floor";
+      }
+    } else if (shape === "L_shape" || (shape as string) === "L") {
+      // L shape: horizontal lower section + vertical left section
+      const splitY = Math.floor(height * 0.45);
+      const splitX = Math.floor(width * 0.55);
+      for (let y = splitY; y < height - 1; y++) {
+        for (let x = 1; x < width - 1; x++) tiles[y][x] = "floor";
+      }
+      for (let y = 1; y < height - 1; y++) {
+        for (let x = 1; x < splitX; x++) tiles[y][x] = "floor";
+      }
+    } else if (shape === "T_shape" || (shape as string) === "T") {
+      // T shape: top horizontal bar + center vertical stem
+      const barHeight = Math.floor(height * 0.5);
+      const stemLeft = Math.floor(width * 0.25);
+      const stemRight = Math.floor(width * 0.75);
+      for (let y = 1; y < barHeight; y++) {
+        for (let x = 1; x < width - 1; x++) tiles[y][x] = "floor";
+      }
+      for (let y = 1; y < height - 1; y++) {
+        for (let x = stemLeft; x < stemRight; x++) tiles[y][x] = "floor";
+      }
+    } else if (shape === "open" || (shape as string) === "pillars_arena") {
+      // Wide open room with distributed tactical pillars
+      for (let y = 1; y < height - 1; y++) {
+        for (let x = 1; x < width - 1; x++) tiles[y][x] = "floor";
       }
       const pCols = [Math.floor(width * 0.28), Math.floor(width * 0.72) - 1];
       const pRows = [Math.floor(height * 0.3), Math.floor(height * 0.7) - 1];
@@ -713,26 +715,17 @@ export function generateSingleRoom(
           }
         }
       }
-    } else if (shape === "central_island") {
-      // Arena with a central obstacle structure forcing circulation
-      for (let y = 1; y < height - 1; y++) {
-        for (let x = 1; x < width - 1; x++) {
-          tiles[y][x] = "floor";
-        }
+    } else if (shape === "compact") {
+      // Tighter active arena
+      const padY = Math.max(1, Math.floor(height * 0.15));
+      const padX = Math.max(1, Math.floor(width * 0.1));
+      for (let y = padY; y < height - padY; y++) {
+        for (let x = padX; x < width - padX; x++) tiles[y][x] = "floor";
       }
-      const cx = Math.floor(width / 2);
-      const cy = Math.floor(height / 2);
-      for (let dy = -1; dy <= 1; dy++) {
-        for (let dx = -2; dx <= 1; dx++) {
-          tiles[cy + dy][cx + dx] = "wall";
-        }
-      }
-    } else if (shape === "divided_chambers") {
+    } else if (shape === "multi_room" || (shape as string) === "divided_chambers") {
       // Two chambers connected by a wide passage
       for (let y = 1; y < height - 1; y++) {
-        for (let x = 1; x < width - 1; x++) {
-          tiles[y][x] = "floor";
-        }
+        for (let x = 1; x < width - 1; x++) tiles[y][x] = "floor";
       }
       const midX = Math.floor(width / 2);
       const doorY = Math.floor(height / 2);
@@ -741,49 +734,51 @@ export function generateSingleRoom(
           tiles[y][midX] = "wall";
         }
       }
-    } else if (shape === "L") {
-      // L shape: horizontal lower section + vertical left section
-      const splitY = Math.floor(height * 0.45);
-      const splitX = Math.floor(width * 0.55);
-      for (let y = splitY; y < height - 1; y++) {
+    } else if (shape === "asymmetric") {
+      // Organic irregular hall
+      for (let y = 1; y < height - 1; y++) {
         for (let x = 1; x < width - 1; x++) tiles[y][x] = "floor";
       }
-      for (let y = 1; y < height - 1; y++) {
-        for (let x = 1; x < splitX; x++) tiles[y][x] = "floor";
+      // Indent top-left and bottom-right
+      for (let y = 1; y < Math.floor(height * 0.4); y++) {
+        for (let x = 1; x < Math.floor(width * 0.25); x++) tiles[y][x] = "wall";
       }
-    } else if (shape === "T") {
-      // T shape: top horizontal bar + center vertical stem
-      const barHeight = Math.floor(height * 0.5);
-      const stemLeft = Math.floor(width * 0.25);
-      const stemRight = Math.floor(width * 0.75);
-      for (let y = 1; y < barHeight; y++) {
+      for (let y = Math.floor(height * 0.65); y < height - 1; y++) {
+        for (let x = Math.floor(width * 0.75); x < width - 1; x++) tiles[y][x] = "wall";
+      }
+    } else if (shape === "winding") {
+      // S-curved winding hall
+      for (let y = 1; y < height - 1; y++) {
         for (let x = 1; x < width - 1; x++) tiles[y][x] = "floor";
       }
+      const midX = Math.floor(width / 2);
+      const h3 = Math.floor(height / 3);
+      for (let y = 1; y < h3 * 2; y++) tiles[y][Math.floor(midX * 0.7)] = "wall";
+      for (let y = h3; y < height - 1; y++) tiles[y][Math.floor(midX * 1.3)] = "wall";
+    } else if (shape === "chokepoint") {
+      // Two wide rooms with narrow central chokepoint
       for (let y = 1; y < height - 1; y++) {
-        for (let x = stemLeft; x < stemRight; x++) tiles[y][x] = "floor";
-      }
-    } else if (shape === "U") {
-      // U shape: bottom bar + two vertical columns
-      const bottomY = Math.floor(height * 0.55);
-      const colWidth = Math.floor(width * 0.35);
-      for (let y = bottomY; y < height - 1; y++) {
         for (let x = 1; x < width - 1; x++) tiles[y][x] = "floor";
       }
+      const midX = Math.floor(width / 2);
+      const cy = Math.floor(height / 2);
       for (let y = 1; y < height - 1; y++) {
-        for (let x = 1; x < colWidth; x++) tiles[y][x] = "floor";
-        for (let x = width - 1 - colWidth; x < width - 1; x++) tiles[y][x] = "floor";
+        if (Math.abs(y - cy) > 1) {
+          tiles[y][midX] = "wall";
+          tiles[y][midX - 1] = "wall";
+        }
       }
-    } else if (shape === "cross") {
-      // Cross (+) shape: central horizontal + central vertical bands
-      const hStartY = Math.floor(height * 0.25);
-      const hEndY = Math.floor(height * 0.75);
-      const vStartX = Math.floor(width * 0.25);
-      const vEndX = Math.floor(width * 0.75);
-      for (let y = hStartY; y < hEndY; y++) {
+    } else if (shape === "central_arena" || shape === "central_island") {
+      // Arena with a central obstacle structure forcing circular movement
+      for (let y = 1; y < height - 1; y++) {
         for (let x = 1; x < width - 1; x++) tiles[y][x] = "floor";
       }
-      for (let y = 1; y < height - 1; y++) {
-        for (let x = vStartX; x < vEndX; x++) tiles[y][x] = "floor";
+      const cx = Math.floor(width / 2);
+      const cy = Math.floor(height / 2);
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -2; dx <= 1; dx++) {
+          tiles[cy + dy][cx + dx] = "wall";
+        }
       }
     }
 
@@ -800,29 +795,27 @@ export function generateSingleRoom(
       }
     }
 
-    // Connect spawn and exit if not already connected by shape (preserves shape integrity)
+    // Connect spawn and exit if not already connected by shape
     const corridorWidth = rng.int(MAP_CONFIG.minCorridorWidth, MAP_CONFIG.maxCorridorWidth);
     if (!isPathConnected(tiles, spawn, exit, width, height)) {
       carveCorridor(tiles, spawn.x, spawn.y, exit.x, exit.y, corridorWidth, width, height);
     }
 
-    // 5. Add Loops (Alternate circular path)
+    // 4. Add Loops
     if (hasLoop && kind !== "boss" && kind !== "miniboss") {
       const loopCorridorWidth = rng.int(1, 2);
       const upperY = Math.max(2, Math.floor(height * 0.22));
       const lowerY = Math.min(height - 3, Math.floor(height * 0.78));
       const midX = Math.floor(width / 2);
 
-      // Upper bypass
       carveCorridor(tiles, spawn.x, spawn.y, midX, upperY, loopCorridorWidth, width, height);
       carveCorridor(tiles, midX, upperY, exit.x, exit.y, loopCorridorWidth, width, height);
 
-      // Lower bypass
       carveCorridor(tiles, spawn.x, spawn.y, midX, lowerY, loopCorridorWidth, width, height);
       carveCorridor(tiles, midX, lowerY, exit.x, exit.y, loopCorridorWidth, width, height);
     }
 
-    // 6. Add Dead-End pockets for exploration & secrets
+    // 5. Add Dead-End pockets / Alcoves for exploration
     let deadEndPropX = -1;
     let deadEndPropY = -1;
     if (hasDeadEnd && kind !== "boss" && kind !== "miniboss") {
@@ -831,7 +824,6 @@ export function generateSingleRoom(
       const pocketY = isBranchUp ? 2 : height - 3;
 
       carveCorridor(tiles, branchX, spawn.y, branchX, pocketY, 2, width, height);
-      // Small 3x3 pocket at the dead-end
       for (let py = Math.max(1, pocketY - 1); py <= Math.min(height - 2, pocketY + 1); py++) {
         for (let px = Math.max(1, branchX - 1); px <= Math.min(width - 2, branchX + 1); px++) {
           tiles[py][px] = "floor";
@@ -841,39 +833,91 @@ export function generateSingleRoom(
       deadEndPropY = pocketY;
     }
 
-    // 7. Add structured 2x2 pillars if applicable without blocking spawn/exit
-    if (
-      kind !== "boss" &&
-      kind !== "miniboss" &&
-      shape !== "pillars_arena" &&
-      shape !== "central_island"
-    ) {
-      const numObstacles = rng.int(1, 3);
-      for (let o = 0; o < numObstacles; o++) {
-        const ox = rng.int(5, width - 7);
-        const oy = rng.int(3, height - 4);
-        if (
-          Math.hypot(ox - spawn.x, oy - spawn.y) > 4 &&
-          Math.hypot(ox - exit.x, oy - exit.y) > 4 &&
-          tiles[oy][ox] === "floor" &&
-          tiles[oy + 1][ox] === "floor" &&
-          tiles[oy][ox + 1] === "floor" &&
-          tiles[oy + 1][ox + 1] === "floor"
-        ) {
-          tiles[oy][ox] = "wall";
-          tiles[oy + 1][ox] = "wall";
-          tiles[oy][ox + 1] = "wall";
-          tiles[oy + 1][ox + 1] = "wall";
-        }
+    // 6. Define COMBAT_NAVIGATION_MASK
+    const combatNavMask = new Set<string>();
+    for (let dy = -3; dy <= 3; dy++) {
+      for (let dx = -3; dx <= 3; dx++) {
+        combatNavMask.add(`${spawn.x + dx},${spawn.y + dy}`);
+        combatNavMask.add(`${exit.x + dx},${exit.y + dy}`);
+      }
+    }
+    // Main route line from spawn to exit
+    const midY = Math.floor(height / 2);
+    for (let x = spawn.x; x <= exit.x; x++) {
+      for (let dy = -1; dy <= 1; dy++) {
+        combatNavMask.add(`${x},${midY + dy}`);
       }
     }
 
-    // 8. Validate BFS reachability for spawn -> exit
+    // 7. Validate initial BFS reachability for spawn -> exit
     const reachableTiles = findReachableFloorTiles(tiles, spawn, width, height);
     const exitReachable = reachableTiles.some((t) => t.x === exit.x && t.y === exit.y);
 
     if (exitReachable && reachableTiles.length >= 25) {
-      // 9. Place Props safely on strictly REACHABLE tiles
+      // 8. Environment Budget and Semantic Clusters
+      const budgetMax = MAP_CONFIG.environmentBudget[sizeCategory] || 15;
+      let budgetUsed = 0;
+      const clusters: EnvironmentCluster[] = [];
+      let landmark: EnvironmentLandmark | undefined = undefined;
+
+      // Place Landmark in Boss, Arena, or Event rooms
+      if (kind === "boss" || kind === "event" || sizeCategory === "arena") {
+        const lmX = Math.floor(width / 2);
+        const lmY = Math.max(2, Math.floor(height * 0.22));
+        landmark = {
+          id: `${id}_landmark`,
+          name: kind === "boss" ? "Altar do Guardião" : "Reator de Dados",
+          tileX: lmX,
+          tileY: lmY,
+          size: { width: 2, height: 2 },
+        };
+        budgetUsed += 7;
+      }
+
+      // Generate Semantic Clusters (rubble, crystal, tech, energy, hazard)
+      const numClusters = Math.min(4, Math.floor((budgetMax - budgetUsed) / 3));
+      const availableClusterTiles = reachableTiles.filter(
+        (t) =>
+          !combatNavMask.has(`${t.x},${t.y}`) &&
+          Math.hypot(t.x - spawn.x, t.y - spawn.y) >= 4 &&
+          Math.hypot(t.x - exit.x, t.y - exit.y) >= 4
+      );
+
+      const clusterTypes: ClusterType[] =
+        themeId === "fire"
+          ? ["rubble", "hazard", "structure"]
+          : themeId === "ice"
+          ? ["crystal", "hazard", "structure"]
+          : themeId === "tech"
+          ? ["tech", "energy", "structure"]
+          : ["energy", "rubble", "hazard"];
+
+      for (let c = 0; c < numClusters && availableClusterTiles.length > 0; c++) {
+        const cTile = rng.pick(availableClusterTiles);
+        const cType = rng.pick(clusterTypes);
+        const clusterTiles = [
+          { x: cTile.x, y: cTile.y, role: "center" },
+          { x: cTile.x + 1, y: cTile.y, role: "accent" },
+          { x: cTile.x, y: cTile.y + 1, role: "accent" },
+        ].filter((t) => t.x < width - 1 && t.y < height - 1 && tiles[t.y]?.[t.x] === "floor");
+
+        clusters.push({
+          id: `${id}_cluster_${c + 1}`,
+          type: cType,
+          zone: cType === "hazard" ? "hazard_zone" : "combat_zone",
+          centerX: cTile.x,
+          centerY: cTile.y,
+          tiles: clusterTiles,
+        });
+        budgetUsed += 3;
+      }
+
+      // Calculate emptySpaceRatio
+      const totalTiles = width * height;
+      const floorCount = reachableTiles.length;
+      const emptySpaceRatio = Number((floorCount / totalTiles).toFixed(2));
+
+      // 9. Place Props safely on strictly REACHABLE tiles outside combat navigation mask
       const props: PropSpawn[] = [];
       const idealCenterX = Math.floor(width / 2);
       const idealCenterY = Math.floor(height / 2);
@@ -912,7 +956,6 @@ export function generateSingleRoom(
         });
       }
 
-      // Guaranteed victory chest in mini-boss chamber
       if (kind === "miniboss") {
         const mbChestTile = sortedForProp[sortedForProp.length - 1] || { x: exit.x - 2, y: exit.y };
         props.push({
@@ -923,7 +966,6 @@ export function generateSingleRoom(
         });
       }
 
-      // Bonus dead-end chest
       if (deadEndPropX > 0 && deadEndPropY > 0 && props.length === 0 && kind !== "boss" && kind !== "miniboss") {
         if (reachableTiles.some((t) => t.x === deadEndPropX && t.y === deadEndPropY)) {
           props.push({
@@ -1112,6 +1154,10 @@ export function generateSingleRoom(
         props,
         shape,
         graph,
+        clusters,
+        landmark,
+        emptySpaceRatio,
+        budgetUsed,
       };
     }
   }
@@ -1177,7 +1223,6 @@ export function validateDungeon(map: DungeonMap): boolean {
 export function generateProceduralDungeon(seed: number = Date.now(), config: DungeonConfig = {}): DungeonMap {
   const run = createFiniteRun(seed, 1);
   const firstRoom = run.rooms[0];
-  const lastRoom = run.rooms[run.rooms.length - 1];
 
   const width = config.width ?? firstRoom.width;
   const height = config.height ?? firstRoom.height;

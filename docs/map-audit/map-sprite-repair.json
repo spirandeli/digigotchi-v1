@@ -1,0 +1,121 @@
+[
+  {
+    "id": "lighting_corners",
+    "theme": "lighting",
+    "sourceFile": "sprite_lists_maps/ChatGPT Image 19_09_2026, 10_32_14.png",
+    "sourceRect": {
+      "x": 758,
+      "y": 322,
+      "width": 90,
+      "height": 90
+    },
+    "category": "corners",
+    "status": "FIXED",
+    "textFound": false
+  },
+  {
+    "id": "tech_floor_normal_1",
+    "theme": "tech",
+    "sourceFile": "sprite_lists_maps/ChatGPT Image 19_09_2026, 10_35_14.png",
+    "sourceRect": {
+      "x": 25,
+      "y": 43,
+      "width": 86,
+      "height": 87
+    },
+    "category": "floor",
+    "target": "public/sprites/maps/tech/floor/normal/floor_normal_01.png",
+    "status": "FIXED",
+    "textFound": false
+  },
+  {
+    "id": "tech_floor_normal_2",
+    "theme": "tech",
+    "sourceFile": "sprite_lists_maps/ChatGPT Image 19_09_2026, 10_35_14.png",
+    "sourceRect": {
+      "x": 112,
+      "y": 43,
+      "width": 95,
+      "height": 87
+    },
+    "category": "floor",
+    "target": "public/sprites/maps/tech/floor/normal/floor_normal_02.png",
+    "status": "FIXED",
+    "textFound": false
+  },
+  {
+    "id": "tech_floor_normal_3",
+    "theme": "tech",
+    "sourceFile": "sprite_lists_maps/ChatGPT Image 19_09_2026, 10_35_14.png",
+    "sourceRect": {
+      "x": 208,
+      "y": 43,
+      "width": 97,
+      "height": 87
+    },
+    "category": "floor",
+    "target": "public/sprites/maps/tech/floor/normal/floor_normal_03.png",
+    "status": "FIXED",
+    "textFound": false
+  },
+  {
+    "id": "tech_floor_cracked_1",
+    "theme": "tech",
+    "sourceFile": "sprite_lists_maps/ChatGPT Image 19_09_2026, 10_35_14.png",
+    "sourceRect": {
+      "x": 25,
+      "y": 168,
+      "width": 86,
+      "height": 88
+    },
+    "category": "floorVariation",
+    "target": "public/sprites/maps/tech/floor/cracked/floor_cracked_01.png",
+    "status": "FIXED",
+    "textFound": false
+  },
+  {
+    "id": "tech_floor_cracked_2",
+    "theme": "tech",
+    "sourceFile": "sprite_lists_maps/ChatGPT Image 19_09_2026, 10_35_14.png",
+    "sourceRect": {
+      "x": 112,
+      "y": 168,
+      "width": 95,
+      "height": 88
+    },
+    "category": "floorVariation",
+    "target": "public/sprites/maps/tech/floor/cracked/floor_cracked_02.png",
+    "status": "FIXED",
+    "textFound": false
+  },
+  {
+    "id": "tech_floor_decor_1",
+    "theme": "tech",
+    "sourceFile": "sprite_lists_maps/ChatGPT Image 19_09_2026, 10_35_14.png",
+    "sourceRect": {
+      "x": 208,
+      "y": 427,
+      "width": 97,
+      "height": 89
+    },
+    "category": "floorDecor",
+    "target": "public/sprites/maps/tech/floor/alternate/floor_alternate_01.png",
+    "status": "FIXED",
+    "textFound": false
+  },
+  {
+    "id": "tech_floor_decor_2",
+    "theme": "tech",
+    "sourceFile": "sprite_lists_maps/ChatGPT Image 19_09_2026, 10_35_14.png",
+    "sourceRect": {
+      "x": 306,
+      "y": 427,
+      "width": 97,
+      "height": 89
+    },
+    "category": "floorDecor",
+    "target": "public/sprites/maps/tech/floor/alternate/floor_alternate_02.png",
+    "status": "FIXED",
+    "textFound": false
+  }
+]

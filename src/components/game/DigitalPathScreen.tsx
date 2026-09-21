@@ -22,7 +22,7 @@ export function DigitalPathScreen() {
   const [xp, setXp] = useState(0);
   const [coins, setCoins] = useState(0);
   const [roomIndex, setRoomIndex] = useState(1);
-  const [totalRooms, setTotalRooms] = useState(6);
+  const [totalRooms, setTotalRooms] = useState(300);
   const [roomTitle, setRoomTitle] = useState("Portal de Entrada");
   const [biome, setBiome] = useState("digital");
   const [floorNumber, setFloorNumber] = useState(1);

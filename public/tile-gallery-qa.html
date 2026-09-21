@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tile Gallery QA - Digital Path Maps</title>
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #c9d1d9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+    }
+    h1 { color: #58a6ff; }
+    h2 { color: #7ee787; margin-top: 30px; border-bottom: 1px solid #30363d; padding-bottom: 8px; }
+    h3 { color: #d2a8ff; margin-top: 20px; }
+    .theme-section {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .tile-card {
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 110px;
+    }
+    .checkerboard {
+      width: 96px;
+      height: 96px;
+      background-color: #2b313a;
+      background-image:
+        linear-gradient(45deg, #1c2128 25%, transparent 25%),
+        linear-gradient(-45deg, #1c2128 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #1c2128 75%),
+        linear-gradient(-45deg, transparent 75%, #1c2128 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .tile-img {
+      width: 96px;
+      height: 96px;
+      image-rendering: pixelated;
+    }
+    .label {
+      font-size: 10px;
+      margin-top: 6px;
+      text-align: center;
+      word-break: break-all;
+      color: #8b949e;
+    }
+  </style>
+</head>
+<body>
+  <h1>Digital Path - Map Tile Gallery QA</h1>
+  <p>Auditoria visual canônica de 96x96 px com verificação de zero-text, zero-bleed e transparência.</p>
+
+  <div class="theme-section" id="theme-lighting">
+    <h2>Tema: Rede Elétrica Digital (lighting)</h2>
+    <h3>Categoria: FLOOR (9 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/floor/normal/floor_normal_01.png" alt="floor_normal_01.png" />
+        </div>
+        <div class="label">floor_normal_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/floor/normal/floor_normal_02.png" alt="floor_normal_02.png" />
+        </div>
+        <div class="label">floor_normal_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/floor/normal/floor_normal_03.png" alt="floor_normal_03.png" />
+        </div>
+        <div class="label">floor_normal_03.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/floor/special/floor_special_01.png" alt="floor_special_01.png" />
+        </div>
+        <div class="label">floor_special_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/floor/special/floor_special_02.png" alt="floor_special_02.png" />
+        </div>
+        <div class="label">floor_special_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/floor/cracked/floor_cracked_01.png" alt="floor_cracked_01.png" />
+        </div>
+        <div class="label">floor_cracked_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/floor/cracked/floor_cracked_02.png" alt="floor_cracked_02.png" />
+        </div>
+        <div class="label">floor_cracked_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/floor/alternate/floor_alternate_01.png" alt="floor_alternate_01.png" />
+        </div>
+        <div class="label">floor_alternate_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/floor/alternate/floor_alternate_02.png" alt="floor_alternate_02.png" />
+        </div>
+        <div class="label">floor_alternate_02.png</div>
+      </div>
+    </div>
+    <h3>Categoria: WALLS (10 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/walls/top/wall_top_01.png" alt="wall_top_01.png" />
+        </div>
+        <div class="label">wall_top_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/walls/special/wall_special_01.png" alt="wall_special_01.png" />
+        </div>
+        <div class="label">wall_special_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/walls/special/wall_special_02.png" alt="wall_special_02.png" />
+        </div>
+        <div class="label">wall_special_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/walls/special/wall_special_03.png" alt="wall_special_03.png" />
+        </div>
+        <div class="label">wall_special_03.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/walls/special/wall_special_04.png" alt="wall_special_04.png" />
+        </div>
+        <div class="label">wall_special_04.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/walls/left/wall_left_01.png" alt="wall_left_01.png" />
+        </div>
+        <div class="label">wall_left_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/walls/right/wall_right_01.png" alt="wall_right_01.png" />
+        </div>
+        <div class="label">wall_right_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/walls/bottom/wall_bottom_01.png" alt="wall_bottom_01.png" />
+        </div>
+        <div class="label">wall_bottom_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/walls/horizontal/wall_horizontal_01.png" alt="wall_horizontal_01.png" />
+        </div>
+        <div class="label">wall_horizontal_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/walls/vertical/wall_vertical_01.png" alt="wall_vertical_01.png" />
+        </div>
+        <div class="label">wall_vertical_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: CORNERS (8 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/corners/outer/bottom_left/corner_outer_bottom_left.png" alt="corner_outer_bottom_left.png" />
+        </div>
+        <div class="label">corner_outer_bottom_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/corners/outer/top_left/corner_outer_top_left.png" alt="corner_outer_top_left.png" />
+        </div>
+        <div class="label">corner_outer_top_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/corners/outer/top_right/corner_outer_top_right.png" alt="corner_outer_top_right.png" />
+        </div>
+        <div class="label">corner_outer_top_right.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/corners/outer/bottom_right/corner_outer_bottom_right.png" alt="corner_outer_bottom_right.png" />
+        </div>
+        <div class="label">corner_outer_bottom_right.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/corners/inner/bottom_left/corner_inner_bottom_left.png" alt="corner_inner_bottom_left.png" />
+        </div>
+        <div class="label">corner_inner_bottom_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/corners/inner/top_left/corner_inner_top_left.png" alt="corner_inner_top_left.png" />
+        </div>
+        <div class="label">corner_inner_top_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/corners/inner/top_right/corner_inner_top_right.png" alt="corner_inner_top_right.png" />
+        </div>
+        <div class="label">corner_inner_top_right.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/corners/inner/bottom_right/corner_inner_bottom_right.png" alt="corner_inner_bottom_right.png" />
+        </div>
+        <div class="label">corner_inner_bottom_right.png</div>
+      </div>
+    </div>
+    <h3>Categoria: DOORS (2 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/doors/vertical/closed/door_vertical_closed_01.png" alt="door_vertical_closed_01.png" />
+        </div>
+        <div class="label">door_vertical_closed_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/doors/vertical/open/door_vertical_open_01.png" alt="door_vertical_open_01.png" />
+        </div>
+        <div class="label">door_vertical_open_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: INTERACTABLES (4 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/interactables/chest/closed/chest_closed_01.png" alt="chest_closed_01.png" />
+        </div>
+        <div class="label">chest_closed_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/interactables/chest/closed/chest_closed_02.png" alt="chest_closed_02.png" />
+        </div>
+        <div class="label">chest_closed_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/interactables/chest/open/chest_open_01.png" alt="chest_open_01.png" />
+        </div>
+        <div class="label">chest_open_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/interactables/chest/open/chest_open_02.png" alt="chest_open_02.png" />
+        </div>
+        <div class="label">chest_open_02.png</div>
+      </div>
+    </div>
+    <h3>Categoria: DECORATIONS (6 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/decorations/medium/decor_medium_01.png" alt="decor_medium_01.png" />
+        </div>
+        <div class="label">decor_medium_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/decorations/medium/decor_medium_02.png" alt="decor_medium_02.png" />
+        </div>
+        <div class="label">decor_medium_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/decorations/floor/decor_floor_01.png" alt="decor_floor_01.png" />
+        </div>
+        <div class="label">decor_floor_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/decorations/floor/decor_floor_02.png" alt="decor_floor_02.png" />
+        </div>
+        <div class="label">decor_floor_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/decorations/wall/decor_wall_01.png" alt="decor_wall_01.png" />
+        </div>
+        <div class="label">decor_wall_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/decorations/wall/decor_wall_02.png" alt="decor_wall_02.png" />
+        </div>
+        <div class="label">decor_wall_02.png</div>
+      </div>
+    </div>
+    <h3>Categoria: ENVIRONMENT (4 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/environment/ambient/env_ambient_01.png" alt="env_ambient_01.png" />
+        </div>
+        <div class="label">env_ambient_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/environment/ruins/env_ruins_01.png" alt="env_ruins_01.png" />
+        </div>
+        <div class="label">env_ruins_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/environment/rocks/env_rocks_01.png" alt="env_rocks_01.png" />
+        </div>
+        <div class="label">env_rocks_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/environment/elemental/env_elemental_01.png" alt="env_elemental_01.png" />
+        </div>
+        <div class="label">env_elemental_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: HAZARDS (2 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/hazards/floor/hazard_floor_01.png" alt="hazard_floor_01.png" />
+        </div>
+        <div class="label">hazard_floor_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/hazards/floor/hazard_floor_02.png" alt="hazard_floor_02.png" />
+        </div>
+        <div class="label">hazard_floor_02.png</div>
+      </div>
+    </div>
+    <h3>Categoria: LANDMARKS (2 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/landmarks/landmark_01.png" alt="landmark_01.png" />
+        </div>
+        <div class="label">landmark_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/lighting/landmarks/landmark_02.png" alt="landmark_02.png" />
+        </div>
+        <div class="label">landmark_02.png</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="theme-section" id="theme-tech">
+    <h2>Tema: Laboratório Cyber Core (tech)</h2>
+    <h3>Categoria: FLOOR (8 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/floor/normal/floor_normal_01.png" alt="floor_normal_01.png" />
+        </div>
+        <div class="label">floor_normal_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/floor/normal/floor_normal_02.png" alt="floor_normal_02.png" />
+        </div>
+        <div class="label">floor_normal_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/floor/special/floor_special_01.png" alt="floor_special_01.png" />
+        </div>
+        <div class="label">floor_special_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/floor/special/floor_special_02.png" alt="floor_special_02.png" />
+        </div>
+        <div class="label">floor_special_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/floor/cracked/floor_cracked_01.png" alt="floor_cracked_01.png" />
+        </div>
+        <div class="label">floor_cracked_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/floor/cracked/floor_cracked_02.png" alt="floor_cracked_02.png" />
+        </div>
+        <div class="label">floor_cracked_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/floor/alternate/floor_alternate_01.png" alt="floor_alternate_01.png" />
+        </div>
+        <div class="label">floor_alternate_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/floor/alternate/floor_alternate_02.png" alt="floor_alternate_02.png" />
+        </div>
+        <div class="label">floor_alternate_02.png</div>
+      </div>
+    </div>
+    <h3>Categoria: WALLS (8 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/walls/top/wall_top_01.png" alt="wall_top_01.png" />
+        </div>
+        <div class="label">wall_top_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/walls/special/wall_special_01.png" alt="wall_special_01.png" />
+        </div>
+        <div class="label">wall_special_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/walls/special/wall_special_02.png" alt="wall_special_02.png" />
+        </div>
+        <div class="label">wall_special_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/walls/left/wall_left_01.png" alt="wall_left_01.png" />
+        </div>
+        <div class="label">wall_left_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/walls/right/wall_right_01.png" alt="wall_right_01.png" />
+        </div>
+        <div class="label">wall_right_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/walls/bottom/wall_bottom_01.png" alt="wall_bottom_01.png" />
+        </div>
+        <div class="label">wall_bottom_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/walls/horizontal/wall_horizontal_01.png" alt="wall_horizontal_01.png" />
+        </div>
+        <div class="label">wall_horizontal_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/walls/vertical/wall_vertical_01.png" alt="wall_vertical_01.png" />
+        </div>
+        <div class="label">wall_vertical_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: CORNERS (8 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/corners/outer/bottom_left/corner_outer_bottom_left.png" alt="corner_outer_bottom_left.png" />
+        </div>
+        <div class="label">corner_outer_bottom_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/corners/outer/top_left/corner_outer_top_left.png" alt="corner_outer_top_left.png" />
+        </div>
+        <div class="label">corner_outer_top_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/corners/outer/top_right/corner_outer_top_right.png" alt="corner_outer_top_right.png" />
+        </div>
+        <div class="label">corner_outer_top_right.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/corners/outer/bottom_right/corner_outer_bottom_right.png" alt="corner_outer_bottom_right.png" />
+        </div>
+        <div class="label">corner_outer_bottom_right.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/corners/inner/bottom_left/corner_inner_bottom_left.png" alt="corner_inner_bottom_left.png" />
+        </div>
+        <div class="label">corner_inner_bottom_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/corners/inner/top_left/corner_inner_top_left.png" alt="corner_inner_top_left.png" />
+        </div>
+        <div class="label">corner_inner_top_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/corners/inner/top_right/corner_inner_top_right.png" alt="corner_inner_top_right.png" />
+        </div>
+        <div class="label">corner_inner_top_right.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/corners/inner/bottom_right/corner_inner_bottom_right.png" alt="corner_inner_bottom_right.png" />
+        </div>
+        <div class="label">corner_inner_bottom_right.png</div>
+      </div>
+    </div>
+    <h3>Categoria: DOORS (2 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/doors/vertical/closed/door_vertical_closed_01.png" alt="door_vertical_closed_01.png" />
+        </div>
+        <div class="label">door_vertical_closed_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/doors/vertical/open/door_vertical_open_01.png" alt="door_vertical_open_01.png" />
+        </div>
+        <div class="label">door_vertical_open_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: INTERACTABLES (2 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/interactables/chest/closed/chest_closed_01.png" alt="chest_closed_01.png" />
+        </div>
+        <div class="label">chest_closed_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/interactables/chest/open/chest_open_01.png" alt="chest_open_01.png" />
+        </div>
+        <div class="label">chest_open_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: DECORATIONS (3 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/decorations/medium/decor_medium_01.png" alt="decor_medium_01.png" />
+        </div>
+        <div class="label">decor_medium_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/decorations/floor/decor_floor_01.png" alt="decor_floor_01.png" />
+        </div>
+        <div class="label">decor_floor_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/decorations/wall/decor_wall_01.png" alt="decor_wall_01.png" />
+        </div>
+        <div class="label">decor_wall_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: ENVIRONMENT (4 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/environment/ambient/env_ambient_01.png" alt="env_ambient_01.png" />
+        </div>
+        <div class="label">env_ambient_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/environment/ruins/env_ruins_01.png" alt="env_ruins_01.png" />
+        </div>
+        <div class="label">env_ruins_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/environment/rocks/env_rocks_01.png" alt="env_rocks_01.png" />
+        </div>
+        <div class="label">env_rocks_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/environment/elemental/env_elemental_01.png" alt="env_elemental_01.png" />
+        </div>
+        <div class="label">env_elemental_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: HAZARDS (1 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/hazards/floor/hazard_floor_01.png" alt="hazard_floor_01.png" />
+        </div>
+        <div class="label">hazard_floor_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: LANDMARKS (1 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/tech/landmarks/landmark_01.png" alt="landmark_01.png" />
+        </div>
+        <div class="label">landmark_01.png</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="theme-section" id="theme-fire">
+    <h2>Tema: Câmara de Magma Digital (fire)</h2>
+    <h3>Categoria: FLOOR (8 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/floor/normal/floor_normal_01.png" alt="floor_normal_01.png" />
+        </div>
+        <div class="label">floor_normal_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/floor/normal/floor_normal_02.png" alt="floor_normal_02.png" />
+        </div>
+        <div class="label">floor_normal_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/floor/special/floor_special_01.png" alt="floor_special_01.png" />
+        </div>
+        <div class="label">floor_special_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/floor/special/floor_special_02.png" alt="floor_special_02.png" />
+        </div>
+        <div class="label">floor_special_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/floor/cracked/floor_cracked_01.png" alt="floor_cracked_01.png" />
+        </div>
+        <div class="label">floor_cracked_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/floor/cracked/floor_cracked_02.png" alt="floor_cracked_02.png" />
+        </div>
+        <div class="label">floor_cracked_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/floor/alternate/floor_alternate_01.png" alt="floor_alternate_01.png" />
+        </div>
+        <div class="label">floor_alternate_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/floor/alternate/floor_alternate_02.png" alt="floor_alternate_02.png" />
+        </div>
+        <div class="label">floor_alternate_02.png</div>
+      </div>
+    </div>
+    <h3>Categoria: WALLS (8 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/walls/top/wall_top_01.png" alt="wall_top_01.png" />
+        </div>
+        <div class="label">wall_top_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/walls/special/wall_special_01.png" alt="wall_special_01.png" />
+        </div>
+        <div class="label">wall_special_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/walls/special/wall_special_02.png" alt="wall_special_02.png" />
+        </div>
+        <div class="label">wall_special_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/walls/left/wall_left_01.png" alt="wall_left_01.png" />
+        </div>
+        <div class="label">wall_left_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/walls/right/wall_right_01.png" alt="wall_right_01.png" />
+        </div>
+        <div class="label">wall_right_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/walls/bottom/wall_bottom_01.png" alt="wall_bottom_01.png" />
+        </div>
+        <div class="label">wall_bottom_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/walls/horizontal/wall_horizontal_01.png" alt="wall_horizontal_01.png" />
+        </div>
+        <div class="label">wall_horizontal_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/walls/vertical/wall_vertical_01.png" alt="wall_vertical_01.png" />
+        </div>
+        <div class="label">wall_vertical_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: CORNERS (8 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/corners/outer/bottom_left/corner_outer_bottom_left.png" alt="corner_outer_bottom_left.png" />
+        </div>
+        <div class="label">corner_outer_bottom_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/corners/outer/top_left/corner_outer_top_left.png" alt="corner_outer_top_left.png" />
+        </div>
+        <div class="label">corner_outer_top_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/corners/outer/top_right/corner_outer_top_right.png" alt="corner_outer_top_right.png" />
+        </div>
+        <div class="label">corner_outer_top_right.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/corners/outer/bottom_right/corner_outer_bottom_right.png" alt="corner_outer_bottom_right.png" />
+        </div>
+        <div class="label">corner_outer_bottom_right.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/corners/inner/bottom_left/corner_inner_bottom_left.png" alt="corner_inner_bottom_left.png" />
+        </div>
+        <div class="label">corner_inner_bottom_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/corners/inner/top_left/corner_inner_top_left.png" alt="corner_inner_top_left.png" />
+        </div>
+        <div class="label">corner_inner_top_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/corners/inner/top_right/corner_inner_top_right.png" alt="corner_inner_top_right.png" />
+        </div>
+        <div class="label">corner_inner_top_right.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/corners/inner/bottom_right/corner_inner_bottom_right.png" alt="corner_inner_bottom_right.png" />
+        </div>
+        <div class="label">corner_inner_bottom_right.png</div>
+      </div>
+    </div>
+    <h3>Categoria: DOORS (2 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/doors/vertical/closed/door_vertical_closed_01.png" alt="door_vertical_closed_01.png" />
+        </div>
+        <div class="label">door_vertical_closed_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/doors/vertical/open/door_vertical_open_01.png" alt="door_vertical_open_01.png" />
+        </div>
+        <div class="label">door_vertical_open_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: INTERACTABLES (2 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/interactables/chest/closed/chest_closed_01.png" alt="chest_closed_01.png" />
+        </div>
+        <div class="label">chest_closed_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/interactables/chest/open/chest_open_01.png" alt="chest_open_01.png" />
+        </div>
+        <div class="label">chest_open_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: DECORATIONS (3 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/decorations/medium/decor_medium_01.png" alt="decor_medium_01.png" />
+        </div>
+        <div class="label">decor_medium_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/decorations/floor/decor_floor_01.png" alt="decor_floor_01.png" />
+        </div>
+        <div class="label">decor_floor_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/decorations/wall/decor_wall_01.png" alt="decor_wall_01.png" />
+        </div>
+        <div class="label">decor_wall_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: ENVIRONMENT (4 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/environment/ambient/env_ambient_01.png" alt="env_ambient_01.png" />
+        </div>
+        <div class="label">env_ambient_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/environment/ruins/env_ruins_01.png" alt="env_ruins_01.png" />
+        </div>
+        <div class="label">env_ruins_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/environment/rocks/env_rocks_01.png" alt="env_rocks_01.png" />
+        </div>
+        <div class="label">env_rocks_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/environment/elemental/env_elemental_01.png" alt="env_elemental_01.png" />
+        </div>
+        <div class="label">env_elemental_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: HAZARDS (1 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/hazards/floor/hazard_floor_01.png" alt="hazard_floor_01.png" />
+        </div>
+        <div class="label">hazard_floor_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: LANDMARKS (1 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/fire/landmarks/landmark_01.png" alt="landmark_01.png" />
+        </div>
+        <div class="label">landmark_01.png</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="theme-section" id="theme-ice">
+    <h2>Tema: Geleira Glacial Digital (ice)</h2>
+    <h3>Categoria: FLOOR (8 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/floor/normal/floor_normal_01.png" alt="floor_normal_01.png" />
+        </div>
+        <div class="label">floor_normal_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/floor/normal/floor_normal_02.png" alt="floor_normal_02.png" />
+        </div>
+        <div class="label">floor_normal_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/floor/special/floor_special_01.png" alt="floor_special_01.png" />
+        </div>
+        <div class="label">floor_special_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/floor/special/floor_special_02.png" alt="floor_special_02.png" />
+        </div>
+        <div class="label">floor_special_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/floor/cracked/floor_cracked_01.png" alt="floor_cracked_01.png" />
+        </div>
+        <div class="label">floor_cracked_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/floor/cracked/floor_cracked_02.png" alt="floor_cracked_02.png" />
+        </div>
+        <div class="label">floor_cracked_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/floor/alternate/floor_alternate_01.png" alt="floor_alternate_01.png" />
+        </div>
+        <div class="label">floor_alternate_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/floor/alternate/floor_alternate_02.png" alt="floor_alternate_02.png" />
+        </div>
+        <div class="label">floor_alternate_02.png</div>
+      </div>
+    </div>
+    <h3>Categoria: WALLS (8 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/walls/top/wall_top_01.png" alt="wall_top_01.png" />
+        </div>
+        <div class="label">wall_top_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/walls/special/wall_special_01.png" alt="wall_special_01.png" />
+        </div>
+        <div class="label">wall_special_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/walls/special/wall_special_02.png" alt="wall_special_02.png" />
+        </div>
+        <div class="label">wall_special_02.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/walls/left/wall_left_01.png" alt="wall_left_01.png" />
+        </div>
+        <div class="label">wall_left_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/walls/right/wall_right_01.png" alt="wall_right_01.png" />
+        </div>
+        <div class="label">wall_right_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/walls/bottom/wall_bottom_01.png" alt="wall_bottom_01.png" />
+        </div>
+        <div class="label">wall_bottom_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/walls/horizontal/wall_horizontal_01.png" alt="wall_horizontal_01.png" />
+        </div>
+        <div class="label">wall_horizontal_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/walls/vertical/wall_vertical_01.png" alt="wall_vertical_01.png" />
+        </div>
+        <div class="label">wall_vertical_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: CORNERS (8 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/corners/outer/bottom_left/corner_outer_bottom_left.png" alt="corner_outer_bottom_left.png" />
+        </div>
+        <div class="label">corner_outer_bottom_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/corners/outer/top_left/corner_outer_top_left.png" alt="corner_outer_top_left.png" />
+        </div>
+        <div class="label">corner_outer_top_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/corners/outer/top_right/corner_outer_top_right.png" alt="corner_outer_top_right.png" />
+        </div>
+        <div class="label">corner_outer_top_right.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/corners/outer/bottom_right/corner_outer_bottom_right.png" alt="corner_outer_bottom_right.png" />
+        </div>
+        <div class="label">corner_outer_bottom_right.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/corners/inner/bottom_left/corner_inner_bottom_left.png" alt="corner_inner_bottom_left.png" />
+        </div>
+        <div class="label">corner_inner_bottom_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/corners/inner/top_left/corner_inner_top_left.png" alt="corner_inner_top_left.png" />
+        </div>
+        <div class="label">corner_inner_top_left.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/corners/inner/top_right/corner_inner_top_right.png" alt="corner_inner_top_right.png" />
+        </div>
+        <div class="label">corner_inner_top_right.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/corners/inner/bottom_right/corner_inner_bottom_right.png" alt="corner_inner_bottom_right.png" />
+        </div>
+        <div class="label">corner_inner_bottom_right.png</div>
+      </div>
+    </div>
+    <h3>Categoria: DOORS (2 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/doors/vertical/closed/door_vertical_closed_01.png" alt="door_vertical_closed_01.png" />
+        </div>
+        <div class="label">door_vertical_closed_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/doors/vertical/open/door_vertical_open_01.png" alt="door_vertical_open_01.png" />
+        </div>
+        <div class="label">door_vertical_open_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: INTERACTABLES (2 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/interactables/chest/closed/chest_closed_01.png" alt="chest_closed_01.png" />
+        </div>
+        <div class="label">chest_closed_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/interactables/chest/open/chest_open_01.png" alt="chest_open_01.png" />
+        </div>
+        <div class="label">chest_open_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: DECORATIONS (3 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/decorations/medium/decor_medium_01.png" alt="decor_medium_01.png" />
+        </div>
+        <div class="label">decor_medium_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/decorations/floor/decor_floor_01.png" alt="decor_floor_01.png" />
+        </div>
+        <div class="label">decor_floor_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/decorations/wall/decor_wall_01.png" alt="decor_wall_01.png" />
+        </div>
+        <div class="label">decor_wall_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: ENVIRONMENT (4 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/environment/ambient/env_ambient_01.png" alt="env_ambient_01.png" />
+        </div>
+        <div class="label">env_ambient_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/environment/ruins/env_ruins_01.png" alt="env_ruins_01.png" />
+        </div>
+        <div class="label">env_ruins_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/environment/rocks/env_rocks_01.png" alt="env_rocks_01.png" />
+        </div>
+        <div class="label">env_rocks_01.png</div>
+      </div>
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/environment/elemental/env_elemental_01.png" alt="env_elemental_01.png" />
+        </div>
+        <div class="label">env_elemental_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: HAZARDS (1 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/hazards/floor/hazard_floor_01.png" alt="hazard_floor_01.png" />
+        </div>
+        <div class="label">hazard_floor_01.png</div>
+      </div>
+    </div>
+    <h3>Categoria: LANDMARKS (1 tiles)</h3>
+    <div class="grid">
+      <div class="tile-card">
+        <div class="checkerboard">
+          <img class="tile-img" src="/sprites/maps/ice/landmarks/landmark_01.png" alt="landmark_01.png" />
+        </div>
+        <div class="label">landmark_01.png</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

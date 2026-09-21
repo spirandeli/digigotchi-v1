@@ -12,6 +12,17 @@ export interface MapThemeWalls {
   readonly special: readonly string[];
 }
 
+export interface MapThemeCorners {
+  readonly outerTopLeft: string;
+  readonly outerTopRight: string;
+  readonly outerBottomLeft: string;
+  readonly outerBottomRight: string;
+  readonly innerTopLeft?: string;
+  readonly innerTopRight?: string;
+  readonly innerBottomLeft?: string;
+  readonly innerBottomRight?: string;
+}
+
 export interface MapThemeDoors {
   readonly verticalClosed: string;
   readonly verticalOpen: string;
@@ -24,48 +35,68 @@ export interface MapThemeChests {
   readonly open: readonly string[];
 }
 
+export interface MapThemeDecorations {
+  readonly floor: readonly string[];
+  readonly medium: readonly string[];
+  readonly wall: readonly string[];
+}
+
+export interface MapThemeEnvironment {
+  readonly ambient: readonly string[];
+  readonly rocks: readonly string[];
+  readonly ruins: readonly string[];
+  readonly elemental: readonly string[];
+}
+
+export interface MapThemeHazards {
+  readonly floor: readonly string[];
+}
+
+export interface MapThemeLandmarks {
+  readonly monolith: readonly string[];
+}
+
 export interface MapThemeTiles {
   /**
-   * The dominant floor tile(s). Used for ~80% of floor cells.
+   * The dominant floor tile(s). Used for ~80-85% of floor cells.
    * Must be visually compatible with each other (similar color/texture family).
    */
   readonly floorNormal: readonly string[];
 
   /**
-   * Subtle floor variations for breaking repetition. Used for ~12-15% of cells.
-   * Must be the same color family as floorNormal. Small cracks, moss, slight damage — ok.
-   * Heavy decorative elements (circles, diamonds, symbols) are NOT ok here.
+   * Subtle floor variations for breaking repetition. Used for ~10-15% of cells.
+   * Must be the same color family as floorNormal. Small cracks, slight damage — ok.
    */
   readonly floorVariation: readonly string[];
 
   /**
-   * Rare decorative floor accents. Used for ~3-5% of cells, in small clusters.
-   * May have mild thematic elements (slight glow, circuitry edge) but should NOT
-   * be dominant or create strong contrast with the base floor.
+   * Rare decorative floor accents. Used for ~2-4% of cells, in small clusters.
    */
   readonly floorDecor: readonly string[];
 
   /**
-   * @deprecated Use floorVariation or floorDecor instead.
-   * Kept for backward compatibility only. Not used by the new renderer.
+   * @deprecated Kept for backward compatibility only.
    */
   readonly floorSpecial: readonly string[];
 
   /**
-   * @deprecated Use floorVariation instead.
-   * Kept for backward compatibility only. Not used by the new renderer.
+   * @deprecated Kept for backward compatibility only.
    */
   readonly floorAlternate: readonly string[];
 
   /**
-   * @deprecated Use floorVariation instead.
-   * Kept for backward compatibility only. Not used by the new renderer.
+   * @deprecated Kept for backward compatibility only.
    */
   readonly floorCracked: readonly string[];
 
   readonly walls: MapThemeWalls;
+  readonly corners: MapThemeCorners;
   readonly doors: MapThemeDoors;
   readonly chests: MapThemeChests;
+  readonly decorations?: MapThemeDecorations;
+  readonly environment?: MapThemeEnvironment;
+  readonly hazards?: MapThemeHazards;
+  readonly landmarks?: MapThemeLandmarks;
 }
 
 export interface MapThemeConfig {
@@ -90,99 +121,98 @@ export const MAP_THEMES: Record<MapThemeId, MapThemeConfig> = {
     wallRimColor: 0x00f0ff,
     accentTint: 0x88ffff,
     tiles: {
-      // ─── FLOOR BASE (80%+ of cells) ───────────────────────────────────
-      // Visual: blue-gray tech stone slabs — uniform, calm, readable base
       floorNormal: [
-        "/sprites/maps/lighting/floor/normal/sprite_0019.png",  // blue-gray stone slabs — primary dominant base
+        "/sprites/maps/lighting/floor/normal/floor_normal_01.png",
+        "/sprites/maps/lighting/floor/normal/floor_normal_02.png",
       ],
-
-      // ─── FLOOR VARIATION (10-12% of cells) ────────────────────────────
-      // Visual: same stone family, subtle corner spark or electric crack in small clusters
       floorVariation: [
-        "/sprites/maps/lighting/floor/special/sprite_0024.png",  // blue-gray stone with subtle corner spark
-        "/sprites/maps/lighting/floor/cracked/sprite_0023.png",  // blue electric lightning crack on blue-gray stone
+        "/sprites/maps/lighting/floor/cracked/floor_cracked_01.png",
+        "/sprites/maps/lighting/floor/cracked/floor_cracked_02.png",
       ],
-
-      // ─── FLOOR DECOR (2-3% of cells, rare tech accents) ──────────────
-      // Visual: subtle circuit/tech pattern — thematic accent
       floorDecor: [
-        "/sprites/maps/lighting/floor/alternate/sprite_0018.png",  // blue diamond circuit
+        "/sprites/maps/lighting/floor/alternate/floor_alternate_02.png",
+        "/sprites/maps/lighting/floor/special/floor_special_01.png",
       ],
-
-      // ─── LEGACY FIELDS (not used by new renderer, kept for type compat) ─
-      // sprite_0009 = circuit grid (too intense for floor variation)
-      // sprite_0024 = blue circle symbol (decoration prop, NOT floor)
       floorAlternate: [
-        "/sprites/maps/lighting/floor/alternate/sprite_0009.png",
-        "/sprites/maps/lighting/floor/alternate/sprite_0018.png",
+        "/sprites/maps/lighting/floor/alternate/floor_alternate_01.png",
+        "/sprites/maps/lighting/floor/alternate/floor_alternate_02.png",
       ],
       floorSpecial: [
-        "/sprites/maps/lighting/floor/special/sprite_0024.png",  // decorative prop
-        "/sprites/maps/lighting/floor/special/sprite_0034.png",
+        "/sprites/maps/lighting/floor/special/floor_special_01.png",
+        "/sprites/maps/lighting/floor/special/floor_special_02.png",
       ],
       floorCracked: [
-        "/sprites/maps/lighting/floor/cracked/sprite_0023.png",
-        "/sprites/maps/lighting/floor/cracked/sprite_0025.png",
+        "/sprites/maps/lighting/floor/cracked/floor_cracked_01.png",
+        "/sprites/maps/lighting/floor/cracked/floor_cracked_02.png",
       ],
-
       walls: {
-        // ─── WALL SPRITE GUIDE ─────────────────────────────────────────
-        // sprite_0029.png = 3x3 dark stone slab grid  → HORIZONTAL surface (top/bottom border)
-        // sprite_0056.png = vertical T-pillar shape    → VERTICAL surface (left/right border)
-        // sprite_0032.png = 3x3 blue-dark stone slab  → compatible with horizontal
-        // sprite_0012.png = 3x3 dark stone slab       → compatible with horizontal
-
-        // HORIZONTAL: used for walls that form the N/S borders of rooms
-        // (the wall tile has floor BELOW it = top border, or floor ABOVE = bottom border)
-        horizontal: ["/sprites/maps/lighting/walls/horizontal/sprite_0029.png"],
-
-        // VERTICAL: used for walls that form the E/W borders of rooms
-        vertical: ["/sprites/maps/lighting/walls/vertical/sprite_0056.png"],
-
-        // TOP: wall that sits at the top of a room (floor is SOUTH of this tile)
-        // Visually this is a horizontal slab — use horizontal sprite
-        top: ["/sprites/maps/lighting/walls/horizontal/sprite_0029.png"],
-
-        // BOTTOM: wall that sits at the bottom of a room (floor is NORTH of this tile)
-        // Also horizontal
-        bottom: ["/sprites/maps/lighting/walls/horizontal/sprite_0029.png"],
-
-        // LEFT: wall forming the left border (floor is to the EAST)
-        // sprite_0032 visually is a stone slab — use as left border
-        left: ["/sprites/maps/lighting/walls/left/sprite_0032.png"],
-
-        // RIGHT: wall forming the right border (floor is to the WEST)
-        right: ["/sprites/maps/lighting/walls/right/sprite_0012.png"],
-
-        // SPECIAL: decorative wall accents — neon conduits, tech panels etc.
-        // Used sparingly (1-2 per room max) on interior wall faces
+        horizontal: ["/sprites/maps/lighting/walls/horizontal/wall_horizontal_01.png"],
+        vertical: ["/sprites/maps/lighting/walls/vertical/wall_vertical_01.png"],
+        top: ["/sprites/maps/lighting/walls/top/wall_top_01.png"],
+        bottom: ["/sprites/maps/lighting/walls/bottom/wall_bottom_01.png"],
+        left: ["/sprites/maps/lighting/walls/left/wall_left_01.png"],
+        right: ["/sprites/maps/lighting/walls/right/wall_right_01.png"],
         special: [
-          "/sprites/maps/lighting/walls/special/sprite_0002.png",
-          "/sprites/maps/lighting/walls/special/sprite_0003.png",
-          "/sprites/maps/lighting/walls/special/sprite_0006.png",
-          "/sprites/maps/lighting/walls/special/sprite_0011.png",
-          "/sprites/maps/lighting/walls/special/sprite_0013.png",
-          "/sprites/maps/lighting/walls/special/sprite_0015.png",
-          "/sprites/maps/lighting/walls/special/sprite_0016.png",
-          "/sprites/maps/lighting/walls/special/sprite_0017.png",
-          "/sprites/maps/lighting/walls/special/sprite_0033.png",
-          "/sprites/maps/lighting/walls/special/sprite_0035.png",
+          "/sprites/maps/lighting/walls/special/wall_special_01.png",
+          "/sprites/maps/lighting/walls/special/wall_special_02.png",
+          "/sprites/maps/lighting/walls/special/wall_special_03.png",
+          "/sprites/maps/lighting/walls/special/wall_special_04.png",
         ],
       },
+      corners: {
+        outerTopLeft: "/sprites/maps/lighting/corners/outer/top_left/corner_outer_top_left.png",
+        outerTopRight: "/sprites/maps/lighting/corners/outer/top_right/corner_outer_top_right.png",
+        outerBottomLeft: "/sprites/maps/lighting/corners/outer/bottom_left/corner_outer_bottom_left.png",
+        outerBottomRight: "/sprites/maps/lighting/corners/outer/bottom_right/corner_outer_bottom_right.png",
+        innerTopLeft: "/sprites/maps/lighting/corners/inner/top_left/corner_inner_top_left.png",
+        innerTopRight: "/sprites/maps/lighting/corners/inner/top_right/corner_inner_top_right.png",
+        innerBottomLeft: "/sprites/maps/lighting/corners/inner/bottom_left/corner_inner_bottom_left.png",
+        innerBottomRight: "/sprites/maps/lighting/corners/inner/bottom_right/corner_inner_bottom_right.png",
+      },
       doors: {
-        verticalClosed: "/sprites/maps/lighting/doors/vertical/sprite_0038.png",
-        verticalOpen: "/sprites/maps/lighting/doors/vertical/sprite_0042.png",
+        verticalClosed: "/sprites/maps/lighting/doors/vertical/closed/door_vertical_closed_01.png",
+        verticalOpen: "/sprites/maps/lighting/doors/vertical/open/door_vertical_open_01.png",
       },
       chests: {
         closed: [
-          "/sprites/maps/lighting/interactables/chest/closed/sprite_0047.png",
-          "/sprites/maps/lighting/interactables/chest/closed/sprite_0048.png",
-          "/sprites/maps/lighting/interactables/chest/closed/sprite_0070.png",
+          "/sprites/maps/lighting/interactables/chest/closed/chest_closed_01.png",
+          "/sprites/maps/lighting/interactables/chest/closed/chest_closed_02.png",
         ],
         open: [
-          "/sprites/maps/lighting/interactables/chest/open/sprite_0044.png",
-          "/sprites/maps/lighting/interactables/chest/open/sprite_0045.png",
-          "/sprites/maps/lighting/interactables/chest/open/sprite_0050.png",
+          "/sprites/maps/lighting/interactables/chest/open/chest_open_01.png",
+          "/sprites/maps/lighting/interactables/chest/open/chest_open_02.png",
+        ],
+      },
+      decorations: {
+        floor: [
+          "/sprites/maps/lighting/decorations/floor/decor_floor_01.png",
+          "/sprites/maps/lighting/decorations/floor/decor_floor_02.png",
+        ],
+        medium: [
+          "/sprites/maps/lighting/decorations/medium/decor_medium_01.png",
+          "/sprites/maps/lighting/decorations/medium/decor_medium_02.png",
+        ],
+        wall: [
+          "/sprites/maps/lighting/decorations/wall/decor_wall_01.png",
+          "/sprites/maps/lighting/decorations/wall/decor_wall_02.png",
+        ],
+      },
+      environment: {
+        ambient: ["/sprites/maps/lighting/environment/ambient/env_ambient_01.png"],
+        rocks: ["/sprites/maps/lighting/environment/rocks/env_rocks_01.png"],
+        ruins: ["/sprites/maps/lighting/environment/ruins/env_ruins_01.png"],
+        elemental: ["/sprites/maps/lighting/environment/elemental/env_elemental_01.png"],
+      },
+      hazards: {
+        floor: [
+          "/sprites/maps/lighting/hazards/floor/hazard_floor_01.png",
+          "/sprites/maps/lighting/hazards/floor/hazard_floor_02.png",
+        ],
+      },
+      landmarks: {
+        monolith: [
+          "/sprites/maps/lighting/landmarks/landmark_01.png",
+          "/sprites/maps/lighting/landmarks/landmark_02.png",
         ],
       },
     },
@@ -191,33 +221,81 @@ export const MAP_THEMES: Record<MapThemeId, MapThemeConfig> = {
     id: "fire",
     name: "Câmara de Magma Digital",
     basePath: "/sprites/maps/fire/",
-    enabled: false, // Spritesheet not sliced yet
+    enabled: true,
     biome: "fire",
     wallRimColor: 0xff4400,
-    floorTint: 0xffccaa,
+    accentTint: 0xffaa00,
     tiles: {
-      floorNormal: ["/sprites/maps/fire/floor/cracked/floor_cracked_01.png"],
-      floorVariation: ["/sprites/maps/fire/floor/cracked/floor_cracked_01.png"],
-      floorDecor: [],
-      floorAlternate: ["/sprites/maps/fire/floor/cracked/floor_cracked_01.png"],
-      floorSpecial: ["/sprites/maps/fire/floor/cracked/floor_cracked_01.png"],
-      floorCracked: ["/sprites/maps/fire/floor/cracked/floor_cracked_01.png"],
+      floorNormal: [
+        "/sprites/maps/fire/floor/normal/floor_normal_01.png",
+        "/sprites/maps/fire/floor/normal/floor_normal_02.png",
+      ],
+      floorVariation: [
+        "/sprites/maps/fire/floor/cracked/floor_cracked_01.png",
+        "/sprites/maps/fire/floor/cracked/floor_cracked_02.png",
+      ],
+      floorDecor: [
+        "/sprites/maps/fire/floor/alternate/floor_alternate_02.png",
+        "/sprites/maps/fire/floor/special/floor_special_01.png",
+      ],
+      floorAlternate: [
+        "/sprites/maps/fire/floor/alternate/floor_alternate_01.png",
+        "/sprites/maps/fire/floor/alternate/floor_alternate_02.png",
+      ],
+      floorSpecial: [
+        "/sprites/maps/fire/floor/special/floor_special_01.png",
+        "/sprites/maps/fire/floor/special/floor_special_02.png",
+      ],
+      floorCracked: [
+        "/sprites/maps/fire/floor/cracked/floor_cracked_01.png",
+        "/sprites/maps/fire/floor/cracked/floor_cracked_02.png",
+      ],
       walls: {
-        horizontal: ["/sprites/maps/fire/floor/cracked/floor_cracked_01.png"],
-        vertical: ["/sprites/maps/fire/floor/cracked/floor_cracked_01.png"],
-        top: ["/sprites/maps/fire/floor/cracked/floor_cracked_01.png"],
-        bottom: ["/sprites/maps/fire/floor/cracked/floor_cracked_01.png"],
-        left: ["/sprites/maps/fire/floor/cracked/floor_cracked_01.png"],
-        right: ["/sprites/maps/fire/floor/cracked/floor_cracked_01.png"],
-        special: ["/sprites/maps/fire/floor/cracked/floor_cracked_01.png"],
+        horizontal: ["/sprites/maps/fire/walls/horizontal/wall_horizontal_01.png"],
+        vertical: ["/sprites/maps/fire/walls/vertical/wall_vertical_01.png"],
+        top: ["/sprites/maps/fire/walls/top/wall_top_01.png"],
+        bottom: ["/sprites/maps/fire/walls/bottom/wall_bottom_01.png"],
+        left: ["/sprites/maps/fire/walls/left/wall_left_01.png"],
+        right: ["/sprites/maps/fire/walls/right/wall_right_01.png"],
+        special: [
+          "/sprites/maps/fire/walls/special/wall_special_01.png",
+          "/sprites/maps/fire/walls/special/wall_special_02.png",
+        ],
+      },
+      corners: {
+        outerTopLeft: "/sprites/maps/fire/corners/outer/top_left/corner_outer_top_left.png",
+        outerTopRight: "/sprites/maps/fire/corners/outer/top_right/corner_outer_top_right.png",
+        outerBottomLeft: "/sprites/maps/fire/corners/outer/bottom_left/corner_outer_bottom_left.png",
+        outerBottomRight: "/sprites/maps/fire/corners/outer/bottom_right/corner_outer_bottom_right.png",
+        innerTopLeft: "/sprites/maps/fire/corners/inner/top_left/corner_inner_top_left.png",
+        innerTopRight: "/sprites/maps/fire/corners/inner/top_right/corner_inner_top_right.png",
+        innerBottomLeft: "/sprites/maps/fire/corners/inner/bottom_left/corner_inner_bottom_left.png",
+        innerBottomRight: "/sprites/maps/fire/corners/inner/bottom_right/corner_inner_bottom_right.png",
       },
       doors: {
-        verticalClosed: "/sprites/maps/lighting/doors/vertical/sprite_0038.png",
-        verticalOpen: "/sprites/maps/lighting/doors/vertical/sprite_0042.png",
+        verticalClosed: "/sprites/maps/fire/doors/vertical/closed/door_vertical_closed_01.png",
+        verticalOpen: "/sprites/maps/fire/doors/vertical/open/door_vertical_open_01.png",
       },
       chests: {
-        closed: ["/sprites/maps/lighting/interactables/chest/closed/sprite_0047.png"],
-        open: ["/sprites/maps/lighting/interactables/chest/open/sprite_0044.png"],
+        closed: ["/sprites/maps/fire/interactables/chest/closed/chest_closed_01.png"],
+        open: ["/sprites/maps/fire/interactables/chest/open/chest_open_01.png"],
+      },
+      decorations: {
+        floor: ["/sprites/maps/fire/decorations/floor/decor_floor_01.png"],
+        medium: ["/sprites/maps/fire/decorations/medium/decor_medium_01.png"],
+        wall: ["/sprites/maps/fire/decorations/wall/decor_wall_01.png"],
+      },
+      environment: {
+        ambient: ["/sprites/maps/fire/environment/ambient/env_ambient_01.png"],
+        rocks: ["/sprites/maps/fire/environment/rocks/env_rocks_01.png"],
+        ruins: ["/sprites/maps/fire/environment/ruins/env_ruins_01.png"],
+        elemental: ["/sprites/maps/fire/environment/elemental/env_elemental_01.png"],
+      },
+      hazards: {
+        floor: ["/sprites/maps/fire/hazards/floor/hazard_floor_01.png"],
+      },
+      landmarks: {
+        monolith: ["/sprites/maps/fire/landmarks/landmark_01.png"],
       },
     },
   },
@@ -225,33 +303,81 @@ export const MAP_THEMES: Record<MapThemeId, MapThemeConfig> = {
     id: "ice",
     name: "Glaciar de Subzero",
     basePath: "/sprites/maps/ice/",
-    enabled: false, // Spritesheet not sliced yet
+    enabled: true,
     biome: "ice",
     wallRimColor: 0x66ccff,
-    floorTint: 0xddf0ff,
+    accentTint: 0xaae4ff,
     tiles: {
-      floorNormal: ["/sprites/maps/ice/floor/normal/floor_normal_01.png"],
-      floorVariation: ["/sprites/maps/ice/floor/special/floor_special_01.png"],
-      floorDecor: [],
-      floorAlternate: ["/sprites/maps/ice/floor/special/floor_special_01.png"],
-      floorSpecial: ["/sprites/maps/ice/floor/special/floor_special_01.png"],
-      floorCracked: ["/sprites/maps/ice/floor/normal/floor_normal_01.png"],
+      floorNormal: [
+        "/sprites/maps/ice/floor/normal/floor_normal_01.png",
+        "/sprites/maps/ice/floor/normal/floor_normal_02.png",
+      ],
+      floorVariation: [
+        "/sprites/maps/ice/floor/cracked/floor_cracked_01.png",
+        "/sprites/maps/ice/floor/cracked/floor_cracked_02.png",
+      ],
+      floorDecor: [
+        "/sprites/maps/ice/floor/alternate/floor_alternate_02.png",
+        "/sprites/maps/ice/floor/special/floor_special_01.png",
+      ],
+      floorAlternate: [
+        "/sprites/maps/ice/floor/alternate/floor_alternate_01.png",
+        "/sprites/maps/ice/floor/alternate/floor_alternate_02.png",
+      ],
+      floorSpecial: [
+        "/sprites/maps/ice/floor/special/floor_special_01.png",
+        "/sprites/maps/ice/floor/special/floor_special_02.png",
+      ],
+      floorCracked: [
+        "/sprites/maps/ice/floor/cracked/floor_cracked_01.png",
+        "/sprites/maps/ice/floor/cracked/floor_cracked_02.png",
+      ],
       walls: {
-        horizontal: ["/sprites/maps/ice/floor/normal/floor_normal_01.png"],
-        vertical: ["/sprites/maps/ice/floor/normal/floor_normal_01.png"],
-        top: ["/sprites/maps/ice/floor/normal/floor_normal_01.png"],
-        bottom: ["/sprites/maps/ice/floor/normal/floor_normal_01.png"],
-        left: ["/sprites/maps/ice/floor/normal/floor_normal_01.png"],
-        right: ["/sprites/maps/ice/floor/normal/floor_normal_01.png"],
-        special: ["/sprites/maps/ice/floor/special/floor_special_01.png"],
+        horizontal: ["/sprites/maps/ice/walls/horizontal/wall_horizontal_01.png"],
+        vertical: ["/sprites/maps/ice/walls/vertical/wall_vertical_01.png"],
+        top: ["/sprites/maps/ice/walls/top/wall_top_01.png"],
+        bottom: ["/sprites/maps/ice/walls/bottom/wall_bottom_01.png"],
+        left: ["/sprites/maps/ice/walls/left/wall_left_01.png"],
+        right: ["/sprites/maps/ice/walls/right/wall_right_01.png"],
+        special: [
+          "/sprites/maps/ice/walls/special/wall_special_01.png",
+          "/sprites/maps/ice/walls/special/wall_special_02.png",
+        ],
+      },
+      corners: {
+        outerTopLeft: "/sprites/maps/ice/corners/outer/top_left/corner_outer_top_left.png",
+        outerTopRight: "/sprites/maps/ice/corners/outer/top_right/corner_outer_top_right.png",
+        outerBottomLeft: "/sprites/maps/ice/corners/outer/bottom_left/corner_outer_bottom_left.png",
+        outerBottomRight: "/sprites/maps/ice/corners/outer/bottom_right/corner_outer_bottom_right.png",
+        innerTopLeft: "/sprites/maps/ice/corners/inner/top_left/corner_inner_top_left.png",
+        innerTopRight: "/sprites/maps/ice/corners/inner/top_right/corner_inner_top_right.png",
+        innerBottomLeft: "/sprites/maps/ice/corners/inner/bottom_left/corner_inner_bottom_left.png",
+        innerBottomRight: "/sprites/maps/ice/corners/inner/bottom_right/corner_inner_bottom_right.png",
       },
       doors: {
-        verticalClosed: "/sprites/maps/lighting/doors/vertical/sprite_0038.png",
-        verticalOpen: "/sprites/maps/lighting/doors/vertical/sprite_0042.png",
+        verticalClosed: "/sprites/maps/ice/doors/vertical/closed/door_vertical_closed_01.png",
+        verticalOpen: "/sprites/maps/ice/doors/vertical/open/door_vertical_open_01.png",
       },
       chests: {
-        closed: ["/sprites/maps/lighting/interactables/chest/closed/sprite_0047.png"],
-        open: ["/sprites/maps/lighting/interactables/chest/open/sprite_0044.png"],
+        closed: ["/sprites/maps/ice/interactables/chest/closed/chest_closed_01.png"],
+        open: ["/sprites/maps/ice/interactables/chest/open/chest_open_01.png"],
+      },
+      decorations: {
+        floor: ["/sprites/maps/ice/decorations/floor/decor_floor_01.png"],
+        medium: ["/sprites/maps/ice/decorations/medium/decor_medium_01.png"],
+        wall: ["/sprites/maps/ice/decorations/wall/decor_wall_01.png"],
+      },
+      environment: {
+        ambient: ["/sprites/maps/ice/environment/ambient/env_ambient_01.png"],
+        rocks: ["/sprites/maps/ice/environment/rocks/env_rocks_01.png"],
+        ruins: ["/sprites/maps/ice/environment/ruins/env_ruins_01.png"],
+        elemental: ["/sprites/maps/ice/environment/elemental/env_elemental_01.png"],
+      },
+      hazards: {
+        floor: ["/sprites/maps/ice/hazards/floor/hazard_floor_01.png"],
+      },
+      landmarks: {
+        monolith: ["/sprites/maps/ice/landmarks/landmark_01.png"],
       },
     },
   },
@@ -259,33 +385,81 @@ export const MAP_THEMES: Record<MapThemeId, MapThemeConfig> = {
     id: "tech",
     name: "Laboratório Cyber Core",
     basePath: "/sprites/maps/tech/",
-    enabled: false, // Walls not sliced yet
+    enabled: true,
     biome: "digital",
     wallRimColor: 0x39ff14,
     accentTint: 0x70ff70,
     tiles: {
-      floorNormal: ["/sprites/maps/lighting/floor/normal/sprite_0005.png"],
-      floorVariation: ["/sprites/maps/lighting/floor/special/sprite_0034.png"],
-      floorDecor: ["/sprites/maps/lighting/floor/alternate/sprite_0018.png"],
-      floorAlternate: ["/sprites/maps/lighting/floor/alternate/sprite_0009.png"],
-      floorSpecial: ["/sprites/maps/lighting/floor/special/sprite_0024.png"],
-      floorCracked: ["/sprites/maps/lighting/floor/cracked/sprite_0023.png"],
+      floorNormal: [
+        "/sprites/maps/tech/floor/normal/floor_normal_01.png",
+        "/sprites/maps/tech/floor/normal/floor_normal_02.png",
+      ],
+      floorVariation: [
+        "/sprites/maps/tech/floor/cracked/floor_cracked_01.png",
+        "/sprites/maps/tech/floor/cracked/floor_cracked_02.png",
+      ],
+      floorDecor: [
+        "/sprites/maps/tech/floor/alternate/floor_alternate_02.png",
+        "/sprites/maps/tech/floor/special/floor_special_01.png",
+      ],
+      floorAlternate: [
+        "/sprites/maps/tech/floor/alternate/floor_alternate_01.png",
+        "/sprites/maps/tech/floor/alternate/floor_alternate_02.png",
+      ],
+      floorSpecial: [
+        "/sprites/maps/tech/floor/special/floor_special_01.png",
+        "/sprites/maps/tech/floor/special/floor_special_02.png",
+      ],
+      floorCracked: [
+        "/sprites/maps/tech/floor/cracked/floor_cracked_01.png",
+        "/sprites/maps/tech/floor/cracked/floor_cracked_02.png",
+      ],
       walls: {
-        horizontal: ["/sprites/maps/lighting/walls/horizontal/sprite_0029.png"],
-        vertical: ["/sprites/maps/lighting/walls/vertical/sprite_0056.png"],
-        top: ["/sprites/maps/lighting/walls/horizontal/sprite_0029.png"],
-        bottom: ["/sprites/maps/lighting/walls/horizontal/sprite_0029.png"],
-        left: ["/sprites/maps/lighting/walls/left/sprite_0032.png"],
-        right: ["/sprites/maps/lighting/walls/right/sprite_0012.png"],
-        special: ["/sprites/maps/lighting/walls/special/sprite_0002.png"],
+        horizontal: ["/sprites/maps/tech/walls/horizontal/wall_horizontal_01.png"],
+        vertical: ["/sprites/maps/tech/walls/vertical/wall_vertical_01.png"],
+        top: ["/sprites/maps/tech/walls/top/wall_top_01.png"],
+        bottom: ["/sprites/maps/tech/walls/bottom/wall_bottom_01.png"],
+        left: ["/sprites/maps/tech/walls/left/wall_left_01.png"],
+        right: ["/sprites/maps/tech/walls/right/wall_right_01.png"],
+        special: [
+          "/sprites/maps/tech/walls/special/wall_special_01.png",
+          "/sprites/maps/tech/walls/special/wall_special_02.png",
+        ],
+      },
+      corners: {
+        outerTopLeft: "/sprites/maps/tech/corners/outer/top_left/corner_outer_top_left.png",
+        outerTopRight: "/sprites/maps/tech/corners/outer/top_right/corner_outer_top_right.png",
+        outerBottomLeft: "/sprites/maps/tech/corners/outer/bottom_left/corner_outer_bottom_left.png",
+        outerBottomRight: "/sprites/maps/tech/corners/outer/bottom_right/corner_outer_bottom_right.png",
+        innerTopLeft: "/sprites/maps/tech/corners/inner/top_left/corner_inner_top_left.png",
+        innerTopRight: "/sprites/maps/tech/corners/inner/top_right/corner_inner_top_right.png",
+        innerBottomLeft: "/sprites/maps/tech/corners/inner/bottom_left/corner_inner_bottom_left.png",
+        innerBottomRight: "/sprites/maps/tech/corners/inner/bottom_right/corner_inner_bottom_right.png",
       },
       doors: {
-        verticalClosed: "/sprites/maps/lighting/doors/vertical/sprite_0038.png",
-        verticalOpen: "/sprites/maps/lighting/doors/vertical/sprite_0042.png",
+        verticalClosed: "/sprites/maps/tech/doors/vertical/closed/door_vertical_closed_01.png",
+        verticalOpen: "/sprites/maps/tech/doors/vertical/open/door_vertical_open_01.png",
       },
       chests: {
-        closed: ["/sprites/maps/lighting/interactables/chest/closed/sprite_0047.png"],
-        open: ["/sprites/maps/lighting/interactables/chest/open/sprite_0044.png"],
+        closed: ["/sprites/maps/tech/interactables/chest/closed/chest_closed_01.png"],
+        open: ["/sprites/maps/tech/interactables/chest/open/chest_open_01.png"],
+      },
+      decorations: {
+        floor: ["/sprites/maps/tech/decorations/floor/decor_floor_01.png"],
+        medium: ["/sprites/maps/tech/decorations/medium/decor_medium_01.png"],
+        wall: ["/sprites/maps/tech/decorations/wall/decor_wall_01.png"],
+      },
+      environment: {
+        ambient: ["/sprites/maps/tech/environment/ambient/env_ambient_01.png"],
+        rocks: ["/sprites/maps/tech/environment/rocks/env_rocks_01.png"],
+        ruins: ["/sprites/maps/tech/environment/ruins/env_ruins_01.png"],
+        elemental: ["/sprites/maps/tech/environment/elemental/env_elemental_01.png"],
+      },
+      hazards: {
+        floor: ["/sprites/maps/tech/hazards/floor/hazard_floor_01.png"],
+      },
+      landmarks: {
+        monolith: ["/sprites/maps/tech/landmarks/landmark_01.png"],
       },
     },
   },

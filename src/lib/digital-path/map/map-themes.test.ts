@@ -12,9 +12,9 @@ import { RunRNG } from "./rng";
 
 test("MAP_THEMES configuration defaults", () => {
   assert.equal(MAP_THEMES.lighting.enabled, true, "lighting must be enabled by default");
-  assert.equal(MAP_THEMES.fire.enabled, false, "fire must be disabled until sprites sliced");
-  assert.equal(MAP_THEMES.ice.enabled, false, "ice must be disabled until sprites sliced");
-  assert.equal(MAP_THEMES.tech.enabled, false, "tech must be disabled until sprites sliced");
+  assert.equal(MAP_THEMES.fire.enabled, true, "fire must be enabled after slicing");
+  assert.equal(MAP_THEMES.ice.enabled, true, "ice must be enabled after slicing");
+  assert.equal(MAP_THEMES.tech.enabled, true, "tech must be enabled after slicing");
 });
 
 test("normalizeThemeId handles aliases and invalid inputs", () => {
@@ -29,19 +29,25 @@ test("normalizeThemeId handles aliases and invalid inputs", () => {
 });
 
 test("Case A: Only lighting enabled returns 100% lighting", () => {
-  setThemeEnabled("lighting", true);
-  setThemeEnabled("fire", false);
-  setThemeEnabled("ice", false);
-  setThemeEnabled("tech", false);
+  try {
+    setThemeEnabled("lighting", true);
+    setThemeEnabled("fire", false);
+    setThemeEnabled("ice", false);
+    setThemeEnabled("tech", false);
 
-  const available = getAvailableThemes();
-  assert.equal(available.length, 1);
-  assert.equal(available[0].id, "lighting");
+    const available = getAvailableThemes();
+    assert.equal(available.length, 1);
+    assert.equal(available[0].id, "lighting");
 
-  const rng = new RunRNG(42);
-  for (let i = 0; i < 20; i++) {
-    const picked = pickRandomTheme(rng);
-    assert.equal(picked.id, "lighting");
+    const rng = new RunRNG(42);
+    for (let i = 0; i < 20; i++) {
+      const picked = pickRandomTheme(rng);
+      assert.equal(picked.id, "lighting");
+    }
+  } finally {
+    setThemeEnabled("fire", true);
+    setThemeEnabled("ice", true);
+    setThemeEnabled("tech", true);
   }
 });
 
@@ -64,34 +70,27 @@ test("Case B: lighting and fire enabled picks only between those two", () => {
     }
     assert.equal(pickedIds.size, 2, "Must have picked both enabled themes");
   } finally {
-    // Restore default
-    setThemeEnabled("fire", false);
+    setThemeEnabled("ice", true);
+    setThemeEnabled("tech", true);
   }
 });
 
 test("Case C: All themes enabled randomly samples across all 4", () => {
-  try {
-    setThemeEnabled("lighting", true);
-    setThemeEnabled("fire", true);
-    setThemeEnabled("ice", true);
-    setThemeEnabled("tech", true);
+  setThemeEnabled("lighting", true);
+  setThemeEnabled("fire", true);
+  setThemeEnabled("ice", true);
+  setThemeEnabled("tech", true);
 
-    const available = getAvailableThemes();
-    assert.equal(available.length, 4);
+  const available = getAvailableThemes();
+  assert.equal(available.length, 4);
 
-    const pickedIds = new Set<string>();
-    const rng = new RunRNG(999);
-    for (let i = 0; i < 100; i++) {
-      const picked = pickRandomTheme(rng);
-      pickedIds.add(picked.id);
-    }
-    assert.equal(pickedIds.size, 4, "Must have picked all 4 enabled themes");
-  } finally {
-    // Restore defaults
-    setThemeEnabled("fire", false);
-    setThemeEnabled("ice", false);
-    setThemeEnabled("tech", false);
+  const pickedIds = new Set<string>();
+  const rng = new RunRNG(999);
+  for (let i = 0; i < 100; i++) {
+    const picked = pickRandomTheme(rng);
+    pickedIds.add(picked.id);
   }
+  assert.equal(pickedIds.size, 4, "Must have picked all 4 enabled themes");
 });
 
 test("Case D: All disabled falls back safely to lighting with warning", () => {
@@ -101,10 +100,16 @@ test("Case D: All disabled falls back safely to lighting with warning", () => {
     setThemeEnabled("ice", false);
     setThemeEnabled("tech", false);
 
-    const picked = pickRandomTheme();
-    assert.equal(picked.id, "lighting", "Must safely fallback to lighting");
+    const available = getAvailableThemes();
+    assert.equal(available.length, 0);
+
+    const rng = new RunRNG(777);
+    const fallback = pickRandomTheme(rng);
+    assert.equal(fallback.id, "lighting", "Must safely fallback to lighting");
   } finally {
-    // Restore default
     setThemeEnabled("lighting", true);
+    setThemeEnabled("fire", true);
+    setThemeEnabled("ice", true);
+    setThemeEnabled("tech", true);
   }
 });

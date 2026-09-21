@@ -154,7 +154,7 @@ export class DigitalPathGame {
 
     this.currentRoomNumber = Math.max(1, Math.min(TOTAL_ROOMS, options.floorNumber || 1));
     this.currentRoomIndex = this.currentRoomNumber - 1;
-    this.runTheme = pickRandomTheme(new RunRNG(options.seed));
+    this.runTheme = options.themeId ? getMapTheme(options.themeId) : pickRandomTheme(new RunRNG(options.seed));
     this.run = createFiniteRun(options.seed, this.currentRoomNumber, this.runTheme.id);
     this.generatedRoomIds.clear();
     console.log(`[Phaser Runtime] Run created. Theme: ${this.runTheme.id} (${this.runTheme.name}) for room ${this.currentRoomNumber}`);
@@ -367,6 +367,57 @@ export class DigitalPathGame {
           theme.tiles.chests.open.forEach((p, idx) => {
             this.load.image(`theme_${theme.id}_chest_open_${idx}`, p);
           });
+
+          // Corners autotiling sprites
+          if (theme.tiles.corners) {
+            if (theme.tiles.corners.outerTopLeft) this.load.image(`theme_${theme.id}_corner_outer_tl`, theme.tiles.corners.outerTopLeft);
+            if (theme.tiles.corners.outerTopRight) this.load.image(`theme_${theme.id}_corner_outer_tr`, theme.tiles.corners.outerTopRight);
+            if (theme.tiles.corners.outerBottomLeft) this.load.image(`theme_${theme.id}_corner_outer_bl`, theme.tiles.corners.outerBottomLeft);
+            if (theme.tiles.corners.outerBottomRight) this.load.image(`theme_${theme.id}_corner_outer_br`, theme.tiles.corners.outerBottomRight);
+            if (theme.tiles.corners.innerTopLeft) this.load.image(`theme_${theme.id}_corner_inner_tl`, theme.tiles.corners.innerTopLeft);
+            if (theme.tiles.corners.innerTopRight) this.load.image(`theme_${theme.id}_corner_inner_tr`, theme.tiles.corners.innerTopRight);
+            if (theme.tiles.corners.innerBottomLeft) this.load.image(`theme_${theme.id}_corner_inner_bl`, theme.tiles.corners.innerBottomLeft);
+            if (theme.tiles.corners.innerBottomRight) this.load.image(`theme_${theme.id}_corner_inner_br`, theme.tiles.corners.innerBottomRight);
+          }
+          // Decorations
+          if (theme.tiles.decorations) {
+            (theme.tiles.decorations.floor ?? []).forEach((p, idx) => {
+              this.load.image(`theme_${theme.id}_decor_floor_${idx}`, p);
+            });
+            (theme.tiles.decorations.medium ?? []).forEach((p, idx) => {
+              this.load.image(`theme_${theme.id}_decor_med_${idx}`, p);
+            });
+            (theme.tiles.decorations.wall ?? []).forEach((p, idx) => {
+              this.load.image(`theme_${theme.id}_decor_wall_${idx}`, p);
+            });
+          }
+          // Environment
+          if (theme.tiles.environment) {
+            (theme.tiles.environment.ambient ?? []).forEach((p, idx) => {
+              this.load.image(`theme_${theme.id}_env_ambient_${idx}`, p);
+            });
+            (theme.tiles.environment.rocks ?? []).forEach((p, idx) => {
+              this.load.image(`theme_${theme.id}_env_rocks_${idx}`, p);
+            });
+            (theme.tiles.environment.ruins ?? []).forEach((p, idx) => {
+              this.load.image(`theme_${theme.id}_env_ruins_${idx}`, p);
+            });
+            (theme.tiles.environment.elemental ?? []).forEach((p, idx) => {
+              this.load.image(`theme_${theme.id}_env_elem_${idx}`, p);
+            });
+          }
+          // Hazards
+          if (theme.tiles.hazards) {
+            (theme.tiles.hazards.floor ?? []).forEach((p, idx) => {
+              this.load.image(`theme_${theme.id}_hazard_floor_${idx}`, p);
+            });
+          }
+          // Landmarks
+          if (theme.tiles.landmarks) {
+            (theme.tiles.landmarks.monolith ?? []).forEach((p, idx) => {
+              this.load.image(`theme_${theme.id}_landmark_mono_${idx}`, p);
+            });
+          }
         }
 
         // Fallback / legacy tilesets
@@ -893,7 +944,16 @@ export class DigitalPathGame {
         const roomSeed = (options.seed ^ (this.currentRoomNumber * 2654435761)) >>> 0;
         const biome = getBiomeForFloor(this.currentRoomNumber);
         const kind = getRoomKind(this.currentRoomNumber);
-        const theme = self.runTheme || MAP_THEMES.lighting;
+        const biomeThemeMap: Record<string, string> = {
+          storm: "lighting",
+          fire: "fire",
+          ice: "ice",
+          digital: "tech",
+          dark: "tech",
+        };
+        const activeThemeId = options.themeId || biomeThemeMap[biome] || self.runTheme?.id || "lighting";
+        const theme = getMapTheme(activeThemeId);
+        self.runTheme = theme;
 
         const room = generateSingleRoom(
           `room_${String(this.currentRoomNumber).padStart(2, "0")}`,
@@ -1052,10 +1112,10 @@ export class DigitalPathGame {
               }
 
               if (!this.textures.exists(textureKey)) {
-                // Fallback to primary normal tile
+                // Fallback to primary normal tile of current theme
                 textureKey = this.textures.exists(`theme_${theme.id}_floor_0`)
                   ? `theme_${theme.id}_floor_0`
-                  : "tile_stone";
+                  : (this.textures.exists("tile_stone") ? "tile_stone" : "__WHITE");
               }
 
               const tile = this.add.image(posX + TILE_SIZE / 2, posY + TILE_SIZE / 2, textureKey);
@@ -1077,39 +1137,60 @@ export class DigitalPathGame {
               const hasFloorLeft  = isFloorOrWalkable(y, x - 1);
               const isOuterBorder = x === 0 || x === room.width - 1 || y === 0 || y === room.height - 1;
 
+              const hasFloorBR = isFloorOrWalkable(y + 1, x + 1);
+              const hasFloorBL = isFloorOrWalkable(y + 1, x - 1);
+              const hasFloorTR = isFloorOrWalkable(y - 1, x + 1);
+              const hasFloorTL = isFloorOrWalkable(y - 1, x - 1);
+
               let wallKey: string;
 
-              const hasAnyAdjacentFloor = hasFloorBelow || hasFloorAbove || hasFloorLeft || hasFloorRight;
-              const hasHorizontalFloor = hasFloorBelow || hasFloorAbove;
-              const hasVerticalFloor   = hasFloorLeft  || hasFloorRight;
-
-              if (!hasAnyAdjacentFloor) {
+              // Convex Outer Corners (wall corner surrounded on 2 adjacent sides by floor)
+              if (hasFloorBelow && hasFloorRight && this.textures.exists(`theme_${theme.id}_corner_outer_tl`)) {
+                wallKey = `theme_${theme.id}_corner_outer_tl`;
+              } else if (hasFloorBelow && hasFloorLeft && this.textures.exists(`theme_${theme.id}_corner_outer_tr`)) {
+                wallKey = `theme_${theme.id}_corner_outer_tr`;
+              } else if (hasFloorAbove && hasFloorRight && this.textures.exists(`theme_${theme.id}_corner_outer_bl`)) {
+                wallKey = `theme_${theme.id}_corner_outer_bl`;
+              } else if (hasFloorAbove && hasFloorLeft && this.textures.exists(`theme_${theme.id}_corner_outer_br`)) {
+                wallKey = `theme_${theme.id}_corner_outer_br`;
+              }
+              // Concave Inner Corners (wall corner where orthogonal neighbors are walls but diagonal is floor)
+              else if (!hasFloorBelow && !hasFloorRight && hasFloorBR && this.textures.exists(`theme_${theme.id}_corner_inner_tl`)) {
+                wallKey = `theme_${theme.id}_corner_inner_tl`;
+              } else if (!hasFloorBelow && !hasFloorLeft && hasFloorBL && this.textures.exists(`theme_${theme.id}_corner_inner_tr`)) {
+                wallKey = `theme_${theme.id}_corner_inner_tr`;
+              } else if (!hasFloorAbove && !hasFloorRight && hasFloorTR && this.textures.exists(`theme_${theme.id}_corner_inner_bl`)) {
+                wallKey = `theme_${theme.id}_corner_inner_bl`;
+              } else if (!hasFloorAbove && !hasFloorLeft && hasFloorTL && this.textures.exists(`theme_${theme.id}_corner_inner_br`)) {
+                wallKey = `theme_${theme.id}_corner_inner_br`;
+              }
+              // Orthogonal edges:
+              else if (!hasFloorBelow && !hasFloorAbove && !hasFloorLeft && !hasFloorRight) {
                 // Deep interior wall (no floor neighbor): use solid/vertical
                 wallKey = theme.tiles.walls.vertical.length > 0
                   ? `theme_${theme.id}_wall_v_0`
                   : `theme_${theme.id}_wall_h_0`;
-              } else if (hasFloorBelow && !hasVerticalFloor) {
+              } else if (hasFloorBelow && !hasFloorLeft && !hasFloorRight) {
                 // North wall border (walkable floor is below) → horizontal slab
                 wallKey = theme.tiles.walls.top.length > 0
                   ? `theme_${theme.id}_wall_top_0`
                   : `theme_${theme.id}_wall_h_0`;
-              } else if (hasFloorAbove && !hasVerticalFloor) {
+              } else if (hasFloorAbove && !hasFloorLeft && !hasFloorRight) {
                 // South wall border (walkable floor is above) → horizontal slab
                 wallKey = theme.tiles.walls.bottom.length > 0
                   ? `theme_${theme.id}_wall_bottom_0`
                   : `theme_${theme.id}_wall_h_0`;
-              } else if (hasFloorRight && !hasHorizontalFloor) {
+              } else if (hasFloorRight && !hasFloorAbove && !hasFloorBelow) {
                 // West column border (walkable floor is to right) → vertical sprite
                 wallKey = theme.tiles.walls.left.length > 0
                   ? `theme_${theme.id}_wall_left_0`
                   : `theme_${theme.id}_wall_v_0`;
-              } else if (hasFloorLeft && !hasHorizontalFloor) {
+              } else if (hasFloorLeft && !hasFloorAbove && !hasFloorBelow) {
                 // East column border (walkable floor is to left) → vertical sprite
                 wallKey = theme.tiles.walls.right.length > 0
                   ? `theme_${theme.id}_wall_right_0`
                   : `theme_${theme.id}_wall_v_0`;
-              } else if (hasHorizontalFloor) {
-                // Mixed corner: horizontal neighbor wins for ledge continuity
+              } else if (hasFloorBelow || hasFloorAbove) {
                 wallKey = `theme_${theme.id}_wall_h_0`;
               } else {
                 wallKey = `theme_${theme.id}_wall_v_0`;
@@ -1133,6 +1214,95 @@ export class DigitalPathGame {
                 this.roomTileObjects.push(rim);
               }
             }
+          }
+        }
+
+        // ── 1.5 RENDER SEMANTIC CLUSTERS & LANDMARKS ─────────────────────────
+        if (room.clusters && room.clusters.length > 0) {
+          for (const cluster of room.clusters) {
+            let texKey: string;
+            let isHazard = false;
+
+            switch (cluster.type) {
+              case "rubble":
+                texKey = this.textures.exists(`theme_${theme.id}_env_rocks_0`)
+                  ? `theme_${theme.id}_env_rocks_0`
+                  : (this.textures.exists(`theme_${theme.id}_decor_floor_0`) ? `theme_${theme.id}_decor_floor_0` : `theme_${theme.id}_floor_var_0`);
+                break;
+              case "crystal":
+                texKey = this.textures.exists(`theme_${theme.id}_env_elem_0`)
+                  ? `theme_${theme.id}_env_elem_0`
+                  : (this.textures.exists(`theme_${theme.id}_decor_floor_1`) ? `theme_${theme.id}_decor_floor_1` : `theme_${theme.id}_floor_decor_0`);
+                break;
+              case "energy":
+                texKey = this.textures.exists(`theme_${theme.id}_env_ambient_0`)
+                  ? `theme_${theme.id}_env_ambient_0`
+                  : (this.textures.exists(`theme_${theme.id}_decor_floor_0`) ? `theme_${theme.id}_decor_floor_0` : `theme_${theme.id}_floor_decor_1`);
+                break;
+              case "tech":
+                texKey = this.textures.exists(`theme_${theme.id}_decor_med_0`)
+                  ? `theme_${theme.id}_decor_med_0`
+                  : (this.textures.exists(`theme_${theme.id}_env_ruins_0`) ? `theme_${theme.id}_env_ruins_0` : `theme_${theme.id}_floor_decor_0`);
+                break;
+              case "hazard":
+                texKey = this.textures.exists(`theme_${theme.id}_hazard_floor_0`)
+                  ? `theme_${theme.id}_hazard_floor_0`
+                  : `theme_${theme.id}_floor_crack_0`;
+                isHazard = true;
+                break;
+              case "structure":
+              default:
+                texKey = this.textures.exists(`theme_${theme.id}_decor_wall_0`)
+                  ? `theme_${theme.id}_decor_wall_0`
+                  : (this.textures.exists(`theme_${theme.id}_env_ruins_0`) ? `theme_${theme.id}_env_ruins_0` : `theme_${theme.id}_wall_spec_0`);
+                break;
+            }
+
+            for (const tilePos of cluster.tiles) {
+              if (!this.textures.exists(texKey)) continue;
+              const cX = tilePos.x * TILE_SIZE + TILE_SIZE / 2;
+              const cY = tilePos.y * TILE_SIZE + TILE_SIZE / 2;
+              const cSprite = this.add.image(cX, cY, texKey);
+              cSprite.setDisplaySize(TILE_SIZE * 0.88, TILE_SIZE * 0.88);
+              cSprite.setDepth(isHazard ? RENDER_DEPTH.FLOOR_HAZARD : RENDER_DEPTH.FLOOR_DECOR);
+              if (cluster.type === "energy" && theme.accentTint) {
+                cSprite.setTint(theme.accentTint);
+              }
+              this.roomTileObjects.push(cSprite);
+            }
+          }
+        }
+
+        // Render Landmark (Boss, Arena, Event rooms)
+        if (room.landmark) {
+          const lm = room.landmark;
+          const lmKey = this.textures.exists(`theme_${theme.id}_landmark_mono_0`)
+            ? `theme_${theme.id}_landmark_mono_0`
+            : (this.textures.exists(`theme_${theme.id}_decor_med_0`) ? `theme_${theme.id}_decor_med_0` : "tile_circuit");
+
+          const lmWidthPx = (lm.size?.width || 2) * TILE_SIZE;
+          const lmHeightPx = (lm.size?.height || 2) * TILE_SIZE;
+          const lmCenterX = lm.tileX * TILE_SIZE + lmWidthPx / 2;
+          const lmCenterY = lm.tileY * TILE_SIZE + lmHeightPx / 2;
+
+          if (this.textures.exists(lmKey)) {
+            const lmSprite = this.add.image(lmCenterX, lmCenterY, lmKey);
+            lmSprite.setDisplaySize(lmWidthPx * 0.9, lmHeightPx * 0.9);
+            lmSprite.setDepth(RENDER_DEPTH.WALL_BASE);
+            if (theme.accentTint) {
+              lmSprite.setTint(theme.accentTint);
+            }
+            this.roomTileObjects.push(lmSprite);
+
+            // Subtle pulsing glow for landmark
+            this.tweens.add({
+              targets: lmSprite,
+              alpha: { from: 0.75, to: 1.0 },
+              duration: 1600,
+              yoyo: true,
+              repeat: -1,
+              ease: "Sine.easeInOut",
+            });
           }
         }
 
@@ -1178,11 +1348,32 @@ export class DigitalPathGame {
         this.doorLabel.setDepth(RENDER_DEPTH.ENTITIES_OVERLAY);
         this.roomTileObjects.push(this.doorLabel);
 
-        // 4. Place Props
+        // 4. Place Props at Guaranteed Walkable Floor Location (closest to center)
         this.isChestOpened = false;
         this.isInteractivePropUsed = false;
-        const centerX = Math.floor(room.width / 2) * TILE_SIZE + TILE_SIZE / 2;
-        const centerY = Math.floor(room.height / 2) * TILE_SIZE + TILE_SIZE / 2;
+
+        const midX = Math.floor(room.width / 2);
+        const midY = Math.floor(room.height / 2);
+        let bestPropTile = { x: midX, y: midY };
+        let minPropDist = Infinity;
+
+        for (let py = 1; py < room.height - 1; py++) {
+          for (let px = 1; px < room.width - 1; px++) {
+            if (room.tiles[py]?.[px] === "floor") {
+              if ((px === validSpawn.x && py === validSpawn.y) || (px === room.exit.x && py === room.exit.y)) {
+                continue;
+              }
+              const dist = Math.hypot(px - midX, py - midY);
+              if (dist < minPropDist) {
+                minPropDist = dist;
+                bestPropTile = { x: px, y: py };
+              }
+            }
+          }
+        }
+
+        const centerX = bestPropTile.x * TILE_SIZE + TILE_SIZE / 2;
+        const centerY = bestPropTile.y * TILE_SIZE + TILE_SIZE / 2;
 
         if (room.kind === "treasure") {
           const chestClosedKey = this.textures.exists(`theme_${theme.id}_chest_closed_0`)
@@ -1439,12 +1630,32 @@ export class DigitalPathGame {
         this.debugOverlayContainer.setDepth(9999);
 
         const room = this.activeRoom;
+
+        // Room Header Info Banner
+        const infoText = `[DEBUG OVERLAY (TAB)] Room: ${room.id} | Shape: ${room.shape || "arena"} | Biome: ${room.biome} | Theme: ${room.theme || "lighting"}\nFloor: ${room.floor} | Kind: ${room.kind} | EmptySpace: ${room.emptySpaceRatio ?? "N/A"} | Budget: ${room.budgetUsed ?? "N/A"}`;
+        const headerBg = this.add.graphics();
+        headerBg.fillStyle(0x000000, 0.85);
+        headerBg.fillRect(8, 8, Math.min(520, room.width * TILE_SIZE - 16), 34);
+        headerBg.lineStyle(1, 0x00f0ff, 0.9);
+        headerBg.strokeRect(8, 8, Math.min(520, room.width * TILE_SIZE - 16), 34);
+        this.debugOverlayContainer.add(headerBg);
+
+        const headerTxt = this.add.text(14, 12, infoText, {
+          fontFamily: "monospace",
+          fontSize: "9px",
+          color: "#00f0ff",
+          fontStyle: "bold",
+        });
+        this.debugOverlayContainer.add(headerTxt);
+
+        // Tile Grid Walkability Overlay
         for (let y = 0; y < room.height; y++) {
           for (let x = 0; x < room.width; x++) {
             const posX = x * TILE_SIZE;
             const posY = y * TILE_SIZE;
             const tileType = room.tiles[y][x];
             const isExit = x === room.exit?.x && y === room.exit?.y;
+            const isSpawn = x === room.spawn?.x && y === room.spawn?.y;
             const hasProp = room.props?.some((p) => p.tileX === x && p.tileY === y);
 
             let label = "F";
@@ -1453,15 +1664,18 @@ export class DigitalPathGame {
               label = "W";
               strokeColor = 0xff3333;
             } else if (isExit) {
-              label = "D";
+              label = "EXIT";
               strokeColor = 0xffff00;
+            } else if (isSpawn) {
+              label = "SPWN";
+              strokeColor = 0x00ffff;
             } else if (hasProp) {
-              label = "O";
+              label = "PROP";
               strokeColor = 0xff8800;
             }
 
             const rect = this.add.graphics();
-            rect.lineStyle(1, strokeColor, 0.45);
+            rect.lineStyle(1, strokeColor, 0.35);
             rect.strokeRect(posX, posY, TILE_SIZE, TILE_SIZE);
             this.debugOverlayContainer.add(rect);
 
@@ -1474,6 +1688,69 @@ export class DigitalPathGame {
             });
             this.debugOverlayContainer.add(txt);
           }
+        }
+
+        // Semantic Clusters Debug Overlay
+        if (room.clusters && room.clusters.length > 0) {
+          const clusterColors: Record<string, number> = {
+            rubble: 0xaa8866,
+            crystal: 0x00ffff,
+            energy: 0xffff00,
+            tech: 0x00ffcc,
+            hazard: 0xff4400,
+            structure: 0xaa44ff,
+          };
+
+          for (const c of room.clusters) {
+            const cColor = clusterColors[c.type] || 0xffffff;
+            for (const t of c.tiles) {
+              const cRect = this.add.graphics();
+              cRect.lineStyle(2, cColor, 0.85);
+              cRect.strokeRect(t.x * TILE_SIZE + 2, t.y * TILE_SIZE + 2, TILE_SIZE - 4, TILE_SIZE - 4);
+              this.debugOverlayContainer.add(cRect);
+            }
+
+            const cLabel = this.add.text(
+              c.centerX * TILE_SIZE + TILE_SIZE / 2,
+              c.centerY * TILE_SIZE - 4,
+              `[${c.type.toUpperCase()}]`,
+              {
+                fontFamily: "monospace",
+                fontSize: "8px",
+                color: `#${cColor.toString(16).padStart(6, "0")}`,
+                backgroundColor: "rgba(0,0,0,0.85)",
+                fontStyle: "bold",
+                padding: { x: 2, y: 1 },
+              }
+            ).setOrigin(0.5);
+            this.debugOverlayContainer.add(cLabel);
+          }
+        }
+
+        // Landmark Debug Overlay
+        if (room.landmark) {
+          const lm = room.landmark;
+          const lmW = (lm.size?.width || 2) * TILE_SIZE;
+          const lmH = (lm.size?.height || 2) * TILE_SIZE;
+          const lmRect = this.add.graphics();
+          lmRect.lineStyle(3, 0xff00ff, 0.9);
+          lmRect.strokeRect(lm.tileX * TILE_SIZE, lm.tileY * TILE_SIZE, lmW, lmH);
+          this.debugOverlayContainer.add(lmRect);
+
+          const lmLbl = this.add.text(
+            lm.tileX * TILE_SIZE + lmW / 2,
+            lm.tileY * TILE_SIZE - 6,
+            `⭐ LANDMARK: ${lm.name}`,
+            {
+              fontFamily: "monospace",
+              fontSize: "9px",
+              color: "#ff00ff",
+              backgroundColor: "rgba(0,0,0,0.85)",
+              fontStyle: "bold",
+              padding: { x: 3, y: 1 },
+            }
+          ).setOrigin(0.5);
+          this.debugOverlayContainer.add(lmLbl);
         }
       }
 
@@ -1768,42 +2045,65 @@ export class DigitalPathGame {
         const origin = this.getPlayerCenter();
         const spawnOffset = 32;
         const spawnPos = getAttackSpawnPosition(origin, this.facingDirection, spawnOffset);
-        const speed = this.partnerProfile.speciesId === "veemon" ? 360 : 280;
+        const b2Vfx = this.vfxProfile.basic2;
+        const speed = b2Vfx.speed || (this.partnerProfile.speciesId === "veemon" ? 360 : 280);
         const { vx, vy } = applyDirectionalVelocity(this.facingDirection, speed);
         const rotation = getProjectileRotation(this.facingDirection);
 
         this.recordAttackEvent("basic_2", this.facingDirection, spawnPos.x, spawnPos.y, vx, vy, rotation);
 
-        const b2Vfx = this.vfxProfile.basic2;
-        let projTexture = b2Vfx.projectileTextureKey;
-        if (!projTexture || !this.textures.exists(projTexture)) {
-          projTexture = `${manifest.id}_projectile_dragon_0`;
-        }
-        if (!this.textures.exists(projTexture)) {
-          projTexture = `${manifest.id}_projectile_laser_0`;
-        }
-        if (!this.textures.exists(projTexture)) {
-          projTexture = `${manifest.id}_attack_basic_2_0`;
-        }
+        // Visual charge feedback burst
+        const chargeCircle = this.add.graphics();
+        const chargeColor = attackConfig.projectileColor ?? 0x00ffff;
+        chargeCircle.lineStyle(2, chargeColor, 0.9);
+        chargeCircle.strokeCircle(spawnPos.x, spawnPos.y, 10);
+        chargeCircle.setDepth(13);
+        this.tweens.add({
+          targets: chargeCircle,
+          scaleX: 1.8,
+          scaleY: 1.8,
+          alpha: 0,
+          duration: 100,
+          onComplete: () => chargeCircle.destroy(),
+        });
 
-        const projSprite = this.add.sprite(spawnPos.x, spawnPos.y, projTexture);
-        projSprite.setScale(b2Vfx.scale || 0.85);
-        projSprite.setRotation(rotation);
-        // Preserves authentic sprite colors without artificial color tinting
-        projSprite.setDepth(12);
+        // 90ms charge delay before ejecting projectile
+        this.time.delayedCall(90, () => {
+          if (!this.scene.isActive()) return;
 
-        if (b2Vfx.projectileAnimKey && this.anims.exists(b2Vfx.projectileAnimKey)) {
-          projSprite.play(b2Vfx.projectileAnimKey);
-        }
+          let projTexture = b2Vfx.projectileTextureKey;
+          if (!projTexture || !this.textures.exists(projTexture)) {
+            projTexture = `${manifest.id}_projectile_dragon_0`;
+          }
+          if (!this.textures.exists(projTexture)) {
+            projTexture = `${manifest.id}_projectile_laser_0`;
+          }
+          if (!this.textures.exists(projTexture)) {
+            projTexture = `${manifest.id}_attack_basic_2_0`;
+          }
 
-        this.projectiles.push({
-          sprite: projSprite,
-          vx,
-          vy,
-          damage: attackConfig.damage,
-          distanceTraveled: 0,
-          maxDistance: attackConfig.range || 380,
-          statusEffect: attackConfig.statusEffect,
+          const projSprite = this.add.sprite(spawnPos.x, spawnPos.y, projTexture);
+          projSprite.setScale(b2Vfx.scale || 0.85);
+          projSprite.setRotation(rotation);
+          projSprite.setDepth(12);
+
+          if (attackConfig.projectileColor && !b2Vfx.projectileAnimKey) {
+            projSprite.setTint(attackConfig.projectileColor);
+          }
+
+          if (b2Vfx.projectileAnimKey && this.anims.exists(b2Vfx.projectileAnimKey)) {
+            projSprite.play(b2Vfx.projectileAnimKey);
+          }
+
+          this.projectiles.push({
+            sprite: projSprite,
+            vx,
+            vy,
+            damage: attackConfig.damage,
+            distanceTraveled: 0,
+            maxDistance: attackConfig.range || 380,
+            statusEffect: attackConfig.statusEffect,
+          });
         });
 
         this.player.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
@@ -2770,15 +3070,15 @@ export class DigitalPathGame {
                       enemy.currentAnimAction = "idle";
                     }
                   });
+                  const roomSnap = this.currentRoomNumber;
+                  this.time.delayedCall(160, () => {
+                    if (enemy.sprite.active && enemy.state !== "dead" && this.currentRoomNumber === roomSnap && !this.isTransitioning) {
+                      this.spawnEnemyProjectile(enemy.sprite.x, enemy.sprite.y - 10, this.player.x, this.player.y - 15, enemy.attack, enemy.species);
+                    }
+                  });
                 } else {
                   enemy.isAttacking = false;
                 }
-                const roomSnap = this.currentRoomNumber;
-                this.time.delayedCall(160, () => {
-                  if (enemy.sprite.active && enemy.state !== "dead" && this.currentRoomNumber === roomSnap && !this.isTransitioning) {
-                    this.spawnEnemyProjectile(enemy.sprite.x, enemy.sprite.y - 10, this.player.x, this.player.y - 15, enemy.attack, enemy.species);
-                  }
-                });
               }
             } else {
               enemy.state = "idle";
@@ -2792,7 +3092,7 @@ export class DigitalPathGame {
             }
           } else {
             // 2. Melee / Elite / Boss Movement & Attack
-            if (distToPlayer < 360) {
+            if (distToPlayer < 520) {
               enemy.state = "chase";
               if (enemy.currentAnimAction !== "walk" && !enemy.isAttacking) {
                 const walkKey = getEnemyAnimationKey(enemy.species, "walk");
@@ -2807,12 +3107,17 @@ export class DigitalPathGame {
               const nextX = enemy.sprite.x + Math.cos(angle) * moveDist;
               const nextY = enemy.sprite.y + Math.sin(angle) * moveDist;
 
-              const tileX = Math.floor(nextX / TILE_SIZE);
-              const tileY = Math.floor(nextY / TILE_SIZE);
-
-              if (isWalkable({ tiles: this.activeRoom.tiles } as any, tileX, tileY)) {
+              const canMoveBoth = isWalkable({ tiles: this.activeRoom.tiles } as any, Math.floor(nextX / TILE_SIZE), Math.floor(nextY / TILE_SIZE));
+              if (canMoveBoth) {
                 enemy.sprite.x = nextX;
                 enemy.sprite.y = nextY;
+              } else {
+                // Wall sliding along independent axes
+                if (isWalkable({ tiles: this.activeRoom.tiles } as any, Math.floor(nextX / TILE_SIZE), Math.floor(enemy.sprite.y / TILE_SIZE))) {
+                  enemy.sprite.x = nextX;
+                } else if (isWalkable({ tiles: this.activeRoom.tiles } as any, Math.floor(enemy.sprite.x / TILE_SIZE), Math.floor(nextY / TILE_SIZE))) {
+                  enemy.sprite.y = nextY;
+                }
               }
 
               enemy.sprite.setFlipX(this.player.x < enemy.sprite.x);
@@ -2848,20 +3153,20 @@ export class DigitalPathGame {
                       enemy.currentAnimAction = "idle";
                     }
                   });
+
+                  // Check hit upon attack impact frame (120ms) instead of instant damage on frame 0
+                  const roomSnap = this.currentRoomNumber;
+                  this.time.delayedCall(120, () => {
+                    if (!enemy.sprite.active || enemy.state === "dead" || this.currentRoomNumber !== roomSnap || this.isTransitioning) return;
+                    const currentDist = Phaser.Math.Distance.Between(enemy.sprite.x, enemy.sprite.y, this.player.x, this.player.y);
+                    const maxHitDist = enemy.kind === "boss" ? 64 : 48;
+                    if (currentDist <= maxHitDist) {
+                      this.damagePlayer(enemy.attack);
+                    }
+                  });
                 } else {
                   enemy.isAttacking = false;
                 }
-
-                // Check hit upon attack impact frame (120ms) instead of instant damage on frame 0
-                const roomSnap = this.currentRoomNumber;
-                this.time.delayedCall(120, () => {
-                  if (!enemy.sprite.active || enemy.state === "dead" || this.currentRoomNumber !== roomSnap || this.isTransitioning) return;
-                  const currentDist = Phaser.Math.Distance.Between(enemy.sprite.x, enemy.sprite.y, this.player.x, this.player.y);
-                  const maxHitDist = enemy.kind === "boss" ? 64 : 48;
-                  if (currentDist <= maxHitDist) {
-                    this.damagePlayer(enemy.attack);
-                  }
-                });
 
                 // In Phase 2, boss also fires a 4-way projectile spread
                 if (enemy.kind === "boss" && enemy.isEnraged) {

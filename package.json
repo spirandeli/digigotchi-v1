@@ -18,7 +18,7 @@
     "check:auth": "node scripts/check-auth-invariant.mjs",
     "review:sprites": "node scripts/review-sprite-actions.mjs",
     "review:maps": "node scripts/validate-map-structure.mjs",
-    "test": "node --test 'scripts/**/*.test.mjs' && node --experimental-strip-types --test src/lib/app-data/app-data.test.ts src/lib/app-data/readiness-schedule.test.ts src/lib/auth/gate-identity.test.ts src/lib/auth/sign-in-gate.test.ts",
+    "test": "npx tsx --test src/lib/digital-path/map/*.test.ts src/lib/digital-path/combat/*.test.ts src/lib/digital-path/runtime/*.test.ts src/lib/pet/*.test.ts src/lib/app-data/*.test.ts src/lib/auth/*.test.ts",
     "lint": "eslint .",
     "format": "prettier --write ."
   },

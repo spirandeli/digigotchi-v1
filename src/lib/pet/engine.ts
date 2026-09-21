@@ -1,5 +1,4 @@
 import { animationDurationMs, INITIAL_INVENTORY, ITEMS, LINES, type Mood } from "./data";
-import { getSkillForSpecies, QA_XP_MULTIPLIER } from "./skills";
 
 export type DigitalPathProgress = {
   currentFloor: number;
@@ -288,33 +287,6 @@ export function tryEvolve(pet: PetState): { pet: PetState; result: ActionResult 
   return { pet: next, result: { ok: true, msg: `Evoluiu para ${evo.name}!`, animation: "evolve", durationMs: animationDurationMs(next.speciesId, "evolve") } };
 }
 
-
-export function trainSkill(pet: PetState): { pet: PetState; result: ActionResult } {
-  const next = { ...pet, inventory: { ...pet.inventory } };
-  if (next.isSleeping) return { pet: next, result: { ok: false, msg: "Acorde antes de treinar" } };
-  const skill = getSkillForSpecies(next.speciesId);
-  if (!skill) return { pet: next, result: { ok: false, msg: "Habilidade nao configurada" } };
-  if (next.energy < skill.energyCost) {
-    return { pet: next, result: { ok: false, msg: `Energia insuficiente para ${skill.name}` } };
-  }
-
-  next.energy = clamp(next.energy - skill.energyCost);
-  next.happiness = clamp(next.happiness + 3);
-  next.hygiene = clamp(next.hygiene - 2);
-  const gainedXp = skill.xpGain * QA_XP_MULTIPLIER;
-  addXp(next, gainedXp);
-  next.coins += 2;
-
-  return {
-    pet: next,
-    result: {
-      ok: true,
-      msg: `${skill.name} · +${gainedXp} XP`,
-      animation: skill.animation,
-      durationMs: animationDurationMs(next.speciesId, skill.animation),
-    },
-  };
-}
 
 export function useItem(pet: PetState, itemId: string): { pet: PetState; result: ActionResult } {
   const item = ITEMS[itemId];

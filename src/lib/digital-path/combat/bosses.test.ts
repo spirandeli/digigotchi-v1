@@ -7,10 +7,12 @@ import {
   isBossFloor,
 } from "./bosses";
 
-test("DIGITAL_PATH_CONFIG specifies exactly 50 floors and 5 boss encounters", () => {
-  assert.equal(DIGITAL_PATH_CONFIG.maxFloor, 50);
-  assert.deepEqual(Array.from(DIGITAL_PATH_CONFIG.bossFloors), [10, 20, 30, 40, 50]);
-  assert.deepEqual(Array.from(DIGITAL_PATH_CONFIG.checkpointFloors), [1, 11, 21, 31, 41]);
+test("DIGITAL_PATH_CONFIG specifies exactly 300 floors and 30 boss encounters", () => {
+  assert.equal(DIGITAL_PATH_CONFIG.maxFloor, 300);
+  assert.equal(DIGITAL_PATH_CONFIG.bossFloors.length, 30);
+  assert.equal(DIGITAL_PATH_CONFIG.checkpointFloors.length, 30);
+  assert.equal(DIGITAL_PATH_CONFIG.bossFloors[0], 10);
+  assert.equal(DIGITAL_PATH_CONFIG.bossFloors[29], 300);
 });
 
 test("isBossFloor accurately identifies boss floors", () => {

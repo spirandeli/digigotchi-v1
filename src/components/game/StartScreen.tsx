@@ -27,7 +27,7 @@ export function StartScreen() {
               Digital Pet
             </h1>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
-              Escolha uma linha, cuide todos os dias e evolua. O tempo continua mesmo quando voce sai.
+              Escolha uma linha, cuide todos os dias e evolua. O tempo continua mesmo quando você sai.
             </p>
           </div>
         </div>
@@ -44,7 +44,7 @@ export function StartScreen() {
               onClick={startNew}
               className="ds-button ds-button-primary h-12 text-sm font-semibold transition-transform duration-150"
             >
-              Comecar
+              Começar
             </button>
             {saved ? (
               <button
