@@ -643,6 +643,10 @@ export class DigitalPathGame {
         console.log("[Phaser Runtime] DigitalPathScene.create() activeScene assigned, room:", this.currentRoomNumber);
         if (typeof window !== "undefined") {
           (window as any).__digitalPathActiveScene = this;
+          const urlParams = new URLSearchParams(window.location.search);
+          if (urlParams.get("mapDebug") === "1") {
+            this.debugOverlayVisible = true;
+          }
         }
 
         // Load First Room
@@ -1630,17 +1634,19 @@ export class DigitalPathGame {
         this.debugOverlayContainer.setDepth(9999);
 
         const room = this.activeRoom;
+        const micro = room.microbiomes?.[0];
+        const metrics = room.metrics;
 
         // Room Header Info Banner
-        const infoText = `[DEBUG OVERLAY (TAB)] Room: ${room.id} | Shape: ${room.shape || "arena"} | Biome: ${room.biome} | Theme: ${room.theme || "lighting"}\nFloor: ${room.floor} | Kind: ${room.kind} | EmptySpace: ${room.emptySpaceRatio ?? "N/A"} | Budget: ${room.budgetUsed ?? "N/A"}`;
+        const infoText = `[DEBUG OVERLAY (TAB)] Room: ${room.id} | Macro: ${room.macroArchetype || "standard"} | Micro: ${micro?.name || "N/A"}\nFloor: ${room.floor} | Kind: ${room.kind} | EmptySpace: ${room.emptySpaceRatio ?? "N/A"} | BFS: ${metrics?.bfsReachableCount ?? "OK"}\nNodes: ${room.graph?.nodes.length || 1} | Loops: ${room.graph?.loopCount || 0} | DeadEnds: ${room.graph?.deadEndCount || 0} | Budget: ${room.budgetUsed ?? "N/A"}`;
         const headerBg = this.add.graphics();
-        headerBg.fillStyle(0x000000, 0.85);
-        headerBg.fillRect(8, 8, Math.min(520, room.width * TILE_SIZE - 16), 34);
+        headerBg.fillStyle(0x000000, 0.88);
+        headerBg.fillRect(8, 8, Math.min(580, room.width * TILE_SIZE - 16), 46);
         headerBg.lineStyle(1, 0x00f0ff, 0.9);
-        headerBg.strokeRect(8, 8, Math.min(520, room.width * TILE_SIZE - 16), 34);
+        headerBg.strokeRect(8, 8, Math.min(580, room.width * TILE_SIZE - 16), 46);
         this.debugOverlayContainer.add(headerBg);
 
-        const headerTxt = this.add.text(14, 12, infoText, {
+        const headerTxt = this.add.text(14, 10, infoText, {
           fontFamily: "monospace",
           fontSize: "9px",
           color: "#00f0ff",
