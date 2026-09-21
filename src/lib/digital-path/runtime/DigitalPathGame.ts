@@ -63,6 +63,20 @@ import {
   getDirectionalVfxPosition,
   getVfxTransform,
 } from "../combat/visual-effects";
+import { WeaponManager } from "../combat/WeaponManager";
+import {
+  computeMovementVector,
+  createDashState,
+  canDash,
+  startDash,
+  updateDash,
+  type DashState,
+} from "../combat/PlayerController";
+import { calculateDamage } from "../combat/DamageSystem";
+import { PickupManager, type XpOrbState } from "../combat/PickupManager";
+import { LevelUpManager } from "../combat/LevelUpManager";
+import { ENEMY_TEMPLATES } from "../combat/enemies";
+import { EnemyDirector } from "../combat/EnemyDirector";
 
 type PhaserModule = typeof import("phaser");
 
@@ -76,7 +90,6 @@ type ActiveEnemy = {
   species: string;
   currentAnimAction?: string;
   sprite: Phaser.GameObjects.Sprite;
-  hpBar: Phaser.GameObjects.Graphics;
   currentHp: number;
   maxHp: number;
   attack: number;
@@ -124,10 +137,10 @@ export class DigitalPathGame {
   private isStopped = false;
 
   async start(options: DigitalPathStartOptions): Promise<boolean> {
-    this.isStopped = false;
     if (this.game) {
       this.stop();
     }
+    this.isStopped = false;
 
     if (options.input.speciesId !== options.manifest.id) {
       throw new Error("Sprite manifest does not match the current Digimon");
@@ -236,6 +249,16 @@ export class DigitalPathGame {
       private hazardGraphics: Phaser.GameObjects.Graphics[] = [];
 
       private isPlayerAttacking = false;
+      // Combat V2 — modular controllers (BLOCK 1)
+      private weaponManager = new WeaponManager();
+      private dashState: DashState = createDashState();
+      // BLOCK 5+6: Physical XP drops and in-run progression
+      private pickupManager = new PickupManager();
+      private levelUpManager = new LevelUpManager();
+      private enemyDirector = new EnemyDirector();
+      private enemyHpBarGraphics!: Phaser.GameObjects.Graphics;
+      private pickupGraphicsLayer!: Phaser.GameObjects.Graphics;
+      private readonly MAGNET_RADIUS = 130;
       private facing: FacingDirection = "right";
 
       public get facingDirection(): FacingDirection {
@@ -598,6 +621,22 @@ export class DigitalPathGame {
         this.isTransitioning = false;
         this.isHitstopped = false;
         this.isPlayerAttacking = false;
+        // Initialize Combat V2 controllers
+        this.weaponManager.reset();
+        this.dashState = createDashState();
+        this.pickupManager.reset();
+        this.levelUpManager.reset();
+        if (this.enemyHpBarGraphics) {
+          this.enemyHpBarGraphics.destroy();
+        }
+        this.enemyHpBarGraphics = this.add.graphics();
+        this.enemyHpBarGraphics.setDepth(RENDER_DEPTH.ENTITIES_OVERLAY);
+
+        if (this.pickupGraphicsLayer) {
+          this.pickupGraphicsLayer.destroy();
+        }
+        this.pickupGraphicsLayer = this.add.graphics();
+        this.pickupGraphicsLayer.setDepth((RENDER_DEPTH.ENTITIES as number) - 1);
 
         // Focus canvas so key events are received immediately
         try {
@@ -894,12 +933,14 @@ export class DigitalPathGame {
         this.interactivePropPrompt = null;
         this.isInteractivePropUsed = false;
 
-        // Destroy enemies and their HP bars
+        // Destroy enemies
         for (const enemy of this.enemies) {
-          enemy.hpBar.destroy();
           enemy.sprite.destroy();
         }
         this.enemies = [];
+        if (this.enemyHpBarGraphics) {
+          this.enemyHpBarGraphics.clear();
+        }
 
         // Destroy active player projectiles
         for (const proj of this.projectiles) {
@@ -920,6 +961,12 @@ export class DigitalPathGame {
           }
         }
         this.transientVfx = [];
+
+        // Clear XP orb graphics when leaving a room (BLOCK 5)
+        if (this.pickupGraphicsLayer) {
+          this.pickupGraphicsLayer.clear();
+        }
+        this.pickupManager.reset();
 
         if (this.bossTelegraphCircle) {
           this.bossTelegraphCircle.destroy();
@@ -972,6 +1019,7 @@ export class DigitalPathGame {
         );
 
         this.activeRoom = room;
+        this.enemyDirector.initRoom(this.currentRoomNumber, room.biome, room.kind);
         self.run = {
           runId: `run_${options.seed}_r${this.currentRoomNumber}`,
           seed: options.seed,
@@ -1208,15 +1256,7 @@ export class DigitalPathGame {
               wall.setDepth(RENDER_DEPTH.WALL_BASE);
               this.roomTileObjects.push(wall);
 
-              // Foreground rim — neon accent on the top-facing face of wall tiles.
-              // ONLY on walls that have floor immediately below (visible front face looking into the room)
-              if (hasFloorBelow) {
-                const rim = this.add.graphics();
-                rim.fillStyle(theme.wallRimColor || 0x00f0ff, 0.85);
-                rim.fillRect(posX + 1, posY + TILE_SIZE - 6, TILE_SIZE - 2, 6);
-                rim.setDepth(RENDER_DEPTH.WALL_FOREGROUND);
-                this.roomTileObjects.push(rim);
-              }
+
             }
           }
         }
@@ -1543,9 +1583,6 @@ export class DigitalPathGame {
             sprite.play(animKey);
           }
 
-          const hpBar = this.add.graphics();
-          hpBar.setDepth(RENDER_DEPTH.ENTITIES_OVERLAY);
-
           this.enemies.push({
             id: enemyDef.id,
             name: enemyName,
@@ -1553,7 +1590,6 @@ export class DigitalPathGame {
             species,
             currentAnimAction: "idle",
             sprite,
-            hpBar,
             currentHp: enemyHp,
             maxHp: enemyMaxHp,
             attack: enemyAttack,
@@ -1794,11 +1830,21 @@ export class DigitalPathGame {
           }
         }
 
-        // 4. Player Attack Inputs
-        this.handlePlayerAttacks(time);
+        // 4. Auto-attacks via WeaponManager (BLOCK 2) + Dash input (BLOCK 4)
+        if (this.keys?.Space?.isDown) {
+          this.performDash(time);
+        }
+        updateDash(this.dashState, time);
+        const hasTargets = this.enemies.some((e) => e.state !== "dead");
+        this.weaponManager.update(time, this.partnerProfile, this.modifiers, hasTargets, {
+          fireBasic1: (t) => { this.aimTowardNearestEnemy(); this.performBasicAttack1(t); },
+          fireBasic2: (t) => { this.aimTowardNearestEnemy(); this.performBasicAttack2(t); },
+          fireSpecial: (t) => this.performSpecialAttack(t),
+          onCooldownChange: undefined,
+        });
 
-        // 5. Player Movement Input
-        this.handlePlayerMovement(delta);
+        // 5. Player Movement (BLOCK 4) — no attack-freeze
+        this.handlePlayerMovement(time, delta);
 
         // 6. Update Projectiles
         this.updateProjectiles(delta);
@@ -1811,6 +1857,12 @@ export class DigitalPathGame {
 
         // 9. Update Biome Hazards
         this.updateHazards(delta);
+
+        // 10. Update XP Orbs — magnet attraction and collection (BLOCK 5)
+        this.updatePickups(delta);
+
+        // 11. Enemy Director & Dynamic Wave Spawning (BLOCK 9)
+        this.updateEnemyWaves(delta);
       }
 
       private triggerHitstop(durationMs = 45) {
@@ -1887,57 +1939,196 @@ export class DigitalPathGame {
         });
       }
 
-      private handlePlayerAttacks(time: number) {
-        if (this.isPlayerAttacking) {
-          // Input buffering: store attack if pressed during action
-          if (this.keys?.J?.isDown || this.keys?.Space?.isDown) {
-            this.inputBuffer = { slot: "basic_1", timestamp: time };
-          } else if (this.keys?.K?.isDown) {
-            this.inputBuffer = { slot: "basic_2", timestamp: time };
-          } else if (this.keys?.L?.isDown) {
-            this.inputBuffer = { slot: "special", timestamp: time };
-          }
-          return;
+      /**
+       * Auto-aim toward the nearest living enemy (BLOCK 3 — simplified).
+       * Called before each auto-attack so projectiles/melee aim correctly.
+       */
+      private aimTowardNearestEnemy(): void {
+        const living = this.enemies.filter((e) => e.state !== "dead");
+        if (living.length === 0) return;
+
+        let nearest = living[0];
+        let minDist = Phaser.Math.Distance.Between(
+          this.player.x, this.player.y,
+          nearest.sprite.x, nearest.sprite.y,
+        );
+        for (const e of living) {
+          const d = Phaser.Math.Distance.Between(
+            this.player.x, this.player.y,
+            e.sprite.x, e.sprite.y,
+          );
+          if (d < minDist) { minDist = d; nearest = e; }
         }
 
-        // Process buffered attack if within 120ms
-        if (this.inputBuffer && time - this.inputBuffer.timestamp <= 120) {
-          const slot = this.inputBuffer.slot;
-          this.inputBuffer = null;
-          if (slot === "basic_1" && time >= this.basic1CooldownUntil) {
-            this.performBasicAttack1(time);
-            return;
-          } else if (slot === "basic_2" && time >= this.basic2CooldownUntil) {
-            this.performBasicAttack2(time);
-            return;
-          } else if (slot === "special" && time >= this.specialCooldownUntil) {
-            this.performSpecialAttack(time);
-            return;
-          }
+        const adx = nearest.sprite.x - this.player.x;
+        const ady = nearest.sprite.y - this.player.y;
+        if (Math.abs(adx) >= Math.abs(ady)) {
+          this.facingDirection = adx >= 0 ? "right" : "left";
         } else {
-          this.inputBuffer = null;
+          this.facingDirection = ady >= 0 ? "down" : "up";
+        }
+      }
+
+      /** Updates XP orb positions and handles collection (BLOCK 5 + 6) in a single batched draw call. */
+      private updatePickups(delta: number): void {
+        const magnetR = (this.modifiers.magnetRadius ?? this.MAGNET_RADIUS) * (this.modifiers.speedMultiplier ?? 1);
+        const collected = this.pickupManager.update(
+          this.player.x,
+          this.player.y,
+          magnetR,
+          delta,
+        );
+
+        // Batched render of all active XP orbs in a single draw call (no GPU stutter)
+        if (this.pickupGraphicsLayer) {
+          this.pickupGraphicsLayer.clear();
+          for (const orb of this.pickupManager.getActiveOrbs()) {
+            const color =
+              orb.xpValue >= 16 ? 0xffd700 : orb.xpValue >= 6 ? 0x00ffaa : 0x44ff88;
+            this.pickupGraphicsLayer.fillStyle(color, 0.9);
+            this.pickupGraphicsLayer.fillCircle(orb.x, orb.y, 6);
+            this.pickupGraphicsLayer.fillStyle(0xffffff, 0.5);
+            this.pickupGraphicsLayer.fillCircle(orb.x - 1.5, orb.y - 1.5, 2.5);
+          }
         }
 
-        // Basic 1 (J or Space)
-        if ((this.keys?.J?.isDown || this.keys?.Space?.isDown) && time >= this.basic1CooldownUntil) {
-          this.performBasicAttack1(time);
-          return;
+        if (collected.length === 0) return;
+
+        let totalXpGained = 0;
+        for (const orb of collected) {
+          totalXpGained += Math.round(orb.xpValue * (this.modifiers.growthMultiplier ?? 1.0));
         }
 
-        // Basic 2 (K - Projectile)
-        if (this.keys?.K?.isDown && time >= this.basic2CooldownUntil) {
-          this.performBasicAttack2(time);
-          return;
+        // Award run XP and update HUD
+        this.playerXp += totalXpGained;
+        options.onPlayerStatsChange?.({
+          currentHp: this.playerHp,
+          maxHp: this.playerMaxHp,
+          xp: this.playerXp,
+          coins: this.playerCoins,
+        });
+
+        // Check in-run level up (BLOCK 6)
+        const didLevelUp = this.levelUpManager.addXp(totalXpGained);
+        if (didLevelUp && !this.isPaused && !this.isFinished) {
+          const choices = getUpgradeChoices(
+            runRng,
+            this.activeUpgrades.map((u) => u.id),
+            this.levelUpManager.passiveCount,
+          );
+          // Freeze gameplay physics internally during draft WITHOUT opening user ESC pause menu
+          this.isPaused = true;
+          options.onTriggerUpgradeDraft?.(choices, (up) => {
+            this.applyUpgrade(up);
+            this.isPaused = false;
+          });
+        }
+      }
+
+      /** Finds a valid walkable floor tile coordinate at distance around player (BLOCK 9). */
+      private getRandomWalkableFloorPoint(minDist = 180, maxDist = 380): { x: number; y: number } | null {
+        if (!this.activeRoom || !this.player) return null;
+        for (let i = 0; i < 15; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const dist = minDist + Math.random() * (maxDist - minDist);
+          const tx = Math.floor((this.player.x + Math.cos(angle) * dist) / TILE_SIZE);
+          const ty = Math.floor((this.player.y + Math.sin(angle) * dist) / TILE_SIZE);
+          if (
+            tx >= 1 && tx < this.activeRoom.width - 1 &&
+            ty >= 1 && ty < this.activeRoom.height - 1 &&
+            isWalkable({ tiles: this.activeRoom.tiles } as any, tx, ty)
+          ) {
+            return { x: tx * TILE_SIZE + TILE_SIZE / 2, y: ty * TILE_SIZE + TILE_SIZE / 2 };
+          }
+        }
+        return null;
+      }
+
+      /** Spawns an enemy from template key at specified world coordinates (BLOCK 9). */
+      private spawnEnemyFromTemplate(
+        templateKey: string,
+        worldX: number,
+        worldY: number,
+        kind: "normal" | "elite" | "miniboss" = "normal",
+        overrideId?: string,
+      ): ActiveEnemy | null {
+        const template = ENEMY_TEMPLATES[templateKey] ?? ENEMY_TEMPLATES.goburimon;
+        if (!template) return null;
+
+        const id = overrideId || `wave_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+        const species = normalizeDigimonName(template.digimon);
+        const animKey = getEnemyAnimationKey(species, "idle");
+
+        const isElite = kind === "elite";
+        const scale = isElite ? 0.85 : 0.65;
+        const hpMult = isElite ? 2.5 : 1.0;
+        const atkMult = isElite ? 1.4 : 1.0;
+        const xpMult = isElite ? 3.0 : 1.0;
+
+        const sprite = this.add.sprite(worldX, worldY, animKey);
+        sprite.setScale(scale);
+        sprite.setOrigin(0.5, 0.85);
+        sprite.setDepth(RENDER_DEPTH.ENTITIES);
+
+        try {
+          if (sprite.preFX) {
+            const cm = sprite.preFX.addColorMatrix();
+            if (!isElite) {
+              cm.grayscale(1);
+            }
+          } else if (!isElite) {
+            sprite.setTint(0xaaaaaa);
+          }
+        } catch {
+          if (!isElite) sprite.setTint(0xaaaaaa);
         }
 
-        // Special (L - AoE Mega Blast)
-        if (this.keys?.L?.isDown && time >= this.specialCooldownUntil) {
-          this.performSpecialAttack(time);
-          return;
+        if (this.anims.exists(animKey)) {
+          sprite.play(animKey);
+        }
+
+        const enemyKind: EnemyKind = isElite ? "elite" : kind === "miniboss" ? "miniboss" : (template.archetype === "ranged" ? "ranged" : "melee");
+        const newEnemy: ActiveEnemy = {
+          id,
+          name: isElite ? `[ELITE] ${template.name}` : template.name,
+          kind: enemyKind,
+          species,
+          currentAnimAction: "idle",
+          sprite,
+          currentHp: Math.round(template.maxHp * hpMult),
+          maxHp: Math.round(template.maxHp * hpMult),
+          attack: Math.round(template.attack * atkMult),
+          defense: template.defense,
+          speed: isElite ? template.speed * 1.15 : template.speed,
+          xpReward: Math.round(template.xpReward * xpMult),
+          coinReward: Math.round(template.coinReward * xpMult),
+          isAttacking: false,
+          attackCooldown: 0,
+          state: "idle",
+          statusEffects: [],
+        };
+
+        this.enemies.push(newEnemy);
+        return newEnemy;
+      }
+
+      /** Ticks EnemyDirector to spawn dynamic mini-waves of enemies in combat rooms (BLOCK 9). */
+      private updateEnemyWaves(delta: number): void {
+        if (!this.activeRoom || this.isFinished || this.isPaused) return;
+
+        const aliveCount = this.enemies.filter((e) => e.state !== "dead").length;
+        const orders = this.enemyDirector.update(delta, aliveCount);
+
+        for (const order of orders) {
+          const pt = this.getRandomWalkableFloorPoint();
+          if (pt) {
+            this.spawnEnemyFromTemplate(order.templateKey, pt.x, pt.y, order.kind, order.id);
+          }
         }
       }
 
       private applyStatusToEnemy(enemy: ActiveEnemy, type: "burn" | "slow" | "shock") {
+
         let eff: StatusEffectInstance;
         if (type === "burn") {
           eff = createBurnEffect();
@@ -1951,41 +2142,41 @@ export class DigitalPathGame {
 
       private performBasicAttack1(time: number) {
         const attackConfig = this.partnerProfile.basic1;
-        this.isPlayerAttacking = true;
         this.basic1CooldownUntil = time + attackConfig.cooldownMs;
         options.onCooldownChange?.("basic_1", attackConfig.cooldownMs, attackConfig.cooldownMs);
 
-        // Visual orientation of player sprite
-        if (this.facingDirection === "left") {
-          this.player.setFlipX(true);
-        } else if (this.facingDirection === "right") {
-          this.player.setFlipX(false);
-        }
-
-        const animKey = this.anims.exists(attackConfig.animation) ? attackConfig.animation : "player-attack-basic-1";
-        if (this.anims.exists(animKey)) {
-          this.player.play(animKey);
-        }
-
-        // Directional melee hitbox check ahead of the character
         const origin = this.getPlayerCenter();
-        const hitboxOffset = 36;
-        const hitboxPos = getDirectionalHitboxPosition(origin, this.facingDirection, hitboxOffset);
-        const attackRange = attackConfig.range || 52;
-        const rotation = getProjectileRotation(this.facingDirection);
+        const living = this.enemies.filter((e) => e.state !== "dead");
+        let targetAngle = getProjectileRotation(this.facingDirection);
+        let targetDir: FacingDirection = this.facingDirection;
 
-        this.recordAttackEvent("basic_1", this.facingDirection, hitboxPos.x, hitboxPos.y, undefined, undefined, rotation);
+        if (living.length > 0) {
+          let nearest = living[0];
+          let minDist = Phaser.Math.Distance.Between(origin.x, origin.y, nearest.sprite.x, nearest.sprite.y);
+          for (const e of living) {
+            const d = Phaser.Math.Distance.Between(origin.x, origin.y, e.sprite.x, e.sprite.y);
+            if (d < minDist) { minDist = d; nearest = e; }
+          }
+          const adx = nearest.sprite.x - origin.x;
+          const ady = nearest.sprite.y - origin.y;
+          targetAngle = Math.atan2(ady, adx);
+          targetDir = Math.abs(adx) >= Math.abs(ady) ? (adx >= 0 ? "right" : "left") : (ady >= 0 ? "down" : "up");
+        }
 
-        // Authentic directional visual slash effect (e.g. Veemon crescent slash)
+        const attackRange = (attackConfig.range || 56) * (this.modifiers.areaMultiplier || 1.0);
+        const hitboxOffset = 36 * (this.modifiers.areaMultiplier || 1.0);
+        const hitboxX = origin.x + Math.cos(targetAngle) * hitboxOffset;
+        const hitboxY = origin.y + Math.sin(targetAngle) * hitboxOffset;
+
+        this.recordAttackEvent("basic_1", targetDir, hitboxX, hitboxY, undefined, undefined, targetAngle);
+
+        // Authentic directional visual slash effect
         const b1Vfx = this.vfxProfile.basic1;
         if (b1Vfx.hasVisualEffect && b1Vfx.effectTextureKey && this.textures.exists(b1Vfx.effectTextureKey)) {
-          const vfxPos = getDirectionalVfxPosition(origin, this.facingDirection, b1Vfx.offsetForward || 36);
-          const slashSprite = this.add.sprite(vfxPos.x, vfxPos.y, b1Vfx.effectTextureKey);
-          const transform = getVfxTransform(this.facingDirection);
-          slashSprite.setRotation(transform.rotation);
-          if (transform.flipY) slashSprite.setFlipY(true);
-          slashSprite.setScale(b1Vfx.scale || 1.0);
-          slashSprite.setDepth(15);
+          const slashSprite = this.add.sprite(hitboxX, hitboxY, b1Vfx.effectTextureKey);
+          slashSprite.setRotation(targetAngle);
+          slashSprite.setScale((b1Vfx.scale || 1.0) * (this.modifiers.areaMultiplier || 1.0));
+          slashSprite.setDepth(RENDER_DEPTH.VFX);
           if (b1Vfx.effectAnimKey && this.anims.exists(b1Vfx.effectAnimKey)) {
             slashSprite.play(b1Vfx.effectAnimKey);
           }
@@ -2004,7 +2195,7 @@ export class DigitalPathGame {
         // Damage enemies in range of directional hitbox
         for (const enemy of this.enemies) {
           if (enemy.state === "dead") continue;
-          const dist = Phaser.Math.Distance.Between(hitboxPos.x, hitboxPos.y, enemy.sprite.x, enemy.sprite.y - 20);
+          const dist = Phaser.Math.Distance.Between(hitboxX, hitboxY, enemy.sprite.x, enemy.sprite.y - 20);
           if (dist <= attackRange) {
             this.damageEnemy(enemy, attackConfig.damage);
             if (attackConfig.statusEffect) {
@@ -2012,190 +2203,116 @@ export class DigitalPathGame {
             }
           }
         }
-
-        this.player.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-          this.isPlayerAttacking = false;
-          if (this.anims.exists("player-idle")) {
-            this.player.play("player-idle");
-            if (this.facingDirection === "left") {
-              this.player.setFlipX(true);
-            } else if (this.facingDirection === "right") {
-              this.player.setFlipX(false);
-            }
-          }
-          if (this.inputBuffer && this.time.now - this.inputBuffer.timestamp <= 120) {
-            this.handlePlayerAttacks(this.time.now);
-          }
-        });
       }
 
       private performBasicAttack2(time: number) {
         const attackConfig = this.partnerProfile.basic2;
-        this.isPlayerAttacking = true;
         this.basic2CooldownUntil = time + attackConfig.cooldownMs;
         options.onCooldownChange?.("basic_2", attackConfig.cooldownMs, attackConfig.cooldownMs);
 
-        // Visual orientation of player sprite
-        if (this.facingDirection === "left") {
-          this.player.setFlipX(true);
-        } else if (this.facingDirection === "right") {
-          this.player.setFlipX(false);
-        }
-
-        const animKey = this.anims.exists(attackConfig.animation) ? attackConfig.animation : "player-attack-basic-2";
-        if (this.anims.exists(animKey)) {
-          this.player.play(animKey);
-        }
-
-        // Spawn Projectile ahead of character in facingDirection
         const origin = this.getPlayerCenter();
-        const spawnOffset = 32;
-        const spawnPos = getAttackSpawnPosition(origin, this.facingDirection, spawnOffset);
+        const living = this.enemies.filter((e) => e.state !== "dead");
+        let targetAngle = getProjectileRotation(this.facingDirection);
+        let targetDir: FacingDirection = this.facingDirection;
+
+        if (living.length > 0) {
+          let nearest = living[0];
+          let minDist = Phaser.Math.Distance.Between(origin.x, origin.y, nearest.sprite.x, nearest.sprite.y);
+          for (const e of living) {
+            const d = Phaser.Math.Distance.Between(origin.x, origin.y, e.sprite.x, e.sprite.y);
+            if (d < minDist) { minDist = d; nearest = e; }
+          }
+          const adx = nearest.sprite.x - origin.x;
+          const ady = nearest.sprite.y - origin.y;
+          targetAngle = Math.atan2(ady, adx);
+          targetDir = Math.abs(adx) >= Math.abs(ady) ? (adx >= 0 ? "right" : "left") : (ady >= 0 ? "down" : "up");
+        }
+
         const b2Vfx = this.vfxProfile.basic2;
         const speed = b2Vfx.speed || (this.partnerProfile.speciesId === "veemon" ? 360 : 280);
-        const { vx, vy } = applyDirectionalVelocity(this.facingDirection, speed);
-        const rotation = getProjectileRotation(this.facingDirection);
+        const vx = Math.cos(targetAngle) * speed;
+        const vy = Math.sin(targetAngle) * speed;
 
-        this.recordAttackEvent("basic_2", this.facingDirection, spawnPos.x, spawnPos.y, vx, vy, rotation);
+        const spawnOffset = 28;
+        const spawnX = origin.x + Math.cos(targetAngle) * spawnOffset;
+        const spawnY = origin.y + Math.sin(targetAngle) * spawnOffset;
+
+        this.recordAttackEvent("basic_2", targetDir, spawnX, spawnY, vx, vy, targetAngle);
 
         // Visual charge feedback burst
         const chargeCircle = this.add.graphics();
         const chargeColor = attackConfig.projectileColor ?? 0x00ffff;
         chargeCircle.lineStyle(2, chargeColor, 0.9);
-        chargeCircle.strokeCircle(spawnPos.x, spawnPos.y, 10);
-        chargeCircle.setDepth(13);
+        chargeCircle.strokeCircle(spawnX, spawnY, 8);
+        chargeCircle.setDepth(RENDER_DEPTH.VFX);
         this.tweens.add({
           targets: chargeCircle,
-          scaleX: 1.8,
-          scaleY: 1.8,
+          scaleX: 1.6,
+          scaleY: 1.6,
           alpha: 0,
-          duration: 100,
+          duration: 90,
           onComplete: () => chargeCircle.destroy(),
         });
 
-        // 90ms charge delay before ejecting projectile
-        this.time.delayedCall(90, () => {
-          if (!this.scene.isActive()) return;
+        // Resolve Projectile Texture
+        let projTexture = b2Vfx.projectileTextureKey;
+        if (!projTexture || !this.textures.exists(projTexture)) {
+          projTexture = `${manifest.id}_projectile_dragon_0`;
+        }
+        if (!this.textures.exists(projTexture)) {
+          projTexture = `${manifest.id}_projectile_laser_0`;
+        }
+        if (!this.textures.exists(projTexture)) {
+          projTexture = `${manifest.id}_attack_basic_2_0`;
+        }
+        if (!this.textures.exists(projTexture)) {
+          projTexture = "projectile-fireball";
+        }
 
-          let projTexture = b2Vfx.projectileTextureKey;
-          if (!projTexture || !this.textures.exists(projTexture)) {
-            projTexture = `${manifest.id}_projectile_dragon_0`;
-          }
-          if (!this.textures.exists(projTexture)) {
-            projTexture = `${manifest.id}_projectile_laser_0`;
-          }
-          if (!this.textures.exists(projTexture)) {
-            projTexture = `${manifest.id}_attack_basic_2_0`;
-          }
+        const projSprite = this.add.sprite(spawnX, spawnY, projTexture);
+        projSprite.setScale((b2Vfx.scale || 0.85) * (this.modifiers.areaMultiplier || 1.0));
+        projSprite.setRotation(targetAngle);
+        projSprite.setDepth(RENDER_DEPTH.PROJECTILES);
 
-          const projSprite = this.add.sprite(spawnPos.x, spawnPos.y, projTexture);
-          projSprite.setScale(b2Vfx.scale || 0.85);
-          projSprite.setRotation(rotation);
-          projSprite.setDepth(12);
+        if (attackConfig.projectileColor && !b2Vfx.projectileAnimKey) {
+          projSprite.setTint(attackConfig.projectileColor);
+        }
 
-          if (attackConfig.projectileColor && !b2Vfx.projectileAnimKey) {
-            projSprite.setTint(attackConfig.projectileColor);
-          }
+        if (b2Vfx.projectileAnimKey && this.anims.exists(b2Vfx.projectileAnimKey)) {
+          projSprite.play(b2Vfx.projectileAnimKey);
+        }
 
-          if (b2Vfx.projectileAnimKey && this.anims.exists(b2Vfx.projectileAnimKey)) {
-            projSprite.play(b2Vfx.projectileAnimKey);
-          }
-
-          this.projectiles.push({
-            sprite: projSprite,
-            vx,
-            vy,
-            damage: attackConfig.damage,
-            distanceTraveled: 0,
-            maxDistance: attackConfig.range || 380,
-            statusEffect: attackConfig.statusEffect,
-          });
-        });
-
-        this.player.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-          this.isPlayerAttacking = false;
-          if (this.anims.exists("player-idle")) {
-            this.player.play("player-idle");
-            if (this.facingDirection === "left") {
-              this.player.setFlipX(true);
-            } else if (this.facingDirection === "right") {
-              this.player.setFlipX(false);
-            }
-          }
-          if (this.inputBuffer && this.time.now - this.inputBuffer.timestamp <= 120) {
-            this.handlePlayerAttacks(this.time.now);
-          }
+        this.projectiles.push({
+          sprite: projSprite,
+          vx,
+          vy,
+          damage: attackConfig.damage,
+          distanceTraveled: 0,
+          maxDistance: (attackConfig.range || 420) * (this.modifiers.areaMultiplier || 1.0),
+          statusEffect: attackConfig.statusEffect,
         });
       }
 
       private performSpecialAttack(time: number) {
         const attackConfig = this.partnerProfile.special;
-        this.isPlayerAttacking = true;
         this.specialCooldownUntil = time + attackConfig.cooldownMs;
         options.onCooldownChange?.("special", attackConfig.cooldownMs, attackConfig.cooldownMs);
 
-        // Visual orientation of player sprite
-        if (this.facingDirection === "left") {
-          this.player.setFlipX(true);
-        } else if (this.facingDirection === "right") {
-          this.player.setFlipX(false);
-        }
-
-        const animKey = this.anims.exists(attackConfig.animation) ? attackConfig.animation : "player-attack-special";
-        if (this.anims.exists(animKey)) {
-          this.player.play(animKey);
-        }
-
-        // Invulnerability frames if defined
-        if (attackConfig.invulnerableFramesMs) {
-          this.invulnerableUntil = Math.max(this.invulnerableUntil, time + attackConfig.invulnerableFramesMs);
-        }
-
-        // Camera Shake (if enabled)
-        if (this.screenShakeEnabled) {
-          this.cameras.main.shake(250, attackConfig.shakeIntensity || 0.008);
-        }
-
-        // Hitstop micro-pause (45ms)
-        this.triggerHitstop(45);
-
-        // Calculate directional parameters for Special
         const origin = this.getPlayerCenter();
-        const dirVec = getFacingVector(this.facingDirection);
-        const forwardOffset = 42;
-        const blastPos = getAttackSpawnPosition(origin, this.facingDirection, forwardOffset);
-        const rotation = getProjectileRotation(this.facingDirection);
-        const { vx, vy } = applyDirectionalVelocity(this.facingDirection, 420);
-        const blastRadius = attackConfig.area || 85;
+        const blastRadius = (attackConfig.area || 95) * (this.modifiers.areaMultiplier || 1.0);
 
-        this.recordAttackEvent("special", this.facingDirection, blastPos.x, blastPos.y, vx, vy, rotation);
-
-        // Dash / Thrust impulse in the facing direction
-        const dashDistance = 44;
-        const destX = this.player.x + dirVec.x * dashDistance;
-        const destY = this.player.y + dirVec.y * dashDistance;
-        const tileX = Math.floor(destX / TILE_SIZE);
-        const tileY = Math.floor(destY / TILE_SIZE);
-        if (isWalkable({ tiles: this.activeRoom.tiles } as any, tileX, tileY)) {
-          this.tweens.add({
-            targets: this.player,
-            x: destX,
-            y: destY,
-            duration: 150,
-            ease: "Quad.easeOut",
-          });
+        if (this.screenShakeEnabled) {
+          this.cameras.main.shake(200, attackConfig.shakeIntensity || 0.008);
         }
 
-        // Authentic sprite visual effect for special attack (Agumon mega blast / Veemon special)
+        this.recordAttackEvent("special", this.facingDirection, origin.x, origin.y, 0, 0, 0);
+
+        // Visual AoE effect
         const spVfx = this.vfxProfile.special;
         if (spVfx.hasVisualEffect && spVfx.effectTextureKey && this.textures.exists(spVfx.effectTextureKey)) {
-          const vfxPos = getDirectionalVfxPosition(origin, this.facingDirection, spVfx.offsetForward || 44);
-          const specialVfxSprite = this.add.sprite(vfxPos.x, vfxPos.y, spVfx.effectTextureKey);
-          const transform = getVfxTransform(this.facingDirection);
-          specialVfxSprite.setRotation(transform.rotation);
-          if (transform.flipY) specialVfxSprite.setFlipY(true);
-          specialVfxSprite.setScale(spVfx.scale || 1.25);
-          specialVfxSprite.setDepth(15);
+          const specialVfxSprite = this.add.sprite(origin.x, origin.y, spVfx.effectTextureKey);
+          specialVfxSprite.setScale((spVfx.scale || 1.25) * (this.modifiers.areaMultiplier || 1.0));
+          specialVfxSprite.setDepth(RENDER_DEPTH.VFX);
           if (spVfx.effectAnimKey && this.anims.exists(spVfx.effectAnimKey)) {
             specialVfxSprite.play(spVfx.effectAnimKey);
           }
@@ -2203,8 +2320,8 @@ export class DigitalPathGame {
 
           this.tweens.add({
             targets: specialVfxSprite,
-            x: vfxPos.x + dirVec.x * 40,
-            y: vfxPos.y + dirVec.y * 40,
+            scaleX: (spVfx.scale || 1.25) * 1.4 * (this.modifiers.areaMultiplier || 1.0),
+            scaleY: (spVfx.scale || 1.25) * 1.4 * (this.modifiers.areaMultiplier || 1.0),
             alpha: 0,
             duration: spVfx.durationMs || 350,
             ease: "Cubic.easeOut",
@@ -2213,93 +2330,20 @@ export class DigitalPathGame {
               this.transientVfx = this.transientVfx.filter((v) => v !== specialVfxSprite);
             },
           });
-
-          // Secondary ground eruption/burst if available (e.g. Veemon ground explosion)
-          if (spVfx.secondaryTextureKey && this.textures.exists(spVfx.secondaryTextureKey)) {
-            const secSprite = this.add.sprite(vfxPos.x, vfxPos.y + 8, spVfx.secondaryTextureKey);
-            secSprite.setScale(spVfx.secondaryScale || 1.05);
-            secSprite.setDepth(14);
-            if (spVfx.secondaryAnimKey && this.anims.exists(spVfx.secondaryAnimKey)) {
-              secSprite.play(spVfx.secondaryAnimKey);
-            }
-            this.transientVfx.push(secSprite);
-            this.tweens.add({
-              targets: secSprite,
-              alpha: 0,
-              duration: (spVfx.durationMs || 350) + 60,
-              onComplete: () => {
-                secSprite.destroy();
-                this.transientVfx = this.transientVfx.filter((v) => v !== secSprite);
-              },
-            });
-          }
         }
 
-        // Directional special energy blast projectile
-        let specialProjTexture = `${manifest.id}_projectile_laser_0`;
-        if (!this.textures.exists(specialProjTexture)) {
-          specialProjTexture = `${manifest.id}_projectile_dragon_0`;
-        }
-        if (!this.textures.exists(specialProjTexture)) {
-          specialProjTexture = `${manifest.id}_attack_special_0`;
-        }
-        if (this.textures.exists(specialProjTexture)) {
-          const specialSprite = this.add.sprite(blastPos.x, blastPos.y, specialProjTexture);
-          specialSprite.setScale(1.1);
-          specialSprite.setRotation(rotation);
-          // Removed artificial setTint(0x00ffff) to preserve authentic pixel art
-          specialSprite.setDepth(13);
-          this.projectiles.push({
-            sprite: specialSprite,
-            vx,
-            vy,
-            damage: attackConfig.damage,
-            distanceTraveled: 0,
-            maxDistance: 320,
-            statusEffect: attackConfig.statusEffect,
-          });
-        }
-
-        // Reflect / Destroy enemy projectiles in the forward blast zone
-        if (attackConfig.reflectProjectiles) {
-          for (let i = this.enemyProjectiles.length - 1; i >= 0; i--) {
-            const ep = this.enemyProjectiles[i];
-            const dist = Phaser.Math.Distance.Between(blastPos.x, blastPos.y, ep.sprite.x, ep.sprite.y);
-            if (dist <= blastRadius + 20) {
-              ep.sprite.destroy();
-              this.enemyProjectiles.splice(i, 1);
-            }
-          }
-        }
-
-        // Damage all enemies in directional blast zone
+        // Damage all enemies in blast radius
         for (const enemy of this.enemies) {
           if (enemy.state === "dead") continue;
-          const dist = Phaser.Math.Distance.Between(blastPos.x, blastPos.y, enemy.sprite.x, enemy.sprite.y - 20);
-          if (dist <= blastRadius + 15) {
+          const dist = Phaser.Math.Distance.Between(origin.x, origin.y, enemy.sprite.x, enemy.sprite.y);
+          if (dist <= blastRadius) {
             this.damageEnemy(enemy, attackConfig.damage);
             if (attackConfig.statusEffect) {
               this.applyStatusToEnemy(enemy, attackConfig.statusEffect);
             }
           }
         }
-
-        this.player.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-          this.isPlayerAttacking = false;
-          if (this.anims.exists("player-idle")) {
-            this.player.play("player-idle");
-            if (this.facingDirection === "left") {
-              this.player.setFlipX(true);
-            } else if (this.facingDirection === "right") {
-              this.player.setFlipX(false);
-            }
-          }
-          if (this.inputBuffer && this.time.now - this.inputBuffer.timestamp <= 120) {
-            this.handlePlayerAttacks(this.time.now);
-          }
-        });
       }
-
 
       private updateProjectiles(delta: number) {
         const dt = delta / 1000;
@@ -2340,9 +2384,12 @@ export class DigitalPathGame {
       }
 
       private damageEnemy(enemy: ActiveEnemy, baseDamage: number, canCrit = true) {
-        const isCrit = canCrit && Math.random() < this.modifiers.critChance;
-        const rawDamage = Math.round(baseDamage * this.modifiers.attackMultiplier * (isCrit ? 2 : 1));
-        const finalDamage = Math.max(1, rawDamage - enemy.defense);
+        const { finalDamage, isCrit } = calculateDamage(
+          baseDamage,
+          canCrit ? this.modifiers.critChance : 0,
+          this.modifiers.attackMultiplier,
+          enemy.defense,
+        );
         enemy.currentHp -= finalDamage;
 
         if (isCrit) {
@@ -2393,17 +2440,18 @@ export class DigitalPathGame {
 
       private killEnemy(enemy: ActiveEnemy) {
         enemy.state = "dead";
-        enemy.hpBar.clear();
 
-        // Award rewards with coin multiplier
-        const xpEarned = enemy.xpReward;
+        // Award coins
         const coinsEarned = Math.round(enemy.coinReward * this.modifiers.coinMultiplier);
-        this.playerXp += xpEarned;
         this.playerCoins += coinsEarned;
 
-        // Real-time synchronization of XP to Tamagotchi Pet
+        // Sync Tamagotchi XP immediately (the pet earns XP for kills)
+        const xpEarned = enemy.xpReward;
         const targetSpecies = options.originalSpeciesId || options.input.speciesId;
         options.onAwardXp?.(targetSpecies, xpEarned);
+
+        // Spawn physical XP orb — run XP is awarded when player collects it (BLOCK 5)
+        this.pickupManager.spawn(enemy.sprite.x, enemy.sprite.y, xpEarned);
 
         if (enemy.kind === "boss") {
           if (!this.bossDefeated) {
@@ -2431,7 +2479,11 @@ export class DigitalPathGame {
         // Elite and Mini-Boss kills offer a draft upgrade choice!
         if (enemy.kind === "elite" || enemy.kind === "miniboss") {
           const choices = getUpgradeChoices(runRng, this.activeUpgrades.map((u) => u.id));
-          options.onTriggerUpgradeDraft?.(choices, (up) => this.applyUpgrade(up));
+          this.isPaused = true;
+          options.onTriggerUpgradeDraft?.(choices, (up) => {
+            this.applyUpgrade(up);
+            this.isPaused = false;
+          });
         }
 
         // Death animation if available, otherwise tween fallback
@@ -2445,7 +2497,6 @@ export class DigitalPathGame {
               duration: 200,
               onComplete: () => {
                 enemy.sprite.destroy();
-                enemy.hpBar.destroy();
                 this.checkRoomCompletion();
               },
             });
@@ -2460,7 +2511,6 @@ export class DigitalPathGame {
             duration: 350,
             onComplete: () => {
               enemy.sprite.destroy();
-              enemy.hpBar.destroy();
               this.checkRoomCompletion();
             },
           });
@@ -2474,7 +2524,11 @@ export class DigitalPathGame {
         );
         const isBossOrMiniBossRoom =
           this.activeRoom?.kind === "boss" || this.activeRoom?.kind === "miniboss";
-        const roomCleared = isBossOrMiniBossRoom ? !bossAlive : aliveEnemies.length === 0;
+        const roomCleared = isBossOrMiniBossRoom
+          ? !bossAlive
+          : (this.activeRoom?.kind === "combat"
+              ? this.enemyDirector.isRoomCompleted(aliveEnemies.length)
+              : aliveEnemies.length === 0);
 
         if (roomCleared && !this.isDoorUnlocked) {
           this.isDoorUnlocked = true;
@@ -2727,6 +2781,10 @@ export class DigitalPathGame {
         this.activeUpgrades.push(upgrade);
         this.modifiers = calculateModifiers(this.activeUpgrades);
 
+        if (upgrade.isPassive) {
+          this.levelUpManager.recordPassive(upgrade.id);
+        }
+
         if (upgrade.maxHpBonus) {
           this.playerMaxHp += upgrade.maxHpBonus;
         }
@@ -2957,6 +3015,10 @@ export class DigitalPathGame {
 
       private updateEnemies(time: number, delta: number) {
         const dt = delta / 1000;
+        if (this.enemyHpBarGraphics) {
+          this.enemyHpBarGraphics.clear();
+        }
+
         for (const enemy of this.enemies) {
           if (enemy.state === "dead" || !enemy.sprite.active) continue;
 
@@ -2981,18 +3043,19 @@ export class DigitalPathGame {
           const slowMult = enemy.statusEffects?.some((e) => e.type === "slow") ? 0.65 : 1.0;
           const currentSpeed = enemy.speed * slowMult;
 
-          // Render HP Bar
-          enemy.hpBar.clear();
-          const barWidth = enemy.kind === "boss" ? 54 : 36;
-          const barHeight = enemy.kind === "boss" ? 6 : 4;
-          const barX = enemy.sprite.x - barWidth / 2;
-          const barY = enemy.sprite.y - (enemy.kind === "boss" ? 68 : 54);
-
-          enemy.hpBar.fillStyle(0x330000, 0.8);
-          enemy.hpBar.fillRect(barX, barY, barWidth, barHeight);
+          // Render HP Bar in batched layer only if enemy is damaged or is boss/elite (prevents GPU stall)
           const hpRatio = Phaser.Math.Clamp(enemy.currentHp / enemy.maxHp, 0, 1);
-          enemy.hpBar.fillStyle(enemy.isEnraged ? 0xff0000 : 0xff3333, 1);
-          enemy.hpBar.fillRect(barX, barY, barWidth * hpRatio, barHeight);
+          if (this.enemyHpBarGraphics && (enemy.currentHp < enemy.maxHp || enemy.kind === "boss" || enemy.kind === "elite")) {
+            const barWidth = enemy.kind === "boss" ? 54 : 36;
+            const barHeight = enemy.kind === "boss" ? 6 : 4;
+            const barX = enemy.sprite.x - barWidth / 2;
+            const barY = enemy.sprite.y - (enemy.kind === "boss" ? 68 : 54);
+
+            this.enemyHpBarGraphics.fillStyle(0x220000, 0.75);
+            this.enemyHpBarGraphics.fillRect(barX, barY, barWidth, barHeight);
+            this.enemyHpBarGraphics.fillStyle(enemy.isEnraged ? 0xff0000 : 0xff3333, 1);
+            this.enemyHpBarGraphics.fillRect(barX, barY, barWidth * hpRatio, barHeight);
+          }
 
           // Boss Enrage Check (< 50% HP)
           if (enemy.kind === "boss") {
@@ -3205,7 +3268,8 @@ export class DigitalPathGame {
         if (this.time.now < this.invulnerableUntil || this.isFinished || this.isTransitioning) return;
 
         this.invulnerableUntil = this.time.now + 800; // 800ms i-frames
-        this.playerHp = Math.max(0, this.playerHp - damage);
+        const effectiveDmg = Math.max(1, damage - (this.modifiers.armor ?? 0));
+        this.playerHp = Math.max(0, this.playerHp - effectiveDmg);
 
         // Flash player red
         this.player.setTint(0xff3333);
@@ -3245,24 +3309,13 @@ export class DigitalPathGame {
         }
       }
 
-      private handlePlayerMovement(delta: number) {
-        if (this.isPlayerAttacking) return;
-
-        let dx = 0;
-        let dy = 0;
-
-        if (this.cursors?.left?.isDown || this.keys?.A?.isDown) dx -= 1;
-        if (this.cursors?.right?.isDown || this.keys?.D?.isDown) dx += 1;
-        if (this.cursors?.up?.isDown || this.keys?.W?.isDown) dy -= 1;
-        if (this.cursors?.down?.isDown || this.keys?.S?.isDown) dy += 1;
-
-        if (dx !== 0 && dy !== 0) {
-          dx *= 0.7071;
-          dy *= 0.7071;
-        }
+      private handlePlayerMovement(time: number, delta: number) {
+        // BLOCK 4: Movement is always allowed — no attack-freeze
+        const { dx, dy } = computeMovementVector(this.cursors, this.keys);
 
         const baseSpeed = this.partnerProfile?.baseSpeed || (options.input.stats.speed || 100);
-        const speed = baseSpeed * 2.2 * this.modifiers.speedMultiplier;
+        const dashMult = this.dashState.isActive ? this.dashState.DASH_SPEED_MULTIPLIER : 1;
+        const speed = baseSpeed * 2.2 * this.modifiers.speedMultiplier * dashMult;
         const moveDist = (speed * delta) / 1000;
 
 
@@ -3328,6 +3381,48 @@ export class DigitalPathGame {
               this.player.setFlipX(false);
             }
           }
+        }
+      }
+
+      /**
+       * Dash — BLOCK 4.
+       * 3× speed impulse for 200ms + 250ms I-frames + ghost trail.
+       * Uses existing player sprite frames — no new assets.
+       */
+      private performDash(time: number) {
+        if (!canDash(this.dashState, time)) return;
+        startDash(this.dashState, time);
+
+        // Grant invulnerability I-frames
+        this.invulnerableUntil = Math.max(this.invulnerableUntil, this.dashState.invulnerableUntil);
+
+        // Ghost trail — 3 semi-transparent copies using the current player frame
+        const ghostTexture = this.player.texture.key;
+        const ghostFrame = this.player.frame.name;
+        const flipX = this.player.flipX;
+
+        for (let i = 0; i < 3; i++) {
+          this.time.delayedCall(i * 55, () => {
+            if (!this.player?.active) return;
+            const ghost = this.add.sprite(
+              this.player.x,
+              this.player.y,
+              ghostTexture,
+              ghostFrame,
+            );
+            ghost.setScale(this.player.scaleX, this.player.scaleY);
+            ghost.setFlipX(flipX);
+            ghost.setOrigin(0.5, 0.85);
+            ghost.setAlpha(0.45 - i * 0.12);
+            ghost.setDepth((this.player.depth ?? 5) - 1);
+            ghost.setTint(0x44aaff);
+            this.tweens.add({
+              targets: ghost,
+              alpha: 0,
+              duration: 180,
+              onComplete: () => ghost.destroy(),
+            });
+          });
         }
       }
 

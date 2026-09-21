@@ -403,7 +403,7 @@ export function DigitalPathScreen() {
                   : "border-cyan-500/30 bg-cyan-950/40 text-cyan-300"
               }`}
             >
-              <kbd className="rounded bg-black/40 px-1 text-[10px]">J/Espaço</kbd>
+              <span className="rounded bg-cyan-500/20 px-1 text-[9px] font-mono font-bold text-cyan-400">AUTO</span>
               <span>{combatProfile.basic1.name}</span>
             </div>
 
@@ -414,7 +414,7 @@ export function DigitalPathScreen() {
                   : "border-amber-500/30 bg-amber-950/40 text-amber-300"
               }`}
             >
-              <kbd className="rounded bg-black/40 px-1 text-[10px]">K</kbd>
+              <span className="rounded bg-amber-500/20 px-1 text-[9px] font-mono font-bold text-amber-400">AUTO</span>
               <span>{combatProfile.basic2.name}</span>
             </div>
 
@@ -425,8 +425,13 @@ export function DigitalPathScreen() {
                   : "border-rose-500/30 bg-rose-950/40 text-rose-300"
               }`}
             >
-              <kbd className="rounded bg-black/40 px-1 text-[10px]">L</kbd>
+              <span className="rounded bg-rose-500/20 px-1 text-[9px] font-mono font-bold text-rose-400">AUTO</span>
               <span>{combatProfile.special.name}</span>
+            </div>
+
+            <div className="flex items-center gap-1 rounded border border-purple-500/30 bg-purple-950/40 px-2 py-1 text-xs text-purple-300">
+              <kbd className="rounded bg-black/40 px-1 text-[10px]">Espaço</kbd>
+              <span>Dash</span>
             </div>
           </div>
 
@@ -756,7 +761,7 @@ export function DigitalPathScreen() {
       )}
 
       {/* 7. Modal de Pause (ESC) */}
-      {isPaused && (
+      {isPaused && !upgradeDraft && !eventModal && !restModal && !shopModal && !runResult && !confirmAbandon && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
           <div className="w-full max-w-sm rounded-2xl border border-cyan-500/30 bg-slate-900 p-6 shadow-2xl text-center">
             <h3 className="text-xl font-bold text-cyan-300">JOGO PAUSADO</h3>
@@ -768,16 +773,12 @@ export function DigitalPathScreen() {
                 <span className="font-semibold text-white">W, A, S, D ou Setas</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Golpe Básico:</span>
-                <span className="font-semibold text-white">J ou Barra de Espaço</span>
+                <span className="text-slate-400">Esquiva / Dash:</span>
+                <span className="font-semibold text-purple-300">Espaço ou Shift</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Disparo Digital:</span>
-                <span className="font-semibold text-white">K</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-400">Ataque Especial:</span>
-                <span className="font-semibold text-white">L</span>
+                <span className="text-slate-400">Ataques & Habilidades:</span>
+                <span className="font-semibold text-cyan-300">Automáticos (mira no alvo)</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">Interagir:</span>

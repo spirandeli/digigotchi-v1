@@ -696,11 +696,10 @@ function DigitalPathEntry() {
           <div className="ds-slot p-3 text-xs text-muted">
             <p className="font-semibold text-fg">Instruções da Expedição:</p>
             <ul className="mt-1.5 list-inside list-disc space-y-1">
-              <li>Mova o parceiro com <strong>W, A, S, D</strong> ou as <strong>Setas</strong>.</li>
-              <li>Ataque básico físico com <strong>Espaço</strong> ou <strong>J</strong>.</li>
-              <li>Ataque de projétil à distância com a tecla <strong>K</strong>.</li>
-              <li>Especial explosivo em área com a tecla <strong>L</strong>.</li>
-              <li>Derrote os inimigos para abrir o portão e avançar pelas salas até os Bosses e Marcos de Andar!</li>
+              <li>Mova o parceiro livremente com <strong>W, A, S, D</strong> ou as <strong>Setas</strong>.</li>
+              <li>Esquiva rápida (Dash com invulnerabilidade) com <strong>Espaço</strong> ou <strong>Shift</strong>.</li>
+              <li>Ataques e Especiais disparam <strong>automaticamente</strong> contra os inimigos em alcance.</li>
+              <li>Sobreviva às 3 hordas da sala para abrir o portal e avançar até os Chefes!</li>
             </ul>
           </div>
 

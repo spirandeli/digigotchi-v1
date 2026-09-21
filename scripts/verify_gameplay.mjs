@@ -9,9 +9,9 @@ async function main() {
 
   const consoleErrors = [];
   page.on('console', (msg) => {
+    console.log(`[BROWSER ${msg.type()}]`, msg.text());
     if (msg.type() === 'error') {
       consoleErrors.push(msg.text());
-      console.error('[BROWSER ERROR]', msg.text());
     }
   });
   page.on('pageerror', (err) => {
@@ -26,19 +26,23 @@ async function main() {
   await page.screenshot({ path: '/home/spira/digigotchi-main/screenshots/qa_final_01_start.png' });
   console.log('Start screen captured.');
 
-  // Click Começar button
-  console.log('2. Clicking Começar...');
-  await page.click("button.ds-button-primary");
-  await page.waitForTimeout(800);
+  // Handle Continuar or Começar
+  const continueBtn = page.getByRole("button", { name: /continuar/i });
+  if (await continueBtn.isVisible()) {
+    console.log('2. Clicking Continuar...');
+    await continueBtn.click();
+  } else {
+    console.log('2. Clicking Começar...');
+    await page.click("button.ds-button-primary");
+    await page.waitForTimeout(800);
 
-  // Choose First Digimon line (Agumon)
-  console.log('3. Selecting Agumon card...');
-  await page.click("button.ds-card");
-  await page.waitForTimeout(400);
+    console.log('3. Selecting Agumon card...');
+    await page.click("button.ds-card");
+    await page.waitForTimeout(400);
 
-  // Click Confirmar escolha
-  console.log('4. Clicking Confirmar escolha...');
-  await page.click("button:has-text('Confirmar escolha')");
+    console.log('4. Clicking Confirmar escolha...');
+    await page.click("button:has-text('Confirmar escolha')");
+  }
   await page.waitForTimeout(1000);
 
   await page.screenshot({ path: '/home/spira/digigotchi-main/screenshots/qa_final_02_play.png' });
@@ -55,7 +59,34 @@ async function main() {
   // Click Iniciar Caminho Digital
   console.log('6. Launching Digital Path Phaser game...');
   await page.click("button:has-text('INICIAR CAMINHO DIGITAL')");
-  await page.waitForTimeout(4500); // Allow Phaser to boot, preload assets, autotile room
+  await page.waitForTimeout(5000); // Allow Phaser to boot, preload assets, autotile room
+
+  const sceneState = await page.evaluate(() => {
+    const scene = window.__digitalPathActiveScene;
+    if (!scene) return { error: "No scene found" };
+    return {
+      currentRoomNumber: scene.currentRoomNumber,
+      hasPlayer: !!scene.player,
+      playerPos: scene.player ? { x: scene.player.x, y: scene.player.y, visible: scene.player.visible, depth: scene.player.depth, texture: scene.player.texture?.key } : null,
+      camera: {
+        scrollX: scene.cameras?.main?.scrollX,
+        scrollY: scene.cameras?.main?.scrollY,
+        zoom: scene.cameras?.main?.zoom,
+        width: scene.cameras?.main?.width,
+        height: scene.cameras?.main?.height,
+      },
+      roomTileObjectsCount: scene.roomTileObjects?.length,
+      enemiesCount: scene.enemies?.length,
+      activeRoom: scene.activeRoom ? {
+        id: scene.activeRoom.id,
+        width: scene.activeRoom.width,
+        height: scene.activeRoom.height,
+        spawnTile: scene.activeRoom.spawnTile,
+        biome: scene.activeRoom.biome,
+      } : null,
+    };
+  });
+  console.log('Phaser Scene State:', JSON.stringify(sceneState, null, 2));
 
   await page.screenshot({ path: '/home/spira/digigotchi-main/screenshots/qa_final_04_canvas.png' });
   console.log('Phaser Canvas rendered and captured.');

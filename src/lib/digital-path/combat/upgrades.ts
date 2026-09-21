@@ -1,4 +1,5 @@
 import { RunRNG } from "../map/rng";
+import { PASSIVE_CATALOG, passiveToUpgradeDefinition } from "./PassiveCatalog";
 
 export type UpgradeRarity = "common" | "rare" | "epic";
 
@@ -9,6 +10,8 @@ export type UpgradeDefinition = Readonly<{
   rarity: UpgradeRarity;
   description: string;
   icon: string;
+  isPassive?: boolean;
+  passiveLevel?: number;
   attackMultiplier?: number;
   cooldownReduction?: number; // 0.20 = -20%
   maxHpBonus?: number;
@@ -18,9 +21,14 @@ export type UpgradeDefinition = Readonly<{
   thornPercent?: number;
   roomEnterHeal?: number;
   coinMultiplier?: number;
+  areaMultiplier?: number;
+  projectileSpeedMultiplier?: number;
+  magnetRadiusBonus?: number;
+  growthMultiplier?: number;
+  armorBonus?: number;
 }>;
 
-export const UPGRADES_CATALOG: readonly UpgradeDefinition[] = [
+export const BASE_UPGRADES: readonly UpgradeDefinition[] = [
   {
     id: "flame_core",
     name: "Núcleo de Chamas",
@@ -96,11 +104,27 @@ export const UPGRADES_CATALOG: readonly UpgradeDefinition[] = [
   },
 ];
 
+export const UPGRADES_CATALOG: readonly UpgradeDefinition[] = [
+  ...BASE_UPGRADES,
+  ...PASSIVE_CATALOG.map((p) => passiveToUpgradeDefinition(p, 0)),
+];
+
 /**
  * Returns 3 random upgrades without duplicates, influenced by seed RNG.
+ * Enforces build limits: max 4 passives and max 4 active skills.
  */
-export function getUpgradeChoices(rng: RunRNG, excludeIds: readonly string[] = []): UpgradeDefinition[] {
-  const available = UPGRADES_CATALOG.filter((u) => !excludeIds.includes(u.id));
+export function getUpgradeChoices(
+  rng: RunRNG,
+  excludeIds: readonly string[] = [],
+  equippedPassiveCount = 0,
+): UpgradeDefinition[] {
+  let available = UPGRADES_CATALOG.filter((u) => !excludeIds.includes(u.id));
+
+  // If already at maximum passives (4), filter out any new passives
+  if (equippedPassiveCount >= 4) {
+    available = available.filter((u) => !u.isPassive);
+  }
+
   const pool = available.length >= 3 ? available : UPGRADES_CATALOG;
   const shuffled = rng.shuffle(pool);
   return shuffled.slice(0, 3);
@@ -115,6 +139,11 @@ export type PlayerStatsModifiers = {
   thornPercent: number;
   roomEnterHeal: number;
   coinMultiplier: number;
+  areaMultiplier: number;
+  projectileSpeedMultiplier: number;
+  magnetRadius: number;
+  growthMultiplier: number;
+  armor: number;
 };
 
 /**
@@ -129,6 +158,11 @@ export function calculateModifiers(upgrades: readonly UpgradeDefinition[]): Play
   let thornPercent = 0;
   let roomEnterHeal = 0;
   let coinMultiplier = 1.0;
+  let areaMult = 1.0;
+  let projSpeedMult = 1.0;
+  let magnetRadius = 120; // Base 120px
+  let growthMult = 1.0;
+  let armor = 0;
 
   for (const up of upgrades) {
     if (up.attackMultiplier) attackMult += up.attackMultiplier;
@@ -139,6 +173,11 @@ export function calculateModifiers(upgrades: readonly UpgradeDefinition[]): Play
     if (up.thornPercent) thornPercent += up.thornPercent;
     if (up.roomEnterHeal) roomEnterHeal += up.roomEnterHeal;
     if (up.coinMultiplier) coinMultiplier += up.coinMultiplier;
+    if (up.areaMultiplier) areaMult += up.areaMultiplier;
+    if (up.projectileSpeedMultiplier) projSpeedMult += up.projectileSpeedMultiplier;
+    if (up.magnetRadiusBonus) magnetRadius += up.magnetRadiusBonus;
+    if (up.growthMultiplier) growthMult += up.growthMultiplier;
+    if (up.armorBonus) armor += up.armorBonus;
   }
 
   return {
@@ -150,5 +189,10 @@ export function calculateModifiers(upgrades: readonly UpgradeDefinition[]): Play
     thornPercent,
     roomEnterHeal,
     coinMultiplier,
+    areaMultiplier: areaMult,
+    projectileSpeedMultiplier: projSpeedMult,
+    magnetRadius,
+    growthMultiplier: growthMult,
+    armor,
   };
 }
